@@ -1,0 +1,37 @@
+kind: knowledge
+domain: building-images
+level: core
+title: Layer caching and rebuilds
+prompt: |
+  During a rebuild, podman reports that most layers are cached and only the
+  final instructions re-execute. Why is this efficient, and when does caching
+  break?
+options:
+  A: Each instruction creates a layer; unchanged layers are reused, but changing
+    an instruction invalidates it and every later instruction.
+  B: The runtime caches the entire final image and always reuses it wholesale.
+  C: Caching only works for images pulled from a remote registry.
+  D: Layers are never cached; every build reruns every instruction.
+answer: A
+explanation: |
+  A Containerfile is executed instruction by instruction, each producing a layer.
+  Podman reuses layers whose instruction (including COPY inputs) is unchanged,
+  so only the changed instruction and everything after it are re-executed. That
+  is why dependency COPYs are placed before frequently changed code, so the
+  expensive dependency layer stays cached.
+solution: |
+  Image builds are layered: every instruction that changes the filesystem (RUN,
+  COPY, ADD, and others) creates a new layer on top of the previous one. On a
+  rebuild, podman checks whether each instruction's inputs are unchanged and, if
+  so, reuses the existing layer instead of rerunning it. The moment an
+  instruction changes, that layer and all layers after it must be rebuilt. Order
+  matters: placing the dependency-install RUN after a COPY of package manifests,
+  but before the COPY of application source, keeps the slow dependency step
+  cached across code changes.
+checks:
+  - desc: Says each instruction creates a layer
+    contains: "layer"
+  - desc: Mentions later instructions must rebuild
+    contains: "after"
+  - desc: Mentions ordering of COPY and RUN
+    contains: "COPY"

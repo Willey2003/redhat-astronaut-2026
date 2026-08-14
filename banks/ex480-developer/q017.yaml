@@ -1,0 +1,32 @@
+kind: knowledge
+domain: observability-apps
+level: core
+title: Which resource tells the monitoring stack what to scrape
+prompt: |
+  An application pod exposes Prometheus metrics on /metrics, and the developer
+  wants OpenShift Monitoring to scrape it automatically. Which custom resource
+  declaratively selects the pods to scrape?
+options:
+  A: ServiceMonitor
+  B: PodDisruptionBudget
+  C: ConfigMap
+  D: Route
+answer: A
+explanation: |
+  A ServiceMonitor (monitoring.coreos.com) selects Service objects by label and
+  specifies the metrics endpoint; Prometheus scrapes the pods behind those
+  Services. A PDB limits voluntary disruption, a ConfigMap holds configuration,
+  and a Route exposes HTTP(S) traffic.
+solution: |
+  Create a ServiceMonitor whose spec.selector matches the labels of a Service
+  that fronts the metric-scraping pods, and set spec.endpoints.port (or
+  targetPort) and interval. The OpenShift monitoring stack picks up
+  ServiceMonitors for namespaces it is configured to watch. The target pods
+  must expose the metrics at the path and format Prometheus understands.
+checks:
+  - desc: Names ServiceMonitor
+    contains: "ServiceMonitor"
+  - desc: Mentions endpoints
+    contains: "endpoints"
+  - desc: Mentions selector
+    contains: "selector"

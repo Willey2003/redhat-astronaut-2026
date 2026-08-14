@@ -1,0 +1,32 @@
+kind: knowledge
+domain: persistent-storage
+level: core
+title: Claiming ODF block storage
+prompt: |
+  A developer wants a Pod to keep data on an ODF RBD volume. What is the
+  correct sequence in the application manifests?
+options:
+  A: Create a PVC with storageClassName ocs-storagecluster-ceph-rbd and reference that PVC in the Pod's volumes, then mount it at a container path.
+  B: Add an S3 ObjectBucketClaim and mount it as a filesystem.
+  C: Reference a ConfigMap containing a Ceph pool name.
+  D: Use an emptyDir and let the cluster migrate it to disk.
+answer: A
+explanation: |
+  Persistent applications claim storage with a PVC that selects the RBD
+  storage class. The Pod then lists the PVC in its volumes and mounts it at a
+  container mountPath. The CSI driver attaches the RBD volume to the node and
+  surfaces it to the Pod.
+solution: |
+  The manifest creates a PersistentVolumeClaim whose storageClassName is
+  ocs-storagecluster-ceph-rbd and requests a size and access mode. The Pod's
+  spec.volumes references the claim by name and the container's
+  volumeMounts.mountPath gives the in-container path. The ODF RBD CSI driver
+  provisions, attaches, and mounts the volume, which the application can then
+  use for persistent data.
+checks:
+  - desc: Names the RBD storage class
+    contains: "ceph-rbd"
+  - desc: Pod volumes reference the PVC
+    contains: "volumes"
+  - desc: Uses mountPath
+    contains: "mountPath"

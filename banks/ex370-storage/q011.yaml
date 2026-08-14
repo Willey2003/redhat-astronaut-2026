@@ -1,0 +1,33 @@
+kind: knowledge
+domain: persistent-storage
+level: deep
+title: Shared file access with CephFS
+prompt: |
+  A web application runs several replicas that all write to the same
+  directory, and the storage must come from ODF. Which storage class fits the
+  ReadWriteMany requirement?
+options:
+  A: ocs-storagecluster-ceph-rbd
+  B: ocs-storagecluster-ceph-rgw
+  C: ocs-storagecluster-cephfs
+  D: ocs-storagecluster-local-pv
+answer: C
+explanation: |
+  CephFS is a POSIX-like file system that many clients can mount at once, so
+  the ocs-storagecluster-cephfs class supports ReadWriteMany access. RBD block
+  volumes are normally single-writer (RWO), and rgw is object access rather
+  than a shared filesystem.
+solution: |
+  The ocs-storagecluster-cephfs storage class backs PVCs with CephFS, which
+  multiple Pods on different nodes can mount simultaneously with read-write
+  access, satisfying the ReadWriteMany mode. The PVC declares
+  accessModes ReadWriteMany and names the cephfs class; the CephFS CSI driver
+  mounts a shared subvolume into every replica. This is the usual ODF choice
+  for shared-file applications.
+checks:
+  - desc: Names the cephfs storage class
+    contains: "cephfs"
+  - desc: Supports ReadWriteMany
+    contains: "ReadWriteMany"
+  - desc: Mentions CephFS CSI driver
+    contains: "CSI"

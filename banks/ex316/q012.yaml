@@ -1,0 +1,36 @@
+kind: knowledge
+domain: vm-lifecycle
+level: core
+title: Stopping versus restarting a VM
+prompt: |
+  A VM is running and an administrator needs it to shut down completely and
+  free its node resources. Which action describes a full stop?
+options:
+  A: virtctl stop <vm>, which gracefully powers down the guest and removes its
+    VirtualMachineInstance.
+  B: virtctl restart <vm>, which also frees the node resources.
+  C: Pausing the VM with virtctl pause.
+  D: Deleting the VirtualMachine object entirely.
+answer: A
+explanation: |
+  virtctl stop shuts the guest down and the VMI is removed, releasing the
+  compute resources. virtctl restart stops then immediately starts the VMI
+  again, so resources stay occupied. Pause keeps the guest in memory, and
+  deleting the VM object would remove the desired-state definition, not just
+  stop it. Restarting from the definition on demand (virtctl start) recreates
+  the VMI later.
+solution: |
+  A VirtualMachine keeps its configuration even when stopped; its running
+  flag or run strategy governs whether a VirtualMachineInstance exists.
+  virtctl stop <vm> triggers a graceful guest shutdown (ACPI), after which the
+  VMI terminates and the node's CPU and memory are released. virtctl restart
+  performs a stop followed immediately by a start, keeping the VM available.
+  Pausing (virtctl pause) freezes execution without freeing resources. To
+  stop a VM permanently you would stop it and, separately, delete the VM object.
+checks:
+  - desc: Names virtctl stop
+    contains: "virtctl stop"
+  - desc: Notes the VMI is removed
+    contains: "VirtualMachineInstance"
+  - desc: Names virtctl restart
+    contains: "virtctl restart"

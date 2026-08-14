@@ -1,0 +1,36 @@
+kind: knowledge
+domain: developer-workflows
+level: core
+title: Instantiating an OpenShift template
+prompt: |
+  A team wants to deploy a parametrized application stack from a Template
+  without hand-writing every object. Which approach is correct?
+options:
+  A: Instantiate the Template with oc new-app --template=<template-name> or
+    oc process piped to oc create -f -.
+  B: Copy the Template file into every namespace and apply it directly.
+  C: Convert the Template to a Helm chart with oc convert.
+  D: Templates cannot be instantiated; each object must be created manually.
+answer: A
+explanation: |
+  A Template is a manifest describing a set of objects with parameters.
+  oc process substitutes the parameters and emits the resulting objects,
+  which can be piped into oc create -f -, or oc new-app --template does the
+  instantiation in one step. Applying a Template file directly without
+  processing is not how Templates are consumed, and oc convert is not a real
+  Template-to-Helm command.
+solution: |
+  OpenShift Templates bundle several objects with parameters that let the same
+  Template instantiate different configurations. To use one, either run
+  oc new-app --template=<name> -p KEY=value and let OpenShift process and
+  create the objects, or run oc process <name> -p KEY=value and pipe the
+  generated YAML into oc create -f -. The processed output contains concrete
+  objects with all substitutions applied, ready to be created in the current
+  project.
+checks:
+  - desc: Names oc process
+    contains: "oc process"
+  - desc: Names oc new-app --template
+    contains: "new-app"
+  - desc: Mentions parameters
+    contains: "parameters"

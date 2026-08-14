@@ -1,0 +1,35 @@
+kind: knowledge
+domain: container-security
+level: core
+title: Read-only root filesystem
+prompt: |
+  A hardened container must not be able to modify its own image files. Which
+  combination gives the process a writable scratch area while the root
+  filesystem stays read-only?
+options:
+  A: podman run --read-only -v tmp:/tmp so /tmp is a writable tmpfs while the
+    image filesystem is read-only.
+  B: podman run --privileged to allow writes anywhere.
+  C: podman run -v /:/app to mount the host root inside the container.
+  D: Rebuilding the image to make every file world-writable.
+answer: A
+explanation: |
+  --read-only mounts the container root filesystem read-only; an anonymous
+  tmpfs volume (-v tmp:/tmp or --tmpfs /tmp) gives the process somewhere to
+  write without touching the image. --privileged and host-root mounts are the
+  opposite of hardening, and world-writable files remove filesystem protection
+  entirely.
+solution: |
+  podman run --read-only <image> mounts the container's root filesystem as
+  read-only, so the application cannot modify or plant files in the image. Since
+  many applications need a scratch directory, a tmpfs such as
+  --tmpfs /tmp (or -v tmp:/tmp) provides ephemeral writable space that
+  disappears when the container exits. This pattern pairs well with a non-root
+  user and is a common checklist item for runtime hardening.
+checks:
+  - desc: Names --read-only
+    contains: "--read-only"
+  - desc: Names tmpfs
+    contains: "tmpfs"
+  - desc: Notes ephemeral writable space
+    contains: "writable"

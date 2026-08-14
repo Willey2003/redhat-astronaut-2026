@@ -1,0 +1,33 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: quick
+title: Ansible connection architecture
+prompt: |
+  A team is evaluating Ansible and notices that no agent process is installed
+  on their managed servers. Which statement best describes how Ansible manages
+  those hosts?
+options:
+  A: Ansible is agentless; the control node connects over SSH or WinRM, executes small modules on the target, and removes them afterwards.
+  B: Ansible requires a permanently running daemon on every managed node.
+  C: Ansible never touches managed nodes and runs everything on the control node only.
+  D: Ansible needs a dedicated message-broker server for all host communication.
+answer: A
+explanation: |
+  Ansible follows a push-based, agentless model. The control node uses SSH
+  (Linux) or WinRM (Windows) to run ephemeral Python or PowerShell modules on
+  the managed hosts. No agent or broker infrastructure is required, and the
+  connection stays open only as long as a task runs.
+solution: |
+  Ansible is agentless: the control node connects to each managed host over SSH
+  or WinRM and pushes small modules that are executed on the target and removed
+  when the task completes. There is no permanently installed agent and no
+  central broker; connections are established on demand for each task or play.
+  This keeps managed nodes lightweight and lets Ansible manage nearly any
+  machine reachable by the supported connection transports.
+checks:
+  - desc: Names the agentless model
+    contains: "agentless"
+  - desc: Mentions SSH or WinRM transport
+    contains: "SSH"
+  - desc: Modules are pushed and removed
+    contains: "removed"

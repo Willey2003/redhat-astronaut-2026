@@ -1,0 +1,37 @@
+kind: knowledge
+domain: openshift-virtualization
+level: deep
+title: Live migration prerequisites
+prompt: |
+  An administrator wants VMs to move transparently between nodes during
+  maintenance. What must be true for live migration to succeed?
+options:
+  A: The VM's storage must be shared across nodes (for example, a ReadWriteMany
+    PVC) and the guest must be live-migratable, with no incompatible devices or
+    unsupported CPU settings.
+  B: The VM must be pinned to a single node by design.
+  C: The VM must run without any disks attached.
+  D: All nodes must run the identical identical VM rather than moving it.
+answer: A
+explanation: |
+  Live migration copies guest memory to another node while the VM keeps
+  running, which requires the disk to be readable on both nodes, typically via
+  shared storage such as a ReadWriteMany PVC or hostpath with shared backing.
+  The VMI must be declared live-migratable (liveMigratable condition), and
+  passthrough devices, certain host-dependent CPU models, or unmigratable
+  interfaces block migration.
+solution: |
+  Live migration moves a running VirtualMachineInstance from one node to another
+  with minimal downtime. Prerequisites include shared, multi-node storage for
+  the guest disk (commonly a ReadWriteMany PVC) so the destination node can
+  access it, a migration policy that permits the VMI (the LiveMigratable
+  condition), and a guest configuration without blocking factors such as
+  host-device passthrough or node-specific CPU models. virtctl migrate <vm>
+  triggers a migration manually; node maintenance automation uses the same path.
+checks:
+  - desc: Names shared storage
+    contains: "ReadWriteMany"
+  - desc: Names the LiveMigratable condition
+    contains: "LiveMigratable"
+  - desc: Names virtctl migrate
+    contains: "virtctl migrate"

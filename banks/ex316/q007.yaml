@@ -1,0 +1,33 @@
+kind: knowledge
+domain: openshift-virtualization
+level: core
+title: virtctl console versus virtctl vnc
+prompt: |
+  A VM boots but has no SSH access configured yet, and an administrator must
+  watch the boot process. Which virtctl command provides that interactive
+  connection?
+options:
+  A: virtctl console <vm> opens the VM's serial console.
+  B: virtctl vnc <vm> opens a graphical VNC session.
+  C: Both are identical in every situation.
+  D: virtctl ssh <vm> without any guest setup.
+answer: A
+explanation: |
+  virtctl console attaches to the VM's serial console, which streams boot
+  messages and works headlessly over a terminal, ideal before the OS networking
+  is ready. virtctl vnc opens a graphical display for VMs with a desktop GUI.
+  virtctl ssh is only possible once the guest is configured for SSH.
+solution: |
+  virtctl provides two interactive access paths. virtctl console <vm> connects
+  to the guest's serial console, showing kernel and init boot output and
+  offering a text login even before the network is configured. virtctl vnc
+  <vm> opens a VNC viewer for a graphical desktop session. The serial console
+  is the standard first-contact debugging channel for headless servers, while
+  VNC suits GUI operating systems.
+checks:
+  - desc: Names virtctl console
+    contains: "virtctl console"
+  - desc: Names virtctl vnc
+    contains: "virtctl vnc"
+  - desc: Notes serial console use
+    contains: "serial console"

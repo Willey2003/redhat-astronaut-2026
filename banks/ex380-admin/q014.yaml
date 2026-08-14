@@ -1,0 +1,33 @@
+kind: knowledge
+domain: operators
+level: quick
+title: Which Subscription field controls update approval
+prompt: |
+  An operator's Subscription is set so that new operator versions are installed
+  only after an administrator reviews and approves them. Which field in the
+  Subscription controls this behavior?
+options:
+  A: spec.installPlanApproval
+  B: spec.package
+  C: spec.channel
+  D: spec.startingCSV
+answer: A
+explanation: |
+  spec.installPlanApproval accepts Automatic or Manual. Automatic installs
+  approved updates on its own; Manual requires an administrator to approve each
+  InstallPlan before OLM applies it. spec.package names the operator,
+  spec.channel selects the update channel, and spec.startingCSV pins the first
+  version installed.
+solution: |
+  A Subscription's spec.installPlanApproval field takes Automatic or Manual.
+  With Manual, OLM creates an InstallPlan when a new version becomes available
+  but applies it only after an administrator approves it, for example by
+  patching the plan's spec.approved to true. Automatic skips that review step.
+  package and channel select which operator and stream to follow.
+checks:
+  - desc: Names installPlanApproval
+    contains: "installPlanApproval"
+  - desc: Mentions Manual approval
+    contains: "Manual"
+  - desc: Mentions InstallPlan
+    contains: "InstallPlan"

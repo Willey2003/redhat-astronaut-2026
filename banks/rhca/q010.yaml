@@ -1,0 +1,32 @@
+kind: knowledge
+domain: openshift-architecture
+level: core
+title: Who owns platform components
+prompt: |
+  OpenShift 4 components such as the router and monitoring are upgraded and
+  kept healthy by what mechanism?
+options:
+  A: "Manual RPM upgrades by an administrator"
+  B: "Cluster Operators that reconcile their owned components"
+  C: "A weekly cron job"
+  D: "Systemd services on the control plane"
+answer: B
+explanation: |
+  OpenShift 4 is operator-driven: each platform component, including ingress,
+  network, monitoring, and storage, is owned by a Cluster Operator that
+  reconciles the component to desired state. oc get clusteroperators shows
+  their conditions.
+solution: |
+  OpenShift 4 manages itself through Cluster Operators: each platform
+  subsystem, such as the ingress router, network, monitoring, registry, and
+  storage, is owned by an operator that continuously reconciles its component
+  to the declared desired state. They watch the ClusterVersion, roll out
+  upgrades in order, and report Available, Progressing, and Degraded conditions
+  that you inspect with oc get clusteroperators.
+checks:
+  - desc: Names Cluster Operators
+    contains: "Cluster Operators"
+  - desc: Mentions reconciliation
+    contains: "reconciles"
+  - desc: Names the clusteroperators command
+    contains: "oc get clusteroperators"

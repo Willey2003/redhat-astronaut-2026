@@ -1,0 +1,31 @@
+kind: knowledge
+domain: hybrid-cloud-strategy
+level: quick
+title: What hybrid cloud strategy means
+prompt: |
+  A VP asks what a hybrid cloud strategy actually buys the company. Which
+  articulation is the best?
+options:
+  A: "Running every workload on one public provider"
+  B: "A single consistent platform strategy spanning on-premise, edge, and public clouds"
+  C: "Moving all data centers to colocation"
+  D: "Using only virtual machines everywhere"
+answer: B
+explanation: |
+  Hybrid cloud is a strategy to run workloads consistently across on-premise,
+  edge, and public cloud on a common platform, preserving workload placement
+  choice and portability rather than being locked into one provider.
+solution: |
+  Hybrid cloud strategy is about a consistent operating platform across
+  on-premise, edge, and public clouds: the same APIs, tooling, and security
+  model wherever the workload runs. It preserves workload placement choice and
+  portability, so decisions follow business needs such as data residency and
+  cost rather than a single provider's lock-in, and the same skills apply
+  everywhere.
+checks:
+  - desc: Mentions consistency across environments
+    contains: "consistent"
+  - desc: Names on-premise and edge
+    contains: "edge"
+  - desc: Mentions portability
+    contains: "portability"

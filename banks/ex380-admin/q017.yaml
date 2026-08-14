@@ -1,0 +1,33 @@
+kind: knowledge
+domain: security-compliance
+level: core
+title: Which SCC is the default for new namespaces
+prompt: |
+  In recent OpenShift 4 releases, which SCC is the default for newly created
+  namespaces, denying privileged containers and enforcing non-root behavior?
+options:
+  A: restricted-v2
+  B: anyuid
+  C: privileged
+  D: hostaccess
+answer: A
+explanation: |
+  Since OpenShift 4.11, new namespaces are assigned the restricted-v2 SCC,
+  which enforces the Kubernetes restricted Pod Security level: no privileged
+  containers, no host namespaces, and non-root execution (unless overridden).
+  anyuid allows running as any UID, privileged is the least restrictive SCC,
+  and hostaccess permits host networking and filesystem access.
+solution: |
+  New namespaces in OpenShift 4.11 and later get restricted-v2 as the default
+  SCC. It forbids privileged and host-namespace containers, requires
+  runAsNonRoot-compatible execution, and matches the Kubernetes restricted Pod
+  Security level. `oc describe scc restricted-v2` shows its rules. The older
+  default was restricted; anyuid, privileged, and hostaccess are all more
+  permissive.
+checks:
+  - desc: Names restricted-v2
+    contains: "restricted-v2"
+  - desc: Mentions the restricted level
+    contains: "restricted"
+  - desc: Contrasts with anyuid
+    contains: "anyuid"

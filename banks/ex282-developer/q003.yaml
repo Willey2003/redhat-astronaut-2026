@@ -1,0 +1,35 @@
+kind: knowledge
+domain: openshift-concepts
+level: quick
+title: Developer versus Administrator perspective
+prompt: |
+  A developer wants to inspect their application in the web console without
+  managing cluster-wide infrastructure. Which perspective should they use?
+options:
+  A: The Developer perspective, which centers on a Topology view of the
+    application's components, routes, builds, and deployments.
+  B: The Administrator perspective, which is required to view any application.
+  C: The Cluster perspective, which manages only node hardware.
+  D: The Operator perspective, which replaces the console for all users.
+answer: A
+explanation: |
+  The Developer perspective is scoped to a chosen Project and shows a Topology
+  view with Deployments, Services, Routes, Builds, and Pipelines as connected
+  nodes. The Administrator perspective is for cluster-level concerns such as
+  nodes, operators, and cluster settings. A developer normally stays in the
+  Developer perspective for day-to-day work.
+solution: |
+  The Developer perspective of the OpenShift web console is optimized for
+  application developers: the Topology view renders the resources of a selected
+  Project as a graph of connected nodes, and lets users add components from
+  Git, container images, or templates, trigger builds, inspect Routes, and
+  scale Deployments or DeploymentConfigs. The Administrator perspective focuses
+  on cluster infrastructure: nodes, machine pools, operators, storage, and
+  cluster settings. Application work belongs in the Developer perspective.
+checks:
+  - desc: Names the Developer perspective
+    contains: "Developer perspective"
+  - desc: Names the Topology view
+    contains: "Topology"
+  - desc: Contrasts with Administrator perspective
+    contains: "Administrator perspective"

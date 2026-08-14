@@ -1,0 +1,34 @@
+kind: knowledge
+domain: networking-advanced
+level: quick
+title: Which NetworkPolicy field selects peer namespaces by label
+prompt: |
+  A NetworkPolicy must allow ingress only from pods that run in a specific set
+  of namespaces, identified by namespace labels, rather than by pod labels.
+  Which spec.ingress field selects peer namespaces by label?
+options:
+  A: from[].namespaceSelector
+  B: from[].podSelector
+  C: from[].ipBlock
+  D: ports[].port
+answer: A
+explanation: |
+  In a NetworkPolicy ingress rule, each `from` entry can be a podSelector, a
+  namespaceSelector, an ipBlock, or a combination of them. A namespaceSelector
+  matches pods in the namespaces carrying the given labels, so it restricts
+  traffic by namespace rather than by individual pod labels. podSelector
+  selects pods by their own labels, ipBlock selects by CIDR, and ports declares
+  the allowed ports.
+solution: |
+  The ingress `from` array in a NetworkPolicy accepts namespaceSelector,
+  podSelector, ipBlock, or a combination with AND/OR semantics. A from entry
+  using namespaceSelector matches every pod in the namespaces that carry the
+  selected labels, letting a single policy govern traffic from an entire set of
+  namespaces. podSelector instead matches pods by their own labels.
+checks:
+  - desc: Names namespaceSelector
+    contains: "namespaceSelector"
+  - desc: Mentions the ingress from field
+    contains: "from"
+  - desc: Contrasts with podSelector
+    contains: "podSelector"

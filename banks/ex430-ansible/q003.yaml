@@ -1,0 +1,33 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: core
+title: Gathering facts
+prompt: |
+  A playbook needs to condition on each host's operating system and IP address.
+  Which playbook keyword causes Ansible to collect those system facts before
+  running the first task?
+options:
+  A: 'gather_facts: false'
+  B: 'facts: true'
+  C: 'gather_facts: true'
+  D: 'collect_facts: yes'
+answer: C
+explanation: |
+  The `gather_facts` keyword controls whether the implicit `setup` module runs.
+  When set to true (or yes), Ansible populates variables such as
+  ansible_facts.ansible_os_family and ansible_facts.default_ipv4.address before
+  tasks execute. Setting it to false skips collection and speeds up runs.
+solution: |
+  Playbooks collect facts with the `gather_facts` keyword; `gather_facts: true`
+  runs the `setup` module on every host in the play and stores the results in
+  ansible_facts (commonly referenced as ansible_os_family,
+  ansible_default_ipv4, ansible_architecture, and many more). Facts are gathered
+  before the first task and can then drive `when` conditions, templating, and
+  variables throughout the play.
+checks:
+  - desc: Names the gather_facts keyword
+    contains: "gather_facts"
+  - desc: Mentions the setup module
+    contains: "setup"
+  - desc: References ansible_facts
+    contains: "ansible_facts"

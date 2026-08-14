@@ -1,0 +1,37 @@
+kind: knowledge
+domain: scaling-performance
+level: core
+title: Which resource detects unhealthy nodes and triggers remediation
+prompt: |
+  An administrator wants a cluster-scoped controller that detects unhealthy
+  nodes (for example Ready=False for more than N minutes) and triggers a
+  remediation strategy such as a MachineHealthCheck to replace the machine.
+  Which resource does this?
+options:
+  A: NodeHealthCheck
+  B: MachineHealthCheck
+  C: ClusterAutoscaler
+  D: A NodeTuningOperator profile
+answer: A
+explanation: |
+  NodeHealthCheck is the remediation watch controller: it selects nodes,
+  applies spec.unhealthyConditions with a timeout, and then triggers the
+  configured remediationTemplate, typically a MachineHealthCheck that deletes
+  and rebuilds the machine. MachineHealthCheck by itself also remediates, but
+  the more recent cluster-level controller is NodeHealthCheck. The
+  ClusterAutoscaler scales for demand, and the tuning operator does not monitor
+  node health.
+solution: |
+  NodeHealthCheck detects unhealthy nodes cluster-wide. It sets spec.selector,
+  spec.unhealthyConditions (node conditions plus a timeout), and a
+  spec.remediationTemplate that points at a MachineHealthCheck, which deletes
+  and recreates the machine. Use `oc get nodehealthcheck` and `oc get
+  machinehealthcheck` to inspect both layers. This differs from the
+  ClusterAutoscaler, which adds capacity rather than performing remediation.
+checks:
+  - desc: Names NodeHealthCheck
+    contains: "NodeHealthCheck"
+  - desc: Mentions unhealthyConditions
+    contains: "unhealthyConditions"
+  - desc: Names MachineHealthCheck as remediation
+    contains: "MachineHealthCheck"

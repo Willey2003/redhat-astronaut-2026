@@ -1,6 +1,6 @@
 FROM python:3.12-slim
-LABEL org.opencontainers.image.title="Golden Astronaut 2026 - facilitator"
-LABEL org.opencontainers.image.source="https://github.com/<owner>/golden-astronaut-2026"
+LABEL org.opencontainers.image.title="Red Hat Astronaut 2026 - facilitator"
+LABEL org.opencontainers.image.source="https://github.com/<owner>/redhat-astronaut-2026"
 
 RUN pip install --no-cache-dir pyyaml && \
     apt-get update && apt-get install -y --no-install-recommends curl && \

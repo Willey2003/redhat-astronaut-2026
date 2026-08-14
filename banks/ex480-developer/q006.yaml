@@ -1,0 +1,33 @@
+kind: knowledge
+domain: advanced-deployments
+level: core
+title: Which rollout approach shifts traffic gradually
+prompt: |
+  A developer wants to shift a small percentage of production traffic to a new
+  version, monitor error rates, and then increase the percentage. Which
+  deployment approach is this?
+options:
+  A: Canary
+  B: Blue-green
+  C: Recreate
+  D: Rolling update
+answer: A
+explanation: |
+  A canary rollout exposes a small fraction of traffic to the new version and
+  gradually grows it as metrics look healthy. Blue-green runs two full stacks
+  and flips a route all at once; recreate stops the old version before starting
+  the new one; a rolling update replaces pods incrementally but without
+  fine-grained traffic control.
+solution: |
+  A canary deployment routes a small percentage of traffic to the new version,
+  verifies error rates and latency, then increases the share until 100% or a
+  rollback. On OpenShift this is typically built with two Deployments or Knative
+  revisions behind a weighted router (a Route or a service mesh VirtualService).
+  Blue-green instead keeps both versions fully running and switches at once.
+checks:
+  - desc: Names canary
+    contains: "canary"
+  - desc: Mentions weighted traffic
+    contains: "weighted"
+  - desc: Contrasts with blue-green
+    contains: "Blue-green"

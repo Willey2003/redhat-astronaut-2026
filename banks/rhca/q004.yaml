@@ -1,0 +1,33 @@
+kind: knowledge
+domain: enterprise-architecture
+level: core
+title: Standard operating environments
+prompt: |
+  Teams keep installing RHEL differently, so production diverges from what was
+  validated. Which practice reduces configuration drift and repeats verified
+  baselines?
+options:
+  A: "Standard Operating Environments built from managed images and automated configuration"
+  B: "Letting each engineer tune servers manually"
+  C: "Deleting configuration after install"
+  D: "Using a different base image per server"
+answer: A
+explanation: |
+  Standard Operating Environments (SOEs) are managed, repeatable baselines: the
+  same verified OS image plus the same configuration applied through
+  automation, so every system starts from a known-good state and diverges only
+  deliberately.
+solution: |
+  A Standard Operating Environment is a managed, repeatable baseline for RHEL:
+  a verified base image plus the same configuration applied by automation, so
+  every system starts from a known-good state and diverges only deliberately.
+  Combined with continuous configuration management it reduces drift, cuts
+  troubleshooting, and makes support and auditing predictable, because the
+  difference between any two systems is intentional, not accidental.
+checks:
+  - desc: Names Standard Operating Environments
+    contains: "Standard Operating Environment"
+  - desc: Mentions baseline images
+    contains: "base image"
+  - desc: Mentions automation
+    contains: "automation"

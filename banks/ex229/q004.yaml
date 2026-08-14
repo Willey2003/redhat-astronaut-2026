@@ -1,0 +1,33 @@
+kind: knowledge
+domain: cluster-administration
+level: deep
+title: Dedicated infrastructure nodes
+prompt: |
+  An administrator wants infrastructure components (registry, monitoring,
+  ingress) to run on separate nodes so application workloads get the full
+  capacity of the general workers. What must be set up?
+options:
+  A: A dedicated node pool labeled for infrastructure, with taints and matching tolerations added to those components.
+  B: Static pods running directly under the kubelet on the control plane.
+  C: Disabling the workloads by setting replicas to zero.
+  D: A second, fully separate cluster for infrastructure.
+answer: A
+explanation: |
+  Infra nodes are typically dedicated worker machines labeled (for example
+  node-role.kubernetes.io/infra) and tainted so normal workloads do not land on
+  them. The infrastructure Operators then add tolerations and node selectors so
+  their components schedule onto those tainted nodes.
+solution: |
+  The pattern is a dedicated infra node pool: nodes get a role label such as
+  node-role.kubernetes.io/infra and a taint, and the Ingress, Cluster
+  Monitoring, and Registry operators are configured with nodeSelectors and
+  matching tolerations. Scheduling then keeps application Pods off those nodes
+  while infrastructure workloads run there. This requires capacity planning
+  and operator configuration to be effective.
+checks:
+  - desc: Uses a dedicated node pool
+    contains: "infra node"
+  - desc: Mentions taints
+    contains: "taint"
+  - desc: Components add tolerations
+    contains: "tolerations"

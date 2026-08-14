@@ -1,0 +1,34 @@
+kind: knowledge
+domain: content-collections-execution
+level: core
+title: Fully qualified collection names
+prompt: |
+  To avoid ambiguity and use the exact source of a module, a playbook calls
+  modules with a fully qualified collection name (FQCN). Which string is an
+  FQCN?
+options:
+  A: ansible.builtin.copy
+  B: copy
+  C: ansible-copy
+  D: builtin.copy
+answer: A
+explanation: |
+  An FQCN is `namespace.collection.module`, for example
+  `ansible.builtin.copy`. Short names such as `copy` still work but can clash
+  once multiple collections provide the same module; using FQCNs pins the
+  behavior explicitly.
+solution: |
+  A fully qualified collection name has the form
+  `namespace.collection.module`, such as `ansible.builtin.copy`,
+  `ansible.posix.firewalld`, or `community.general.dnf`. Collections bundle
+  modules, roles, and plugins under a namespace, and FQCNs remove ambiguity
+  when several collections supply identically named modules. ansible-core
+  ships the ansible.builtin collection, so `copy` and `ansible.builtin.copy`
+  resolve the same module unless another collection shadows it.
+checks:
+  - desc: Names namespace and collection
+    contains: "namespace"
+  - desc: Example FQCN given
+    contains: "ansible.builtin.copy"
+  - desc: Mentions ansible.builtin
+    contains: "ansible.builtin"

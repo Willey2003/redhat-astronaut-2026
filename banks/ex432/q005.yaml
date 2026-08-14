@@ -1,0 +1,32 @@
+kind: knowledge
+domain: cluster-installation
+level: core
+title: Which subcommand writes the UPI Ignition configs
+prompt: |
+  For a UPI install, the administrator needs the Ignition configs that the
+  control plane and compute nodes will boot from. Which openshift-install
+  subcommand writes them out?
+options:
+  A: openshift-install create ignition-configs
+  B: openshift-install create manifests
+  C: openshift-install create cluster
+  D: openshift-install destroy cluster
+answer: A
+explanation: |
+  `openshift-install create ignition-configs` writes bootstrap.ign, master.ign,
+  and worker.ign into the install directory, which UPI setups serve to nodes so
+  they boot and join the cluster. create manifests stops before ignition
+  generation, create cluster is for IPI, and destroy cluster tears down.
+solution: |
+  Run `openshift-install create ignition-configs --dir <install-dir>` to
+  produce bootstrap.ign, master.ign, and worker.ign. UPI platforms then serve
+  these files (for example over HTTP) and embed their URL in the coreos-installer
+  commands or DHCP configs that boot the nodes. The ignition configs tell each
+  node which release to pull and how to join the cluster.
+checks:
+  - desc: Names the subcommand
+    contains: "create ignition-configs"
+  - desc: Names the master file
+    contains: "master.ign"
+  - desc: Names the worker file
+    contains: "worker.ign"

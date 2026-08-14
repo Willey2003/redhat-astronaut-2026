@@ -1,0 +1,31 @@
+kind: knowledge
+domain: networking-neutron
+level: deep
+title: Who allows what at the port
+prompt: |
+  Instances on the same network are talking when they should not. Which Neutron
+  feature restricts traffic between ports?
+options:
+  A: "Security groups, which filter ingress and egress per port based on rules"
+  B: "Floating IP assignment"
+  C: "The image format"
+  D: "Volume encryption"
+answer: A
+explanation: |
+  Security groups are port-level firewalls: their rules specify allowed
+  protocols, ports, and source or destination CIDRs or groups, and they apply
+  per port, so they also limit east-west traffic between instances.
+solution: |
+  Neutron security groups act as per-port firewalls: each port belongs to a
+  security group, and its rules state which ingress and egress traffic is
+  allowed, matching protocol, port range, and remote source, either a CIDR or
+  another security group. The command openstack security group rule create adds
+  rules, and because they apply at the port, they limit east-west traffic
+  between instances, not just traffic from the internet.
+checks:
+  - desc: Names security groups
+    contains: "security groups"
+  - desc: Mentions per-port filtering
+    contains: "port"
+  - desc: Gives rule create command
+    contains: "openstack security group rule create"

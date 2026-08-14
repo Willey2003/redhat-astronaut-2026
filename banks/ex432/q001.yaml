@@ -1,0 +1,34 @@
+kind: knowledge
+domain: cluster-installation
+level: quick
+title: Which subcommand renders manifests without starting the install
+prompt: |
+  An administrator must customize a cluster's manifests (for example add a
+  MachineConfig) before nodes are provisioned. Which openshift-install
+  subcommand renders the manifests and Ignition configs WITHOUT starting the
+  cluster installation?
+options:
+  A: openshift-install create manifests
+  B: openshift-install create cluster
+  C: openshift-install destroy cluster
+  D: openshift-install agent create cluster
+answer: A
+explanation: |
+  `openshift-install create manifests` produces the cluster's manifests
+  directory and Ignition configs without beginning the install, so you can
+  inspect and customize them first. create cluster runs the full installation,
+  destroy cluster tears a cluster down, and agent create cluster is used for
+  Agent-based installs.
+solution: |
+  Run `openshift-install create manifests --dir <install-dir>` to generate the
+  cluster manifests and Ignition configs without installing. This is the point
+  to customize manifests or add MachineConfigs before running `openshift-install
+  create cluster --dir <install-dir>`. Keeping the manifests staged this way
+  makes installs reproducible.
+checks:
+  - desc: Names the subcommand
+    contains: "create manifests"
+  - desc: Mentions the dir flag
+    contains: "--dir"
+  - desc: Mentions create cluster next
+    contains: "create cluster"

@@ -1,0 +1,30 @@
+kind: knowledge
+domain: playbooks-templating
+level: quick
+title: Minimum playbook structure
+prompt: |
+  A minimal playbook needs to run a `debug` task on every host in the
+  inventory. Which two top-level keys are required for any play?
+options:
+  A: vars and templates
+  B: remote_user and handlers
+  C: hosts and tasks
+  D: name and modules
+answer: C
+explanation: |
+  Every play needs `hosts` to select which hosts it targets and `tasks` to list
+  the actions to run. Keys such as `vars`, `become`, and `handlers` are
+  optional refinements, not requirements.
+solution: |
+  A play always declares `hosts`, the pattern of hosts to target (such as `all`
+  or `webservers`), and `tasks`, the ordered list of modules to run. The
+  keyword `gather_facts` controls fact collection and optional keys such as
+  `become`, `vars`, `pre_tasks`, and `handlers` add behavior, but `hosts` and
+  `tasks` alone form a valid, runnable play.
+checks:
+  - desc: Names hosts keyword
+    contains: "hosts"
+  - desc: Names tasks keyword
+    contains: "tasks"
+  - desc: Shows target pattern
+    contains: "webservers"

@@ -1,0 +1,28 @@
+kind: knowledge
+domain: automation-controller
+level: core
+title: Syncing playbooks from source control
+prompt: |
+  Playbooks live in a Git repository. What does the automation controller use
+  to fetch and keep them updated?
+options:
+  A: "A Project, which syncs a source control repository into the controller"
+  B: "A manually uploaded tarball per job"
+  C: "A cron job on each managed host"
+  D: "The webhook URL of the router"
+answer: A
+explanation: |
+  A Project points at a source control repository (Git or SVN) and syncs the
+  content into the controller. Job Templates then select a playbook from that
+  synced project, and updating the project pulls the latest commit.
+solution: |
+  A Project in the automation controller points at a source control repository
+  and syncs its contents into the controller, keeping playbook code current and
+  versioned. Job Templates reference a playbook inside a project, and updating
+  the project pulls the latest commit, so every run executes reviewed,
+  version-controlled code rather than whatever happens to sit on a laptop.
+checks:
+  - desc: Names the Project object
+    contains: "Project"
+  - desc: Mentions syncing from source control
+    contains: "syncs"

@@ -1,0 +1,36 @@
+kind: knowledge
+domain: container-security
+level: deep
+title: Keeping secrets out of images
+prompt: |
+  An application needs a database password. Which approach keeps the secret out
+  of the image and out of the shell history?
+options:
+  A: Mount it at runtime from a Podman secret or an environment file, and never
+    bake it into the Containerfile.
+  B: Hard-code the password in the Containerfile's ENV line.
+  C: Pass the password as a build argument that gets committed into a layer.
+  D: Store the password in a world-readable file inside the image.
+answer: A
+explanation: |
+  Secrets should reach the container at runtime: podman secret create plus a
+  --secret mount, or an env file passed with --env-file and kept out of
+  version control. Baking values into ENV, committing ARG values into layers,
+  or shipping a world-readable file in the image all leak the secret to anyone
+  with image access.
+solution: |
+  Secrets belong in runtime configuration, never in the image. Podman supports
+  podman secret create dbpass secret.txt and mounting it into the container
+  with --secret dbpass,type=mount, or with the type=env variant that
+  exposes it as an environment variable. Alternatively --env-file reads
+  variables from a local file at start time. Because image layers can be
+  inspected by anyone with pull access, and ARG/ENV values are recorded in
+  layers, both are unsafe for secrets. Using Podman secrets or external secret
+  tooling keeps credentials out of images and out of build logs.
+checks:
+  - desc: Names podman secret create
+    contains: "podman secret create"
+  - desc: Names the --secret flag
+    contains: "--secret"
+  - desc: Warns about secrets in layers
+    contains: "layers"

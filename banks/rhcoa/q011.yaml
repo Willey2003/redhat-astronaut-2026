@@ -1,0 +1,30 @@
+kind: knowledge
+domain: networking-neutron
+level: core
+title: Reaching the outside world
+prompt: |
+  A user boots an instance on a private network and needs inbound access from
+  the internet. What does Neutron provide?
+options:
+  A: "A floating IP from an external network, associated with the instance port"
+  B: "A second SSH key"
+  C: "A larger flavor"
+  D: "A Cinder snapshot"
+answer: A
+explanation: |
+  Floating IPs are public addresses on an external or provider network that map
+  one-to-one to instance ports, providing inbound and outbound internet
+  connectivity through the router.
+solution: |
+  To reach a private-network instance from the internet, a user allocates a
+  floating IP from an external network and associates it with the instance
+  port: openstack floating ip create external, then openstack server add floating ip <server> <ip>. The router performs the network address
+  translation between the floating IP and the instance's fixed IP, giving both
+  inbound access and outbound connectivity.
+checks:
+  - desc: Names floating IPs
+    contains: "floating IP"
+  - desc: Mentions external network
+    contains: "external network"
+  - desc: Gives association commands
+    contains: "add floating ip"

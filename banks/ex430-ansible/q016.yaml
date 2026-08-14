@@ -1,0 +1,33 @@
+kind: knowledge
+domain: content-collections-execution
+level: deep
+title: Execution environments in AAP
+prompt: |
+  An organization needs a consistent runtime so every job has the same
+  ansible-core version, collections, and Python dependencies. Which AAP
+  mechanism packages all of that into a container used to run jobs?
+options:
+  A: Execution Environments
+  B: Static host inventories
+  C: Python virtual environments created per host
+  D: Job-level `pip install` in every playbook
+answer: A
+explanation: |
+  An execution environment (EE) is an OCI container image containing
+  ansible-core, a curated set of collections, and the Python and system
+  packages they need. Automation controller runs each job inside the EE
+  selected by its Job Template, giving every run the same, reproducible
+  runtime.
+solution: |
+  An Execution Environment is a container image built with ansible-builder
+  from an execution-environment.yml definition. It layers ansible-core, the
+  required collections, and Python dependencies, and automation controller
+  executes jobs inside that container. Pinning the EE in a Job Template makes
+  runtimes reproducible and removes the fragile host-level virtualenv approach.
+checks:
+  - desc: Names Execution Environments
+    contains: "Execution Environment"
+  - desc: Mentions ansible-builder
+    contains: "ansible-builder"
+  - desc: Jobs run inside the container
+    contains: "container"

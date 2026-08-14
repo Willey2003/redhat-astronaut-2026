@@ -1,0 +1,33 @@
+kind: knowledge
+domain: services-networking
+level: core
+title: Which route termination opens a new TLS session to the backend
+prompt: |
+  A service behind a Route must receive HTTPS traffic from the router itself,
+  so the backend pod must present its own TLS certificate. Which Route TLS
+  termination type opens a new TLS connection from the router to the backend?
+options:
+  A: reencrypt
+  B: edge
+  C: passthrough
+  D: http (insecure)
+answer: A
+explanation: |
+  reencrypt termination terminates TLS at the router and then opens a fresh TLS
+  connection to the backend, so the service must serve HTTPS with its own
+  certificate. edge terminates TLS at the router and forwards plain HTTP to the
+  pods; passthrough forwards the encrypted stream untouched; insecure sends
+  plain HTTP.
+solution: |
+  Use reencrypt termination when the backend itself must serve TLS. The router
+  terminates the client's TLS, then initiates a new TLS session to the pod,
+  which must present a certificate matching the route. edge is the opposite:
+  TLS stops at the router and the backend sees HTTP. passthrough forwards the
+  original TLS stream without termination.
+checks:
+  - desc: Names reencrypt
+    contains: "reencrypt"
+  - desc: Contrasts with edge termination
+    contains: "edge"
+  - desc: Mentions passthrough
+    contains: "passthrough"

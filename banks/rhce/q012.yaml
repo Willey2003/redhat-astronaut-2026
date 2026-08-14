@@ -1,0 +1,29 @@
+kind: knowledge
+domain: roles
+level: core
+title: Generating files inside a role
+prompt: |
+  A role must render a configuration file from a Jinja2 template during a
+  play. Which directory holds the template, and which module renders it?
+options:
+  A: "files/ with the copy module"
+  B: "templates/ with the template module"
+  C: "vars/ with the command module"
+  D: "handlers/ with the assemble module"
+answer: B
+explanation: |
+  Jinja2 templates live in a role's templates/ directory and are rendered by
+  the template module, which substitutes variables before copying the result to
+  the destination path.
+solution: |
+  A role stores Jinja2 templates in templates/ and a play applies them with the
+  ansible.builtin.template module. The module reads the template, substitutes
+  variables and filters such as {{ ansible_facts['hostname'] }} and
+  {{ service_port }}, and writes the result to the destination path on the
+  managed host with the requested ownership and permissions. Handlers notified
+  by the template change then restart the service.
+checks:
+  - desc: Names templates directory
+    contains: "templates/"
+  - desc: Names the template module
+    contains: "template module"

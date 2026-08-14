@@ -1,0 +1,13 @@
+id: ex430-ansible
+title: EX430 Red Hat Ansible Automation Platform Mock
+engine: knowledge
+duration_minutes: 90
+pass_threshold: 0.7
+draw_size: 16
+seed: null
+domains:
+  ansible-fundamentals: 0.25
+  playbooks-templating: 0.25
+  roles-collections: 0.20
+  automation-controller: 0.15
+  content-collections-execution: 0.15

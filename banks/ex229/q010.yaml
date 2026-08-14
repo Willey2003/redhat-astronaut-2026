@@ -1,0 +1,32 @@
+kind: knowledge
+domain: networking-cluster
+level: core
+title: Default-deny network policy
+prompt: |
+  An administrator must stop all inbound traffic to every Pod in the `pay`
+  namespace, regardless of labels. Which NetworkPolicy expresses that?
+options:
+  A: A policy whose podSelector matches all Pods and whose spec.ingress is empty.
+  B: A policy selecting one Pod and one port.
+  C: A Service of type ClusterIP pointing at the namespace.
+  D: An SCC named deny-all assigned to the namespace.
+answer: A
+explanation: |
+  A NetworkPolicy with an empty podSelector (`{}`, matching all Pods) and no
+  ingress rules denies all inbound traffic; an empty ingress list means "no
+  rules, so nothing is allowed". Network policies are additive, so this must
+  be combined carefully with any allow policies.
+solution: |
+  A default-deny policy uses podSelector: {} to match every Pod in the
+  namespace and an ingress list that contains no allow rules. Since a Network
+  Policy with rules only permits what its rules specify, an empty ingress
+  array blocks all inbound traffic to those Pods. Traffic to Services is
+  governed by the same Pod rules, so the deny applies to the underlying Pods.
+  White-listing then happens through additional policies.
+checks:
+  - desc: Empty podSelector matches all
+    contains: "podSelector: {}"
+  - desc: Empty ingress blocks all
+    contains: "ingress"
+  - desc: Applies per namespace
+    contains: "namespace"

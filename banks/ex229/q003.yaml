@@ -1,0 +1,31 @@
+kind: knowledge
+domain: cluster-administration
+level: core
+title: Driving a cluster upgrade
+prompt: |
+  An administrator runs `oc adm upgrade --to=4.16.20` on a 4.16 cluster. Which
+  object and operator move the cluster to the requested version?
+options:
+  A: The ClusterVersion object reconciled by the Cluster Version Operator.
+  B: The MachineSet updated to a new image.
+  C: A Subscription in the openshift-marketplace namespace.
+  D: The Cluster Operator ConfigMap.
+answer: A
+explanation: |
+  The Cluster Version Operator (CVO) watches the ClusterVersion resource,
+  applies the requested channel and desired update, and orchestrates the
+  cluster operators to the target version. MachineSets and subscriptions are
+  not what drive version reconciliation.
+solution: |
+  The ClusterVersion object stores the cluster's version history, channel, and
+  desired update. The Cluster Version Operator reads spec.desiredUpdate,
+  verifies the graph, and sequentially updates the cluster operators until the
+  whole cluster reports the target version. `oc adm upgrade` writes the desired
+  update, and `oc get clusterversion` shows the progressing state.
+checks:
+  - desc: Names the ClusterVersion object
+    contains: "ClusterVersion"
+  - desc: Names the Cluster Version Operator
+    contains: "Cluster Version Operator"
+  - desc: Uses oc adm upgrade
+    contains: "upgrade"

@@ -1,0 +1,34 @@
+kind: knowledge
+domain: security-compliance
+level: core
+title: How Pod Security Admission enforces the restricted level
+prompt: |
+  An administrator wants to guarantee that only pods meeting the Kubernetes
+  restricted Pod Security level run in a namespace, blocking everything else.
+  What must they configure?
+options:
+  A: 'The namespace label pod-security.kubernetes.io/enforce: restricted'
+  B: An SCC named privileged bound to all ServiceAccounts
+  C: A NetworkPolicy denying all ingress
+  D: A ResourceQuota with a priorityClassName
+answer: A
+explanation: |
+  Pod Security Admission is driven by namespace labels:
+  pod-security.kubernetes.io/enforce: restricted makes the API server reject
+  pods that violate the restricted level. Adding -audit and -warn variants
+  records or warns instead of blocking. Binding a privileged SCC loosens
+  security, a NetworkPolicy controls traffic, and a ResourceQuota caps
+  resources rather than security.
+solution: |
+  Set the pod-security.kubernetes.io/enforce label to restricted on the
+  namespace so Pod Security Admission rejects workloads that violate the
+  restricted level. To observe rather than block, also set the audit and warn
+  variants of the label to the same value. OpenShift aligns these labels with
+  the namespace's assigned SCC policy.
+checks:
+  - desc: Names the enforce label
+    contains: "pod-security.kubernetes.io/enforce"
+  - desc: Mentions restricted
+    contains: "restricted"
+  - desc: Mentions audit and warn
+    contains: "audit"

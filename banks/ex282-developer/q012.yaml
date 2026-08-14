@@ -1,0 +1,37 @@
+kind: knowledge
+domain: building-deploying-applications
+level: core
+title: Route TLS termination types
+prompt: |
+  A Route must encrypt traffic between the client and the OpenShift router, but
+  the backend service itself talks plain HTTP. Which termination type is
+  appropriate?
+options:
+  A: Edge termination, where TLS is terminated at the router and traffic to the
+    backend is plain HTTP.
+  B: Passthrough termination, where TLS is passed unexamined to the backend.
+  C: Reencrypt termination, which re-encrypts to the backend with a new cert.
+  D: No termination, which never accepts TLS.
+answer: A
+explanation: |
+  Edge termination places the TLS certificate on the router (HAProxy), so the
+  client connection is encrypted and the connection to the backend service is
+  plain HTTP. Passthrough forwards TLS end-to-end without the router seeing the
+  payload, and reencrypt adds a second TLS hop from router to backend. For an
+  HTTP-only backend, edge is the standard choice.
+solution: |
+  A Route exposes a Service outside the cluster through the ingress router. With
+  edge TLS termination, the router terminates the client's TLS connection using
+  the certificate configured on the Route, and forwards to the backend Service
+  over plain HTTP. Passthrough termination forwards the encrypted stream
+  untouched, so the backend must speak TLS itself. Reencrypt termination
+  terminates TLS at the router and then establishes a fresh TLS connection to
+  the backend. oc create route edge --service=<svc> creates an edge Route
+  directly.
+checks:
+  - desc: Names edge termination
+    contains: "edge"
+  - desc: Names passthrough and reencrypt
+    contains: "passthrough"
+  - desc: Names reencrypt
+    contains: "reencrypt"

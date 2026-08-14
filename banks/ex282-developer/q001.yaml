@@ -1,0 +1,40 @@
+kind: knowledge
+domain: openshift-concepts
+level: quick
+title: Developer-oriented OpenShift resources
+prompt: |
+  A developer is asked which Kubernetes-native resources OpenShift layers on
+  top of to support source-driven application delivery. Which set is the best
+  answer?
+options:
+  A: Route, ImageStream, BuildConfig, and DeploymentConfig
+  B: HelmRelease, PrometheusRule, and NetworkPolicy
+  C: StorageClass, PersistentVolumeClaim, and ConfigMap
+  D: Ingress, Namespace, and LimitRange
+answer: A
+explanation: |
+  OpenShift augments Kubernetes with developer-facing APIs: Route (HTTP(S)
+  exposure with TLS termination options), ImageStream (tag-based image
+  metadata), BuildConfig (build strategies such as Source-to-Image), and
+  DeploymentConfig (deployment with config and image change triggers). Ingress,
+  PVCs, ConfigMaps, and Namespaces are core Kubernetes resources that already
+  exist; Helm and Prometheus rules are additive but not part of the core
+  source-to-deploy story described here.
+solution: |
+  OpenShift extends the Kubernetes API with developer-focused resources:
+  Routes expose services over HTTP(S) with edge, passthrough, or reencrypt TLS
+  termination; ImageStreams track images and tags as first-class objects;
+  BuildConfigs define how source becomes an image using strategies such as
+  Source-to-Image (S2I), Dockerfile, or Pipeline; DeploymentConfigs manage
+  rolling deployments with config and image-change triggers. These objects are
+  what the Developer perspective and oc new-app orchestrate for a typical
+  application workload.
+checks:
+  - desc: Names Route as an OpenShift resource
+    contains: "Route"
+  - desc: Names ImageStream
+    contains: "ImageStream"
+  - desc: Names BuildConfig
+    contains: "BuildConfig"
+  - desc: Names DeploymentConfig
+    contains: "DeploymentConfig"

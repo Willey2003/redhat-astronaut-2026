@@ -1,0 +1,33 @@
+kind: knowledge
+domain: application-development
+level: core
+title: Which GitOps resource syncs a Git repo into a namespace
+prompt: |
+  OpenShift GitOps is installed, and the team wants a Git repository to
+  continuously deliver a set of manifests to a namespace. Which resource
+  declares that the cluster should sync that repo to the cluster?
+options:
+  A: An Argo CD Application
+  B: A BuildConfig with a Docker strategy
+  C: A Knative Service
+  D: An ImageStream trigger
+answer: A
+explanation: |
+  In OpenShift GitOps (Argo CD), an Application (argoproj.io) points at a
+  source (a Git repo and path) and a destination (a cluster and namespace), and
+  Argo CD syncs the manifests from source to destination. BuildConfigs build
+  images, Knative Services serve serverless workloads, and image triggers
+  redeploy on tag changes.
+solution: |
+  Create an Application (argoproj.io) whose spec.source.repoURL points at the
+  Git repository, spec.source.path selects a directory, and spec.destination
+  specifies the namespace and cluster. Argo CD continuously compares the live
+  state with the repo and syncs changes. The Application can live in any
+  namespace where the GitOps operator grants access.
+checks:
+  - desc: Names the Argo CD Application
+    contains: "Application"
+  - desc: Mentions repoURL
+    contains: "repoURL"
+  - desc: Mentions sync
+    contains: "sync"

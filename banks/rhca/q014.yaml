@@ -1,0 +1,34 @@
+kind: knowledge
+domain: automation-at-scale
+level: core
+title: Layers of the automation platform
+prompt: |
+  Modern automation runs playbooks in isolated, repeatable runtimes. Which
+  component packages the Ansible version, Python, and collections so jobs run
+  identically everywhere?
+options:
+  A: "Execution Environments, container images bundling Ansible, Python, and collections"
+  B: "The web UI theme"
+  C: "Managed node /etc/ansible"
+  D: "A YAML linter"
+answer: A
+explanation: |
+  Execution Environments (EEs) are container images containing the Ansible
+  version, Python dependencies, system packages, and collections a job needs;
+  the controller launches jobs inside them, giving reproducibility and
+  portability.
+solution: |
+  Execution Environments are the core of automation at scale on Red Hat
+  Ansible Automation Platform: each is a container image that bundles the exact
+  Ansible core version, Python, system packages, and collections a job needs.
+  The automation controller runs every job inside its configured execution
+  environment, so the same playbook behaves identically whether run from a
+  laptop or the scheduler, eliminating the classic "works on my machine"
+  problem.
+checks:
+  - desc: Names Execution Environments
+    contains: "Execution Environments"
+  - desc: Mentions bundling collections
+    contains: "collections"
+  - desc: Mentions reproducibility
+    contains: "identically"

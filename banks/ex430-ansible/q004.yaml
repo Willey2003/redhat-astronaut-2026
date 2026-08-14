@@ -1,0 +1,31 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: core
+title: Ad hoc command syntax
+prompt: |
+  Without writing a playbook, a sysadmin wants to run the `uptime` command
+  against every host in the `db` inventory group. Which command does this?
+options:
+  A: ansible db -m command -a 'uptime'
+  B: ansible-playbook db -m command -a 'uptime'
+  C: ansible db -M command -a 'uptime'
+  D: ansible db command --args 'uptime'
+answer: A
+explanation: |
+  Ad hoc tasks use the `ansible` binary, not `ansible-playbook`. The `-m`
+  option selects the module (command by default) and `-a` passes module
+  arguments. `-M` is an unrelated flag (module path search), and passing the
+  module name as a positional argument is invalid.
+solution: |
+  Ad hoc automation uses the `ansible` command: `ansible db -m command -a
+  'uptime'` runs the command module with the argument uptime on every host in
+  the db group. The `-m` flag names the module and `-a` supplies its arguments;
+  playbooks with the `ansible-playbook` binary are only needed when you want
+  orchestrated, multi-step automation saved as YAML.
+checks:
+  - desc: Uses the ansible binary
+    contains: "ansible"
+  - desc: Names the -m module flag
+    contains: "-m"
+  - desc: Uses -a for arguments
+    contains: "-a"

@@ -1,0 +1,31 @@
+kind: knowledge
+domain: networking-neutron
+level: core
+title: Connecting private networks to the internet
+prompt: |
+  Instances on a private network need outbound internet without public IPs.
+  Which Neutron object performs the routing and NAT?
+options:
+  A: "A router attached to the private subnet and an external network"
+  B: "A bigger image"
+  C: "A security group with no rules"
+  D: "A second project"
+answer: A
+explanation: |
+  A Neutron router connects a project's private subnets to an external network,
+  providing L3 routing, a gateway, and source NAT so private instances reach
+  the internet.
+solution: |
+  A Neutron router links a private network to the external network: openstack
+  router create, then openstack router add subnet to attach the private subnet,
+  and openstack router set --external-gateway to connect the external network.
+  The router then routes between subnets and performs source NAT so private
+  instances reach the internet, while floating IPs provide the reverse path for
+  inbound traffic.
+checks:
+  - desc: Names the router object
+    contains: "router"
+  - desc: Mentions the external gateway
+    contains: "external-gateway"
+  - desc: Mentions source NAT
+    contains: "NAT"

@@ -1,0 +1,32 @@
+kind: knowledge
+domain: system-configuration
+level: core
+title: Installing packages with the dnf module
+prompt: |
+  A playbook must install the postfix package if it is missing and never touch
+  it when it is present. Which module gives that idempotent guarantee?
+options:
+  A: "command with dnf install -y"
+  B: "ansible.builtin.dnf with state: present"
+  C: "shell with rpm -i"
+  D: "copy with a downloaded RPM"
+answer: B
+explanation: |
+  The dnf module wraps package management idempotently: state: present (the
+  default) installs the package only when it is missing. command and shell
+  rerun unconditionally and are never idempotent.
+solution: |
+  ansible.builtin.dnf manages RHEL packages with state: present, meaning ensure
+  the package is installed, and the module checks current state so it changes
+  nothing when the package is already present. That is idempotence: the same
+  playbook run twice yields the same result with no redundant work, unlike a
+  raw dnf install command, which reinstalls and touches the system every run.
+  The module also handles package removal with state: absent and latest for
+  upgrades.
+checks:
+  - desc: Names the dnf module
+    contains: "dnf"
+  - desc: Names state present
+    contains: "state: present"
+  - desc: Mentions idempotence
+    contains: "idempotence"

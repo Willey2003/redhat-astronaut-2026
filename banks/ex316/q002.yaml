@@ -1,0 +1,38 @@
+kind: knowledge
+domain: virtualization-concepts
+level: core
+title: How OpenShift runs virtual machines
+prompt: |
+  A skeptic asks how OpenShift, a container platform, is able to run full
+  virtual machines. What is the correct technical answer?
+options:
+  A: OpenShift Virtualization runs each VM as a special pod whose containers
+    launch QEMU, which uses the host's KVM hypervisor for hardware-accelerated
+    virtualization.
+  B: Each VM runs on a dedicated bare-metal node with no pod involvement.
+  C: VMs are emulated entirely in software on the control plane nodes.
+  D: OpenShift replaces the kernel on worker nodes with a hypervisor only.
+answer: A
+explanation: |
+  OpenShift Virtualization (KubeVirt) wraps the QEMU process in a pod. A
+  virt-launcher pod is created for each VM; inside it, a compute container runs
+  QEMU/KVM and the VM's vCPUs are accelerated by the node's /dev/kvm device when
+  available. VMs are scheduled like pods, managed by Kubernetes controllers, and
+  appear as VM CRDs, not as something outside the pod model.
+solution: |
+  OpenShift Virtualization is built on KubeVirt, which turns VMs into
+  Kubernetes-native objects. For each VirtualMachineInstance, the virt-controller
+  creates a virt-launcher pod on a node. That pod contains a compute container
+  running QEMU, which executes the guest using the KVM kernel module through
+  /dev/kvm for near-native speed. Standard Kubernetes scheduling, networking,
+  storage, and monitoring apply to the pod, so the VM workload is managed with
+  the same tooling as containers.
+checks:
+  - desc: Names KubeVirt
+    contains: "KubeVirt"
+  - desc: Names virt-launcher pod
+    contains: "virt-launcher"
+  - desc: Names QEMU and KVM
+    contains: "QEMU"
+  - desc: Names /dev/kvm
+    contains: "/dev/kvm"

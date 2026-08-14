@@ -1,0 +1,32 @@
+kind: knowledge
+domain: system-configuration
+level: deep
+title: Rendering config files from variables
+prompt: |
+  A playbook generates /etc/nginx/nginx.conf from variables defined in
+  group_vars, so each host gets different values. Which module produces a file
+  whose content varies per host?
+options:
+  A: "template, which renders a Jinja2 source into the target file"
+  B: "lineinfile, which only appends a single line"
+  C: "file with state: absent"
+  D: "get_url, which only downloads"
+answer: A
+explanation: |
+  The template module renders a Jinja2 source using host facts and variables
+  and writes the result, so each host gets a customized file. lineinfile edits
+  one line, get_url downloads a file, and file manages attributes.
+solution: |
+  The template module renders a Jinja2 source file with the values of variables
+  and facts for each managed host and writes the output to the target path, so
+  /etc/nginx/nginx.conf differs per host as needed. It is the standard way to
+  generate configuration from group_vars or host_vars, and a notify on the
+  template task can trigger a handler that reloads the service when content
+  changes.
+checks:
+  - desc: Names the template module
+    contains: "template module"
+  - desc: Mentions Jinja2
+    contains: "Jinja2"
+  - desc: Mentions group_vars
+    contains: "group_vars"

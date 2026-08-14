@@ -1,0 +1,34 @@
+kind: knowledge
+domain: scaling-performance
+level: core
+title: Which resource autoscales one specific MachineSet
+prompt: |
+  A cluster uses the ClusterAutoscaler, and an administrator now wants one
+  specific MachineSet to scale between 2 and 8 machines automatically. Which
+  resource applies autoscaling limits to that one MachineSet?
+options:
+  A: MachineAutoscaler
+  B: ClusterAutoscaler
+  C: MachineHealthCheck
+  D: HorizontalPodAutoscaler
+answer: A
+explanation: |
+  The MachineAutoscaler (autoscaling.openshift.io/v1) references a single
+  MachineSet via spec.scaleTargetRef and sets spec.minNodes and spec.maxNodes
+  for it. The ClusterAutoscaler configures cluster-wide behavior; a
+  MachineHealthCheck remediates failed machines; a HorizontalPodAutoscaler
+  scales pods, not machines.
+solution: |
+  The MachineAutoscaler custom resource ties a single MachineSet to scaling
+  limits: it references the MachineSet through spec.scaleTargetRef and defines
+  spec.minNodes and spec.maxNodes. The ClusterAutoscaler uses those bounds to
+  decide when to add or remove machines for pending pods. A MachineHealthCheck,
+  by contrast, detects unhealthy nodes and triggers remediation instead of
+  scaling.
+checks:
+  - desc: Names the MachineAutoscaler
+    contains: "MachineAutoscaler"
+  - desc: Mentions scaleTargetRef
+    contains: "scaleTargetRef"
+  - desc: Mentions min and max nodes
+    contains: "minNodes"

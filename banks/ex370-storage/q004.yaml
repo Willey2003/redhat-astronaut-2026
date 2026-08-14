@@ -1,0 +1,32 @@
+kind: knowledge
+domain: storage-concepts
+level: core
+title: Volume modes
+prompt: |
+  An application needs to access a raw block device directly instead of a
+  mounted filesystem. Which PersistentVolume field selects between block and
+  filesystem presentation?
+options:
+  A: spec.volumeMode with values Block or Filesystem
+  B: spec.reclaimPolicy
+  C: spec.accessModes
+  D: spec.storageClassName
+answer: A
+explanation: |
+  `volumeMode` on the PersistentVolume and PersistentVolumeClaim distinguishes
+  raw Block volumes from Filesystem volumes. A Filesystem volume is mounted and
+  formatted with a filesystem; a Block volume is presented as a raw device.
+  accessModes controls concurrency, not the block/filesystem distinction.
+solution: |
+  The `volumeMode` field, set on both the PV and the PVC, takes the values
+  Filesystem (the default) or Block. A Filesystem volume is formatted and
+  mounted at a path, while a Block volume appears as a raw block device the
+  application can open directly, such as a database wanting to manage its own
+  layout. CSI storage such as RBD supports both modes.
+checks:
+  - desc: Names volumeMode
+    contains: "volumeMode"
+  - desc: Lists Block and Filesystem values
+    contains: "Block"
+  - desc: Mentions CSI storage
+    contains: "CSI"

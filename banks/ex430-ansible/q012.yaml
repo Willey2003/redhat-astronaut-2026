@@ -1,0 +1,32 @@
+kind: knowledge
+domain: automation-controller
+level: core
+title: Job Templates in automation controller
+prompt: |
+  In Red Hat Ansible Automation Platform, an operator wants to run a playbook
+  from a project against an inventory with a specific set of credentials.
+  Which object captures that reusable runnable configuration?
+options:
+  A: An Execution Environment
+  B: A Job Template
+  C: A Host Group
+  D: A Notification
+answer: B
+explanation: |
+  A Job Template binds together a project (source of the playbook), an
+  inventory, a job type (run or check), a credential, and an execution
+  environment. Launching it produces a Job. Execution environments only
+  provide the runtime image and notifications only report results.
+solution: |
+  A Job Template is the object that links a project, inventory, credential,
+  and execution environment into a reusable run. When launched, each run
+  becomes a Job whose output and status are recorded. Templates may enforce
+  strategy, verbosity, timeout, and survey prompts, making them the central
+  scheduling unit of automation controller in AAP.
+checks:
+  - desc: Names Job Template
+    contains: "Job Template"
+  - desc: Ties project to inventory and credential
+    contains: "inventory"
+  - desc: Launching creates a Job
+    contains: "Job"

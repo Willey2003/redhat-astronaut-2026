@@ -1,0 +1,31 @@
+kind: knowledge
+domain: openshift-architecture
+level: core
+title: How worker capacity grows
+prompt: |
+  A cluster must add compute automatically when pods are pending. Which
+  mechanism scales the worker pool to match demand?
+options:
+  A: "MachineAutoscaler plus the Cluster Autoscaler, scaling the machine pool up and down"
+  B: "Manually creating pods"
+  C: "Rebooting the control plane"
+  D: "The cronjob operator"
+answer: A
+explanation: |
+  On IPI and cloud clusters, MachineSets own node instances; MachineAutoscaler
+  annotates a MachineSet with min and max size, and the Cluster Autoscaler
+  scales that pool up when pods are unschedulable and down when demand drops.
+solution: |
+  OpenShift scales compute through the Machine API: MachineSets own node
+  instances, MachineAutoscaler annotates a MachineSet with min and max size,
+  and the Cluster Autoscaler scales that pool up when pods are unschedulable
+  and down when demand drops. Because it works at the machine level, node count
+  tracks actual workload demand rather than static sizing, and nodes are
+  removed and created cleanly as the pool shrinks and grows.
+checks:
+  - desc: Names MachineAutoscaler
+    contains: "MachineAutoscaler"
+  - desc: Names Cluster Autoscaler
+    contains: "Cluster Autoscaler"
+  - desc: Mentions MachineSets
+    contains: "MachineSets"

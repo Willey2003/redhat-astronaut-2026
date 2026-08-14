@@ -1,0 +1,33 @@
+kind: knowledge
+domain: containers-podman
+level: quick
+title: Publishing a container port
+prompt: |
+  A developer starts an nginx container and needs to reach it from the host on
+  port 8080. Which podman run invocation does that?
+options:
+  A: podman run -d -p 8080:80 nginx
+  B: podman run -d nginx
+  C: podman run --network host nginx
+  D: podman pull nginx
+answer: A
+explanation: |
+  -p 8080:80 maps host port 8080 to container port 80, publishing the
+  container's port to the host. Running without -p keeps ports private to the
+  container's network, --network host shares the host network namespace
+  (rather than publishing a single port), and podman pull only downloads the
+  image.
+solution: |
+  podman run -d -p 8080:80 nginx publishes the container: the container's
+  port 80 is bound to host port 8080, so curl http://localhost:8080 reaches
+  nginx. The -p (or --publish) flag is the standard way to expose a port,
+  and multiple -p flags publish several ports. Without it, the container's
+  ports are only reachable inside its network namespace, and the containers.conf
+  default network is used.
+checks:
+  - desc: Uses -p publish flag
+    contains: "-p"
+  - desc: Maps host port 8080 to container port 80
+    contains: "8080:80"
+  - desc: Notes default is no publication
+    contains: "Without it"

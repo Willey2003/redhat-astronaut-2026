@@ -1,0 +1,33 @@
+kind: knowledge
+domain: container-security
+level: deep
+title: Capabilities and privilege escalation
+prompt: |
+  A container is granted extra capabilities at runtime, but the process still
+  needs to be prevented from escalating to full root. Which combination
+  addresses this?
+options:
+  A: Grant only the specific capabilities with --cap-add, drop the rest, and
+    use --security-opt no-new-privileges so it cannot gain more privileges.
+  B: Grant all capabilities and also run --privileged.
+  C: Remove seccomp filtering to let the kernel enforce nothing.
+  D: Set --user root so the process already has every privilege.
+answer: A
+explanation: |
+  The least-privilege pattern is to start with --cap-drop=ALL, add back only
+  the capabilities the process needs, and enable no-new-privileges, which
+  prevents setuid binaries from escalating. --privileged grants everything and
+  disables the normal isolation, seccomp filtering is a control, not something
+  to remove, and running as root is the state being mitigated.
+solution: |
+  Linux capabilities divide root privileges into small units. The default
+  capability set can be tightened with podman run --cap-drop=ALL --cap-add=NET_BIND_SERVICE <image> to give a process only what it needs. Adding --security-opt no-new-privileges prevents the process from executing setuid binaries that could raise its privileges. Seccomp profiles remain enabled by default and further filter system calls. Together with a non-root user and a read-only root filesystem, these settings make up a solid runtime hardening baseline.
+checks:
+  - desc: Names --cap-add
+    contains: "--cap-add"
+  - desc: Names --cap-drop
+    contains: "--cap-drop"
+  - desc: Names no-new-privileges
+    contains: "no-new-privileges"
+  - desc: Mentions seccomp
+    contains: "seccomp"

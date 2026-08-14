@@ -1,0 +1,32 @@
+kind: knowledge
+domain: enterprise-architecture
+level: deep
+title: Sizing OpenShift control plane nodes
+prompt: |
+  When sizing control plane nodes for a new OpenShift cluster, which workload
+  consideration most affects the node count and sizing you choose?
+options:
+  A: "Only the number of routes"
+  B: "Worker node count and etcd load, which grow with cluster scale"
+  C: "The number of SSH keys configured"
+  D: "The monitoring dashboard theme"
+answer: B
+explanation: |
+  etcd is the critical state store of the control plane, and as worker nodes
+  and namespaces grow, so do API and etcd load. Control plane node count, CPU,
+  and memory must therefore scale with the cluster, using an odd count for
+  quorum.
+solution: |
+  Control plane capacity tracks cluster scale: as worker nodes and namespaces
+  grow, the API server and etcd receive more requests, so control plane sizing:
+  node count, CPU, memory, and disk, must grow with expected scale. Best
+  practice is dedicated control plane nodes, an odd count for quorum, fast
+  local disk for etcd, and worker pools sized by the application workload
+  rather than the other way round.
+checks:
+  - desc: Names etcd as scaling factor
+    contains: "etcd"
+  - desc: Mentions quorum
+    contains: "quorum"
+  - desc: Mentions dedicated control plane nodes
+    contains: "control plane"

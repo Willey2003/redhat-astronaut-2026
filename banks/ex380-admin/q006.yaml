@@ -1,0 +1,36 @@
+kind: knowledge
+domain: scaling-performance
+level: deep
+title: Which resource defines CPU partitioning for low-latency workloads
+prompt: |
+  A latency-sensitive workload needs consistent low latency on dedicated nodes.
+  An administrator prepares a profile that requests isolated CPUs and reserves
+  a set of CPUs for housekeeping tasks. Which resource defines this?
+options:
+  A: PerformanceProfile
+  B: A bare Tuned profile
+  C: KubeletConfig
+  D: MachineConfig
+answer: A
+explanation: |
+  A PerformanceProfile (performance.openshift.io) from the Node Tuning
+  Operator configures CPU partitioning: it declares spec.cpu.isolated and
+  spec.cpu.reserved, and the operator renders the Tuned profiles,
+  MachineConfigs, and kubelet arguments needed to implement it. A bare Tuned
+  profile handles kernel sysctls but not CPU partitioning; KubeletConfig tunes
+  the kubelet only; a MachineConfig is the mechanism, not the intent-level
+  profile.
+solution: |
+  The PerformanceProfile custom resource defines CPU partitioning for
+  low-latency workloads. spec.cpu.isolated lists the CPUs usable by application
+  pods, spec.cpu.reserved lists the CPUs left for kernel and housekeeping
+  tasks, and the Node Tuning Operator renders the Tuned profiles, MachineConfigs,
+  and kubelet CPU-manager settings from it. Create the profile, then label the
+  nodes so the operator applies it to them.
+checks:
+  - desc: Names PerformanceProfile
+    contains: "PerformanceProfile"
+  - desc: Mentions isolated CPUs
+    contains: "cpu.isolated"
+  - desc: Names the Node Tuning Operator
+    contains: "Node Tuning Operator"

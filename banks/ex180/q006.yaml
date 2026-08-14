@@ -1,0 +1,34 @@
+kind: knowledge
+domain: kubernetes-basics
+level: core
+title: Generating Kubernetes manifests with Podman
+prompt: |
+  A developer has a running container and wants a Kubernetes Pod manifest they
+  can hand to a cluster. Which podman command produces it?
+options:
+  A: podman generate kube <name>
+  B: podman build <name>
+  C: podman save <name>
+  D: podman commit <name>
+answer: A
+explanation: |
+  podman generate kube <container> emits a Kubernetes Pod YAML describing the
+  container, its ports, environment, and volumes. podman save exports an image
+  tarball, podman commit snapshots a container into a new image, and podman
+  build builds images. The generated YAML can be modified or fed directly to
+  podman kube play or oc apply.
+solution: |
+  podman generate kube <container-name> produces a Kubernetes Pod manifest
+  that captures the container's configuration: image, command, environment
+  variables, port mappings, volume mounts, and labels. The same command with a
+  pod name generates the Pod plus its associated containers. The output can be
+  edited and then applied to a real cluster with kubectl apply or oc apply,
+  or run locally with podman kube play, making it a bridge between Podman and
+  Kubernetes.
+checks:
+  - desc: Names podman generate kube
+    contains: "podman generate kube"
+  - desc: Says it emits a Pod manifest
+    contains: "Pod"
+  - desc: Names podman kube play
+    contains: "podman kube play"

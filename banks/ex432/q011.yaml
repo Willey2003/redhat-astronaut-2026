@@ -1,0 +1,34 @@
+kind: knowledge
+domain: post-install-configuration
+level: core
+title: How to expose the internal registry with a route
+prompt: |
+  On a bare-metal cluster, the internal registry is running but not reachable
+  from outside the cluster, so developers cannot push images. Which config
+  object is patched to expose the registry with a route?
+options:
+  A: configs.imageregistry.operator.openshift.io cluster
+  B: configs.ingress cluster
+  C: The registry Deployment
+  D: An ImageStream
+answer: A
+explanation: |
+  The Image Registry Operator exposes the config object
+  configs.imageregistry.operator.openshift.io named cluster. Setting
+  spec.defaultRoute to true makes the operator create a Route to the registry,
+  and you can also define spec.routes for custom hostnames. The ingress config
+  manages the default domain, the registry Deployment is managed by the
+  operator, and an ImageStream is not a configuration object.
+solution: |
+  Patch the Image Registry Operator's cluster config: `oc patch
+  configs.imageregistry.operator.openshift.io cluster --type merge -p
+  '{"spec":{"defaultRoute":true}}'`. The operator then creates a Route whose
+  hostname you can find with `oc get route -n openshift-image-registry`. You may
+  also set spec.routes to pin a custom hostname and TLS certificate.
+checks:
+  - desc: Names the imageregistry config
+    contains: "configs.imageregistry.operator.openshift.io"
+  - desc: Mentions defaultRoute
+    contains: "defaultRoute"
+  - desc: Mentions the route command
+    contains: "oc get route"

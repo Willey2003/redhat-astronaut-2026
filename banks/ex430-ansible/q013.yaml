@@ -1,0 +1,32 @@
+kind: knowledge
+domain: automation-controller
+level: quick
+title: Credentials in automation controller
+prompt: |
+  An AAP administrator is configuring a connection to a cloud provider for a
+  Job Template. What kind of data does a Credential in automation controller
+  store?
+options:
+  A: The YAML source of the playbooks
+  B: The list of hosts in the environment
+  C: Authentication secrets such as SSH keys, cloud tokens, and vault passwords
+  D: The history of completed job runs
+answer: C
+explanation: |
+  Credentials hold the authentication material a job needs: machine SSH
+  credentials, cloud provider API tokens, source-control tokens, and Ansible
+  Vault passwords. They are stored encrypted and referenced by Job Templates,
+  keeping secrets out of playbooks and inventories.
+solution: |
+  A Credential stores secrets used during execution, including SSH keys and
+  passwords for machine access, cloud provider API tokens, SCM tokens, and
+  vault passwords. Automation controller encrypts stored credentials and
+  injects them into job runs on demand, so playbooks and inventories never
+  contain plaintext secrets.
+checks:
+  - desc: Names secret material
+    contains: "SSH keys"
+  - desc: Mentions cloud tokens
+    contains: "API tokens"
+  - desc: Mentions vault passwords
+    contains: "vault"

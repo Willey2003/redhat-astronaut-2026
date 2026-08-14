@@ -1,0 +1,31 @@
+kind: knowledge
+domain: roles-collections
+level: deep
+title: Installing content from Ansible Galaxy
+prompt: |
+  A team wants to reuse a community role for Nginx and a community collection
+  of PostgreSQL modules. Which commands download that content from Galaxy?
+options:
+  A: ansible-galaxy role install <namespace>.<role> and ansible-galaxy collection install <namespace>.<collection>
+  B: ansible-galaxy role init <namespace>.<role> and ansible-playbook collection fetch
+  C: ansible-galaxy install uses only pip and installs nothing else
+  D: ansible-galaxy role install can only install the built-in roles
+answer: A
+explanation: |
+  `ansible-galaxy role install` downloads roles and `ansible-galaxy collection
+  install` downloads collections, both from galaxy.ansible.com by default.
+  `role init` scaffolds a new role locally and does not install anything.
+solution: |
+  `ansible-galaxy role install geerlingguy.nginx` downloads the role into
+  roles_path, while `ansible-galaxy collection install community.postgresql`
+  installs the collection, typically under collections/ansible_collections. A
+  requirements.yml file can pin names and versions for reproducibility.
+  `ansible-galaxy role init` only creates a skeleton for a new role and does
+  not fetch remote content.
+checks:
+  - desc: Names the role install subcommand
+    contains: "role install"
+  - desc: Names the collection install subcommand
+    contains: "collection install"
+  - desc: Mentions requirements.yml
+    contains: "requirements.yml"

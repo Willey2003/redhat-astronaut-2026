@@ -1,0 +1,32 @@
+kind: knowledge
+domain: containers-podman
+level: quick
+title: Running a command inside a container
+prompt: |
+  A container named web is running but misbehaving. A developer needs to open
+  an interactive shell inside it for investigation. Which command is correct?
+options:
+  A: podman exec -it web /bin/bash
+  B: podman run -it web
+  C: podman attach web
+  D: podman start web
+answer: A
+explanation: |
+  podman exec runs a process inside an already-running container;
+  -it attaches a terminal. podman run -it web would start a new container,
+  podman attach reconnects to the container's primary process, and podman
+  start starts a stopped container rather than running a command.
+solution: |
+  podman exec -it web /bin/bash starts a bash shell inside the running
+  container named web and attaches an interactive terminal. podman exec is for
+  running additional processes in an existing container, as opposed to podman
+  run, which creates a brand-new container. If the shell binary is missing,
+  the --user flag can select a user, and an alternative such as sh can be
+  used instead of bash.
+checks:
+  - desc: Names podman exec
+    contains: "podman exec"
+  - desc: Names the -it flags
+    contains: "-it"
+  - desc: Contrasts with podman run
+    contains: "podman run"

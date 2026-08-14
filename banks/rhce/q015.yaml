@@ -1,0 +1,32 @@
+kind: knowledge
+domain: automation-controller
+level: deep
+title: Where controller keeps secrets
+prompt: |
+  Where and how does the automation controller store secrets such as SSH keys
+  so they are not exposed in playbook code?
+options:
+  A: "In plain text inside the playbook's vars"
+  B: "Encrypted in the controller's credential store, referenced by name from Job Templates"
+  C: "In the control node's ~/.ssh directory of every user"
+  D: "In the inventory file as ansible_ssh_private_key_file"
+answer: B
+explanation: |
+  The controller stores credentials as managed objects encrypted in its own
+  store, keyed by type: machine, source control, and Vault. Job Templates
+  reference credentials by name, so secrets never appear in playbooks or
+  inventories.
+solution: |
+  The automation controller stores credentials as first-class objects in its
+  own encrypted store. A Job Template references credentials by name — machine credentials for SSH keys and passwords, source control credentials for SCM
+  access, and Vault credentials for encrypted variables. Because secrets stay
+  out of playbooks and inventories and access to them is governed by
+  role-based access control, only the right people can use a credential, and
+  they never see its value.
+checks:
+  - desc: Says credentials are stored encrypted
+    contains: "encrypted"
+  - desc: Mentions credential types
+    contains: "machine credentials"
+  - desc: Mentions Vault
+    contains: "Vault"

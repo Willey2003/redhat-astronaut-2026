@@ -1,0 +1,30 @@
+kind: knowledge
+domain: compute-nova
+level: core
+title: Booting from an image
+prompt: |
+  Where does the boot image for an instance come from, and what sizing template
+  defines its resources?
+options:
+  A: "Glance stores images, and a flavor defines vCPU, RAM, and disk sizing"
+  B: "Nova stores images, and a security group defines sizing"
+  C: "Cinder stores images, and a network defines sizing"
+  D: "Keystone stores images, and a quota defines sizing"
+answer: A
+explanation: |
+  Glance is the image service that holds boot images, and a flavor is the named
+  template of vCPU, RAM, and root disk that the instance is created with.
+solution: |
+  Boot images live in Glance, the image service, and an instance is created by
+  choosing an image together with a flavor, a named template that fixes vCPUs,
+  memory, and root disk, such as m1.small. The command openstack server create
+  --flavor m1.small --image rocky-9.3 boot creates an instance with those
+  resources, and snapshots of running servers also become Glance images that
+  later boots can reuse.
+checks:
+  - desc: Names Glance
+    contains: "Glance"
+  - desc: Defines flavor
+    contains: "flavor"
+  - desc: Gives a create command
+    contains: "openstack server create"

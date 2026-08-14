@@ -1,0 +1,31 @@
+kind: knowledge
+domain: storage-apps
+level: core
+title: On-demand persistent storage
+prompt: |
+  A stateful application must get storage automatically when it is deployed.
+  Which pair of objects makes that storage provisioned on demand?
+options:
+  A: StorageClass and PersistentVolumeClaim
+  B: ConfigMap and Secret
+  C: Route and Service
+  D: Deployment and ReplicaSet
+answer: A
+explanation: |
+  The StorageClass declares the provisioner and the claim requests storage;
+  the provisioner then creates a PersistentVolume automatically and binds it
+  to the claim. ConfigMaps, Secrets, Routes, and Services do not provide
+  persistent volumes.
+solution: |
+  A StorageClass names a provisioner (for example a CSI driver) plus settings
+  such as reclaimPolicy and allowVolumeExpansion. A PersistentVolumeClaim asks
+  for a size and access mode while referencing the class by name. The
+  provisioner then dynamically creates the backing volume and a PersistentVolume
+  bound to the claim, which a Pod can mount.
+checks:
+  - desc: Names StorageClass
+    contains: "StorageClass"
+  - desc: Names PersistentVolumeClaim
+    contains: "PersistentVolumeClaim"
+  - desc: Provisioner creates the volume
+    contains: "provisioner"

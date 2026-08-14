@@ -1,0 +1,32 @@
+kind: knowledge
+domain: configuration-secrets
+level: core
+title: How to expose a Secret as files inside a pod
+prompt: |
+  A pod needs a Secret exposed as a file at /etc/app/creds, with each Secret
+  key as a file. What must the pod spec define?
+options:
+  A: A secret volume in spec.volumes plus a volumeMount for the container
+  B: Only an imagePullSecret entry
+  C: An envFrom entry alone
+  D: A hostPath pointing at the Secret
+answer: A
+explanation: |
+  To expose Secret keys as files, declare a volume of type secret
+  (spec.volumes with secret.secretName) and mount it in the container with
+  spec.containers[].volumeMounts at the target path. imagePullSecrets only
+  authorizes pulls, envFrom exposes data as environment variables, and hostPath
+  mounts host directories.
+solution: |
+  Declare spec.volumes with a volume whose type is secret (secretName) and add
+  a volumeMount in the container at /etc/app/creds. Each key in the Secret
+  becomes a file named after the key inside the mount directory. Create the
+  Secret with `oc create secret generic`, then reference it; updates to the
+  Secret are reflected in the mounted files.
+checks:
+  - desc: Mentions the secret volume
+    contains: "secretName"
+  - desc: Mentions volumeMount
+    contains: "volumeMount"
+  - desc: Mentions the mount path
+    contains: "/etc/app/creds"

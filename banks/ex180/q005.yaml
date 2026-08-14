@@ -1,0 +1,33 @@
+kind: knowledge
+domain: containers-podman
+level: core
+title: Inspecting container details
+prompt: |
+  A developer needs the low-level JSON configuration (mounts, environment,
+  network settings, health status) of a running container. Which command
+  provides that data?
+options:
+  A: podman inspect <name>
+  B: podman logs <name>
+  C: podman top <name>
+  D: podman diff <name>
+answer: A
+explanation: |
+  podman inspect emits a JSON document with the container's configuration and
+  live state: mounts, env, networks, ports, state, health, and image metadata.
+  podman logs shows stdout/stderr, podman top lists processes, and podman
+  diff shows changed files between layers.
+solution: |
+  podman inspect <name> returns the container's complete configuration and
+  current state as JSON, including environment variables, bind mounts, port
+  bindings, network settings, exit code, and health-check results. Slices of the
+  output can be queried with format templates, for example podman inspect -f
+  '{{.State.Status}}' <name>. podman image inspect <image> performs the
+  equivalent inspection on an image.
+checks:
+  - desc: Names podman inspect
+    contains: "podman inspect"
+  - desc: Mentions JSON output
+    contains: "JSON"
+  - desc: Mentions image inspect
+    contains: "podman image inspect"

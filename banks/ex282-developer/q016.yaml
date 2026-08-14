@@ -1,0 +1,34 @@
+kind: knowledge
+domain: debugging-troubleshooting
+level: quick
+title: Viewing application logs
+prompt: |
+  A pod is running but a developer needs to follow its stdout/stderr output to
+  diagnose a bug. Which command streams the logs?
+options:
+  A: oc logs -f <pod> and, for controllers, oc logs deployment/<name>.
+  B: oc describe <pod> only, which prints logs inline.
+  C: oc get events only.
+  D: oc exec <pod> -- ls /var/log.
+answer: A
+explanation: |
+  oc logs <pod> prints the current container logs, and oc logs -f <pod>
+  follows them like tail -f. Controllers can be targeted with
+  oc logs deployment/<name>, which streams logs from the newest pod. oc
+  describe shows status and events, not full logs, and oc exec runs commands
+  inside the container rather than streaming its logs.
+solution: |
+  oc logs is the primary way to read container output. oc logs -f <pod>
+  streams logs live, which is useful when watching a crash loop or a startup
+  sequence. For workload resources, oc logs deployment/<name> or
+  oc logs bc/<name> selects the most recent pod. Multi-container pods need
+  -c <container> when the requested container is not the default. Combined
+  with oc get pods, this gives the fastest view of what an application is
+  doing.
+checks:
+  - desc: Names oc logs
+    contains: "oc logs"
+  - desc: Mentions -f follow flag
+    contains: "-f"
+  - desc: Mentions multi-container -c flag
+    contains: "-c"

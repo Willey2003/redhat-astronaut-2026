@@ -1,0 +1,13 @@
+id: ex229
+title: EX229 OpenShift Cluster Administration Essentials Mock
+engine: knowledge
+duration_minutes: 90
+pass_threshold: 0.7
+draw_size: 16
+seed: null
+domains:
+  cluster-administration: 0.25
+  security-rbac: 0.25
+  networking-cluster: 0.20
+  storage-apps: 0.15
+  logging-monitoring: 0.15

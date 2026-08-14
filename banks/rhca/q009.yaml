@@ -1,0 +1,31 @@
+kind: knowledge
+domain: openshift-architecture
+level: quick
+title: The front door of the API
+prompt: |
+  Every oc command and controller request lands first on one component. Which
+  is it?
+options:
+  A: "etcd"
+  B: "kube-apiserver"
+  C: "CoreDNS"
+  D: "The router"
+answer: B
+explanation: |
+  The OpenShift API server (kube-apiserver) is the front door: it authenticates,
+  authorizes, validates, and persists all API objects to etcd. etcd stores
+  state but is never talked to directly by users.
+solution: |
+  The OpenShift API server (kube-apiserver) is the single front door for the
+  cluster: every oc command, controller, and internal client is authenticated,
+  authorized, admission-checked, and persisted through it before anything
+  happens. etcd stores the resulting state, but it is written and read by the
+  API server, never directly by users, which is why all security policy applies
+  at the API server boundary.
+checks:
+  - desc: Names the API server
+    contains: "API server"
+  - desc: Mentions authentication and authorization
+    contains: "authenticated"
+  - desc: Notes etcd is not a user endpoint
+    contains: "etcd"

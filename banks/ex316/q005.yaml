@@ -1,0 +1,39 @@
+kind: knowledge
+domain: openshift-virtualization
+level: core
+title: VirtualMachine versus VirtualMachineInstance
+prompt: |
+  A developer is authoring YAML for a VM and must decide between the
+  VirtualMachine and VirtualMachineInstance API objects. What is the correct
+  distinction?
+options:
+  A: A VirtualMachine is the higher-level object with a spec and a running state
+    (runStrategy), and it manages VirtualMachineInstances underneath; a
+    VirtualMachineInstance is the running instance.
+  B: They are synonyms and either can be used interchangeably in every case.
+  C: A VirtualMachineInstance persists configuration while a VirtualMachine is
+    only for live migration.
+  D: A VirtualMachine is only for templates and cannot be started.
+answer: A
+explanation: |
+  The VirtualMachine (VM) is the declarative, higher-level object: it carries
+  the desired virtual hardware and a run strategy or running flag. When started,
+  it creates one VirtualMachineInstance (VMI), which represents the actual
+  running state on a node and has a lifecycle mirroring a pod's. Editing a VMI
+  directly is discouraged because the VM reconciles it back.
+solution: |
+  In KubeVirt, a VirtualMachine (vm.kubevirt.io) is the desired-state object: it
+  declares the domain spec (CPU, memory, disks, interfaces) and how it should
+  run, using running or the richer runStrategy. When the VM is started, the
+  controllers instantiate a VirtualMachineInstance (VMI), the object that
+  actually binds to a node and contains the running guest's status, IP, and
+  events. Users work with VMs and virtctl for day-to-day control; the VMI is
+  the observable runtime counterpart, similar to the Relationship between a
+  Deployment and its Pods.
+checks:
+  - desc: Names VirtualMachine as the desired state
+    contains: "VirtualMachine"
+  - desc: Names VirtualMachineInstance
+    contains: "VirtualMachineInstance"
+  - desc: Mentions runStrategy
+    contains: "runStrategy"

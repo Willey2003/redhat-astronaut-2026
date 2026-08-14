@@ -1,0 +1,36 @@
+kind: knowledge
+domain: kubernetes-basics
+level: core
+title: Service types and reachability
+prompt: |
+  A Deployment exposes three replicas, and a developer must make them reachable
+  from outside the cluster on a well-known port. Which Kubernetes Service type
+  fits best?
+options:
+  A: NodePort, which publishes the Service on a fixed port of every node.
+  B: ClusterIP, which is only reachable from inside the cluster.
+  C: ExternalName, which maps to a DNS name.
+  D: Headless Service, which returns pod IPs instead of a virtual IP.
+answer: A
+explanation: |
+  NodePort exposes a Service on a static port on every node, so traffic can
+  reach the Service from outside the cluster. ClusterIP is internal-only,
+  ExternalName returns a CNAME to a DNS name, and a Headless Service has no
+  cluster IP at all. LoadBalancer is another external option but requires a
+  cloud or load balancer provider.
+solution: |
+  A Service provides a stable virtual IP (ClusterIP) and DNS name that load
+  balances across a set of pods selected by label. The ClusterIP type is only
+  reachable inside the cluster. NodePort allocates a port (default range
+  30000-32767) on every node and forwards to the Service, giving external
+  access through any node IP. LoadBalancer builds on NodePort and provisions a
+  cloud load balancer, while ExternalName maps the Service to an external DNS
+  name. For a quick external entry point without a cloud provider, NodePort is
+  the right choice.
+checks:
+  - desc: Names NodePort
+    contains: "NodePort"
+  - desc: Names ClusterIP
+    contains: "ClusterIP"
+  - desc: Names LoadBalancer
+    contains: "LoadBalancer"

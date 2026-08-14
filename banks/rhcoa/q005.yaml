@@ -1,0 +1,33 @@
+kind: knowledge
+domain: openstack-core
+level: deep
+title: The backbone services
+prompt: |
+  Every OpenStack control-plane request passes through two shared services
+  regardless of which API is called. Which two?
+options:
+  A: "RabbitMQ (message bus) and MariaDB (database), shared by all services"
+  B: "Two web servers on each hypervisor"
+  C: "Glance and Swift, which all services proxy"
+  D: "Two load balancers in each network"
+answer: A
+explanation: |
+  OpenStack services are stateless API and worker processes backed by a shared
+  MariaDB database holding state and a RabbitMQ message bus carrying work
+  between services, such as when the API server schedules work to the compute
+  service.
+solution: |
+  OpenStack control-plane services are stateless API and worker processes backed
+  by two shared components: a MariaDB database holding each service's state and
+  RabbitMQ providing the asynchronous message bus between services, such as
+  when the API server schedules work to the compute service. This shared
+  plumbing is what lets dozens of services coordinate without direct
+  connections, so RabbitMQ and MariaDB are among the first things to check when
+  control-plane calls fail.
+checks:
+  - desc: Names RabbitMQ
+    contains: "RabbitMQ"
+  - desc: Names MariaDB
+    contains: "MariaDB"
+  - desc: Mentions message bus
+    contains: "message bus"

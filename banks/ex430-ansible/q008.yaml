@@ -1,0 +1,32 @@
+kind: knowledge
+domain: playbooks-templating
+level: deep
+title: Registered variables and output
+prompt: |
+  A task runs a command and the playbook must print its standard output to the
+  console. Which combination achieves this?
+options:
+  A: register the task result, then use debug with var set to the stdout field
+  B: echo the output with the shell module only
+  C: capture it with set_fact and never reference it again
+  D: write the output to a file and include it as a task
+answer: A
+explanation: |
+  The `register` keyword stores a task's return values in a variable; the
+  `debug` module prints them. The stdout field holds captured standard output
+  (`result.stdout`), while `result.stdout_lines` gives the split lines. The
+  shell module alone runs a command but does not display its output.
+solution: |
+  Use `register: result` on the task to save the module's return values, then
+  `debug: var=result.stdout` to print the captured standard output. The
+  registered variable holds fields such as stdout, stderr, rc, and changed;
+  `result.stdout_lines` yields the output as a list. Registering is the
+  standard way to reuse command output later in the play for conditions and
+  templates.
+checks:
+  - desc: Names the register keyword
+    contains: "register"
+  - desc: Uses the debug module
+    contains: "debug"
+  - desc: References the stdout field
+    contains: "stdout"

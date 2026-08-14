@@ -1,13 +1,15 @@
-# Golden Astronaut 2026
+# Red Hat Astronaut 2026
 
 An independent, **from-scratch** exam simulator and learning platform for the
 Red Hat / OpenShift **2026** certification track — built to be owned, extended,
 and controlled entirely by you.
 
 > Target certifications (2026 objectives):
-> **EX280** — OpenShift Administration (DO280 path) ·
-> **EX288** — OpenShift Application Development (DO288 path) ·
-> **RH024-style** knowledge/multiple-choice coverage.
+> **RHCA** · **RHCE** · **EX280** · **EX316** · **EX380** · **EX480** ·
+> **EX180** · **EX432** · **EX430** · **EX370** · **EX229** · **EX282** ·
+> **RHCOA**
+> (EX280 admin + EX282 developer paths, plus specialist tracks; RH024-style
+> knowledge coverage.)
 
 This project does **not** reuse the code of any other simulator. Everything —
 engine, grading, bank format, UI, cluster automation — is original.
@@ -26,7 +28,7 @@ and more. It is a companion platform for the same learning journey.
 
 | Layer | What you get |
 |---|---|
-| **Learning paths** | Objective-by-objective curricula for the admin (EX280) and developer (EX288) tracks, with per-module goals and practice exercises |
+| **Learning paths** | Objective-by-objective curricula for the admin (EX280) and developer (EX282) tracks, with per-module goals and practice exercises |
 | **Exam simulator** | Full timed exam attempts, stratified question draws, Training / Mastery / Exam modes, behaviour-graded hands-on tasks |
 | **Grading engine** | Original conductor that scores multiple-choice automatically and executes real checks (`oc`, `kubectl`, manifests) against your OpenShift cluster for hands-on tasks |
 | **Cluster automation** | Scripts to provision a real OpenShift cluster — Red Hat OpenShift Local (CRC) or OKD — plus a preflight checker |
@@ -38,7 +40,7 @@ and more. It is a companion platform for the same learning journey.
 ./ga doctor        # preflight: python, docker, oc, RAM, virtualization
 ./ga install       # build platform containers + write config
 ./ga up            # start the platform
-./ga exam ex280    # start a timed EX280 attempt (headless API) or open the UI
+./ga exam ex280-admin  # start a timed EX280 attempt (headless API) or open the UI
 ```
 
 Open <http://localhost:8900> (or the LAN address after `ga expose`) in your

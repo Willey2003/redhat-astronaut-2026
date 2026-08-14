@@ -1,0 +1,32 @@
+kind: knowledge
+domain: troubleshooting-install
+level: quick
+title: Which port must be open to serve Ignition configs
+prompt: |
+  Control-plane nodes cannot fetch their Ignition configs during install, and
+  the team suspects the configuration server port is blocked. Which port serves
+  Ignition configs and MUST be open from nodes to the bootstrap?
+options:
+  A: 22623
+  B: 6443
+  C: 443
+  D: 2379
+answer: A
+explanation: |
+  Port 22623 on the bootstrap serves the machine config Ignition endpoints
+  (also used later by the Machine Config Operator on control-plane nodes). The
+  API server uses 6443, HTTPS and ingress use 443, and etcd uses 2379. If 22623
+  is blocked, machines cannot get their Ignition config and the install stalls.
+solution: |
+  Nodes must reach the bootstrap (and later the control-plane nodes) on port
+  22623 to fetch Ignition configs from the machine config server; if a firewall
+  blocks it, the nodes report that fetching the config fails and never complete
+  their bootstrap. Port 6443 serves the kube-apiserver, 443 the default ingress,
+  and 2379 etcd. Open 22623 for the machine config server.
+checks:
+  - desc: Names port 22623
+    contains: "22623"
+  - desc: Mentions the machine config server
+    contains: "machine config server"
+  - desc: Contrasts with 6443
+    contains: "6443"

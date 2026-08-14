@@ -1,0 +1,30 @@
+kind: knowledge
+domain: openshift-data-foundation
+level: deep
+title: Block storage class in ODF
+prompt: |
+  A database Pod needs a single-writer persistent volume backed by ODF RBD
+  block storage. Which StorageClass provides that dynamically?
+options:
+  A: ocs-storagecluster-ceph-rgw
+  B: ocs-storagecluster-cephfs
+  C: ocs-storagecluster-ceph-rbd
+  D: ocs-storagecluster-local-pv
+answer: C
+explanation: |
+  ocs-storagecluster-ceph-rbd maps to Ceph RBD volumes, the block storage
+  class suitable for a single writer, typically used with RWO. The cephfs
+  class serves RWX file access and rgw exposes object storage.
+solution: |
+  The ODF installation creates the storage class ocs-storagecluster-ceph-rbd
+  for Ceph RBD block volumes, appropriate for RWO workloads such as a database.
+  The ceph-rbd class supports volume expansion and snapshots, and its
+  provisioner is the ODF RBD CSI driver. CephFS-backed RWX workloads instead
+  use ocs-storagecluster-cephfs, and object storage uses the RGW endpoint.
+checks:
+  - desc: Names the RBD storage class
+    contains: "ceph-rbd"
+  - desc: Mentions RBD block volumes
+    contains: "RBD"
+  - desc: Contrasts with CephFS
+    contains: "cephfs"

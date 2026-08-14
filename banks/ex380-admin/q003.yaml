@@ -1,0 +1,33 @@
+kind: knowledge
+domain: advanced-cluster-configuration
+level: core
+title: Which resource groups nodes so a MachineConfig applies to them
+prompt: |
+  The Machine Config Operator must apply a set of MachineConfigs (such as a
+  tuned kernel argument or an extra file) only to the control-plane nodes.
+  Which resource groups nodes so a MachineConfig targets them together?
+options:
+  A: MachineConfigPool
+  B: MachineSet
+  C: NodeHealthCheck
+  D: KubeletConfig
+answer: A
+explanation: |
+  A MachineConfigPool selects a group of nodes (for example the `master` pool)
+  and decides which MachineConfigs apply to them. A MachineConfig whose
+  machineConfigPoolSelector matches the pool is applied only to the pool's
+  nodes. A MachineSet provisions machines, NodeHealthCheck remediates unhealthy
+  nodes, and KubeletConfig tunes the kubelet rather than OS content.
+solution: |
+  A MachineConfigPool (MCP) groups nodes, such as the master or worker pools,
+  and controls which MachineConfigs apply to them. The MCO reconciles the
+  MachineConfigs whose spec.machineConfigPoolSelector matches a pool onto the
+  nodes in that pool, then drains and reboots them as needed. `oc get
+  machineconfigpool` shows the pools and the configs each one is using.
+checks:
+  - desc: Names the MachineConfigPool
+    contains: "MachineConfigPool"
+  - desc: Mentions the worker pool
+    contains: "worker"
+  - desc: Mentions the MCO
+    contains: "MCO"

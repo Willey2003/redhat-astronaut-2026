@@ -1,0 +1,33 @@
+kind: knowledge
+domain: logging-monitoring
+level: deep
+title: Exposing application metrics
+prompt: |
+  An application exposes Prometheus-format metrics on /metrics, and the
+  administrator wants the built-in cluster monitoring to scrape them. Which
+  object declares that scraping?
+options:
+  A: A ServiceMonitor selecting the application's Service and its metrics port.
+  B: A NetworkPolicy allowing port 9090.
+  C: A Route with edge TLS termination.
+  D: A ReplicaSet with a metrics sidecar.
+answer: A
+explanation: |
+  Prometheus Operator discovers scrape targets through ServiceMonitor objects,
+  which select a Service by label and name the port that serves /metrics. The
+  cluster monitoring stack (Prometheus) then scrapes those endpoints. A
+  NetworkPolicy is about traffic rules, not scraping configuration.
+solution: |
+  A ServiceMonitor tells the Prometheus Operator which endpoints to scrape. It
+  uses selector.matchLabels to choose the Service, names the metrics port, and
+  sets the path such as /metrics. The OpenShift cluster-monitoring stack reads
+  ServiceMonitors in the same namespace and begins scraping automatically.
+  Targets and their health are visible in Prometheus under the ServiceMonitors
+  view.
+checks:
+  - desc: Names ServiceMonitor
+    contains: "ServiceMonitor"
+  - desc: Selects a Service by label
+    contains: "matchLabels"
+  - desc: Scrapes /metrics path
+    contains: "/metrics"

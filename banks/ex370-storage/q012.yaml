@@ -1,0 +1,34 @@
+kind: knowledge
+domain: persistent-storage
+level: core
+title: Online PVC size expansion
+prompt: |
+  A PVC backed by an ODF RBD volume is running out of space while in use. What
+  must be true before the PVC size can be increased without recreation?
+options:
+  A: 'The StorageClass sets allowVolumeExpansion: true and the CSI driver supports online expansion.'
+  B: The PVC must be recreated after deleting the Pod.
+  C: Expansion works automatically for every storage class without configuration.
+  D: Only the node's filesystem, not the volume, can be grown.
+answer: A
+explanation: |
+  A StorageClass enables resizing by setting allowVolumeExpansion: true. When
+  the PVC's spec.resources.requests.storage is increased, the RBD CSI driver
+  expands the volume and the node filesystem, provided the volume is
+  Filesystem mode. Block mode volumes expand but no filesystem resize is
+  needed.
+solution: |
+  Dynamic resizing requires the StorageClass to declare
+  allowVolumeExpansion: true; the ODF RBD and CephFS classes enable it. An
+  administrator edits the PVC's spec.resources.requests.storage, and the
+  provisioner expands the backing volume. For Filesystem-mode volumes the node
+  grows the filesystem automatically; for Block mode only the device grows.
+  The PVC's phase and the storage system health determine whether expansion
+  completes online.
+checks:
+  - desc: Names allowVolumeExpansion
+    contains: "allowVolumeExpansion"
+  - desc: Editing PVC requests storage
+    contains: "requests.storage"
+  - desc: CSI driver expands the volume
+    contains: "expand"

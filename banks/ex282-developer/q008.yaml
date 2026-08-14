@@ -1,0 +1,39 @@
+kind: knowledge
+domain: building-deploying-applications
+level: quick
+title: Source-to-Image build strategy
+prompt: |
+  A Python application is built using the Source-to-Image (S2I) strategy. What
+  best describes what happens during the build?
+options:
+  A: A builder image runs scripts that inject the application source into a
+    runtime image and commit the result as a new image.
+  B: The application source is compiled inside a Kubernetes Job that never
+    produces an image.
+  C: A shell script manually copies files into a running Pod at runtime.
+  D: The runtime image is built on the developer's laptop and pushed to the
+    registry.
+answer: A
+explanation: |
+  S2I uses a builder image containing the language runtime and special scripts
+  (assemble/run) stored under S2I_SCRIPTS_PATH. During a build, OpenShift
+  runs those scripts, which place the application source into the image layers
+  and commit the result. The output is a new image tag in the project's
+  ImageStream, ready for a deployment. Nothing is compiled at runtime, and S2I
+  does not build on the developer's laptop.
+solution: |
+  Source-to-Image (S2I) is a build strategy in which a builder image provides
+  the language runtime and build scripts. The Build controller launches a build
+  pod that fetches the application source, executes the builder image's
+  assemble script to install dependencies and place the source into a writable
+  layer, and commits that layer on top of the builder image. The finished image
+  is pushed to an ImageStreamTag, and the run script becomes the image's entry
+  point. S2I makes reproducible builds without requiring a Dockerfile for the
+  application itself.
+checks:
+  - desc: Names the builder image
+    contains: "builder image"
+  - desc: Mentions assemble script
+    contains: "assemble"
+  - desc: Names ImageStreamTag
+    contains: "ImageStreamTag"

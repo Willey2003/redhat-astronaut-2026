@@ -1,0 +1,34 @@
+kind: knowledge
+domain: operators
+level: core
+title: Which resource does OLM generate to install an operator
+prompt: |
+  An administrator approves an operator installation from a Subscription.
+  Which resource does OLM generate to carry out the actual installation of the
+  operator's bundle and CRDs?
+options:
+  A: InstallPlan
+  B: ClusterServiceVersion
+  C: OperatorGroup
+  D: PackageManifest
+answer: A
+explanation: |
+  When a Subscription is created (or an update appears), OLM creates an
+  InstallPlan that lists the ClusterServiceVersions and CRDs to install.
+  Approving the InstallPlan makes OLM resolve and apply the bundle. The CSV
+  describes the operator itself, an OperatorGroup defines the namespaces it
+  watches, and a PackageManifest is read-only catalog metadata.
+solution: |
+  OLM turns a Subscription into an InstallPlan, which enumerates the
+  ClusterServiceVersions and CRDs to be installed for the operator. `oc get
+  installplan -n <ns>` lists them, and pending plans require approval when the
+  subscription uses Manual approval. Once approved, OLM applies the CSV and
+  CRDs, then starts the operator. PackageManifest objects are read-only catalog
+  metadata.
+checks:
+  - desc: Names InstallPlan
+    contains: "InstallPlan"
+  - desc: Mentions approval
+    contains: "approval"
+  - desc: Mentions the CSV
+    contains: "ClusterServiceVersion"

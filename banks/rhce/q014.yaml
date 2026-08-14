@@ -1,0 +1,32 @@
+kind: knowledge
+domain: automation-controller
+level: core
+title: What a Job Template combines
+prompt: |
+  An operator needs to launch the same playbook against the same inventory with
+  defined credentials, repeatably. What should they configure in the automation
+  controller?
+options:
+  A: "A Job Template that binds a project, inventory, and credentials to a playbook"
+  B: "A one-off ad-hoc command from the controller dashboard"
+  C: "A webhook that rewrites the inventory"
+  D: "A credential that contains the playbook"
+answer: A
+explanation: |
+  A Job Template is the reusable definition that combines a playbook from a
+  project, a target inventory, credentials, and settings such as ask variables
+  on launch. Launching a Job Template creates a job that runs the playbook.
+solution: |
+  A Job Template is the unit that turns playbooks into repeatable launches: it
+  references a playbook from a synced project, the inventory to target, the
+  credentials to use, and execution settings such as the execution environment.
+  Every launch of the template creates a job that runs the playbook with those
+  bindings, which is how the controller provides repeatability, audit history,
+  and consistent environments.
+checks:
+  - desc: Names the Job Template
+    contains: "Job Template"
+  - desc: Mentions inventory binding
+    contains: "inventory"
+  - desc: Mentions credentials
+    contains: "credentials"

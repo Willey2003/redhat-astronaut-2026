@@ -1,0 +1,38 @@
+kind: knowledge
+domain: virtualization-concepts
+level: quick
+title: Virtual machines versus containers
+prompt: |
+  A platform team must choose between running a legacy application as a virtual
+  machine or as a container on the same infrastructure. Which statement
+  accurately contrasts the two?
+options:
+  A: A VM runs a full guest operating system on virtualized hardware via a
+    hypervisor, while a container shares the host kernel and packages only an
+    application and its dependencies.
+  B: A container requires a separate hypervisor for every workload.
+  C: A VM shares the host kernel exactly like a container does.
+  D: Containers can run binaries from any operating system without
+    modification.
+answer: A
+explanation: |
+  A virtual machine emulates hardware for a complete guest OS, isolated by the
+  hypervisor (KVM), while a container is a set of processes sharing the host
+  kernel with namespaces and cgroups for isolation. Containers do not need a
+  hypervisor, VMs do not share the host kernel, and container images must match
+  the host OS/kernel compatibility, so D is false.
+solution: |
+  Virtual machines virtualize hardware and boot a complete guest operating
+  system under a hypervisor such as KVM, giving strong isolation but more
+  overhead. Containers share the host kernel and isolate processes with Linux
+  namespaces and cgroups, so they start faster and use fewer resources but
+  cannot run kernels or OSes incompatible with the host. The trade-off drives
+  the choice: containers for new cloud-native services, VMs for applications
+  that need a full OS, legacy compatibility, or their own kernel.
+checks:
+  - desc: Says a VM runs a guest OS on a hypervisor
+    contains: "hypervisor"
+  - desc: Says a container shares the host kernel
+    contains: "host kernel"
+  - desc: Names namespaces and cgroups
+    contains: "cgroups"

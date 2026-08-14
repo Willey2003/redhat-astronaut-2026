@@ -1,0 +1,33 @@
+kind: knowledge
+domain: post-install-configuration
+level: core
+title: Who signs the API server certificate right after install
+prompt: |
+  Immediately after installation, the kube-apiserver's public endpoint presents
+  a certificate signed by an authority that no external client trusts. Who
+  generated that certificate?
+options:
+  A: The cluster itself, from a CA created during installation
+  B: A public certificate authority such as Let's Encrypt
+  C: The kubeadmin password
+  D: The cloud provider's load balancer
+answer: A
+explanation: |
+  The installer bootstraps a cluster-internal PKI: the cluster generates its
+  own CA, and the API server serving certificate is signed by it. External
+  clients therefore see an untrusted certificate until you replace it with a
+  customer CA or configure trusted CA bundles. Let's Encrypt, the kubeadmin
+  password, and the load balancer do not sign API certificates.
+solution: |
+  During installation, the cluster creates its own certificate authorities, and
+  the kube-apiserver serving certificate for the public endpoint is signed by
+  the internal CA. That is why clients report an untrusted certificate after
+  install. To fix it, add a customer CA certificate in a Secret and patch the
+  apiservers.config.openshift.io cluster resource to reference it.
+checks:
+  - desc: Mentions the internal CA
+    contains: "internal CA"
+  - desc: Mentions the untrusted report
+    contains: "untrusted"
+  - desc: Mentions the customer CA
+    contains: "customer CA"

@@ -1,0 +1,33 @@
+kind: knowledge
+domain: playbooks
+level: deep
+title: Controlling task failure and recovery
+prompt: |
+  A task may fail under circumstances you expect, and you want recovery steps
+  to run when it does. Which construct gives structured error handling and
+  stops the playbook from aborting on a known failure?
+options:
+  A: "ignore_errors: yes and nothing else"
+  B: "A block with a rescue section that executes when a task inside the block fails"
+  C: "Always setting failed_when: false on every task"
+  D: "Removing the failing task from the playbook"
+answer: B
+explanation: |
+  block/rescue/always is Ansible's structured error handling: tasks under block
+  run first, rescue runs if any of them fails, and always runs after either
+  path, mirroring try/except/finally. ignore_errors is a blunt suppression
+  tool; failed_when overrides what counts as a failure.
+solution: |
+  Ansible groups tasks with block, rescue, and always to handle expected
+  failures. Tasks under block execute normally; if any of them fails, the play
+  jumps to rescue and runs the recovery tasks; always executes after either
+  path, mirroring try/except/finally in other languages. This is more precise
+  than ignore_errors, which merely suppresses the failure and leaves you blind
+  to it, because rescue lets you act on the failure.
+checks:
+  - desc: Names block
+    contains: "block"
+  - desc: Names rescue
+    contains: "rescue"
+  - desc: Mentions always
+    contains: "always"

@@ -1,0 +1,36 @@
+kind: knowledge
+domain: virtualization-concepts
+level: quick
+title: KubeVirt and CNV relationship
+prompt: |
+  A colleague uses the terms KubeVirt and OpenShift Virtualization (formerly
+  CNV) interchangeably. How are they related?
+options:
+  A: OpenShift Virtualization is Red Hat's supported product built from the
+    upstream KubeVirt project, adding Red Hat components and lifecycle support.
+  B: They are two unrelated hypervisors that cannot coexist.
+  C: KubeVirt is Red Hat's paid product and OpenShift Virtualization is the
+    free upstream.
+  D: OpenShift Virtualization replaces KubeVirt and shares no code with it.
+answer: A
+explanation: |
+  KubeVirt is the upstream open-source project. Red Hat OpenShift Virtualization
+  (previously Container Native Virtualization, CNV) is Red Hat's supported
+  offering built on KubeVirt, layered onto OpenShift with additional components
+  and Red Hat support. They are not competing products; one is the upstream of
+  the other.
+solution: |
+  KubeVirt is an open-source project that adds virtual machine support to
+  Kubernetes using standard extension mechanisms. OpenShift Virtualization,
+  formerly known as Container Native Virtualization (CNV), is Red Hat's
+  enterprise distribution of KubeVirt integrated into OpenShift: it includes the
+  KubeVirt controllers and CRDs plus Red Hat's components, lifecycle tooling,
+  and supported upgrade path. When a team runs VMs on OpenShift, they are
+  consuming the Red Hat productized form of the upstream KubeVirt technology.
+checks:
+  - desc: Says OpenShift Virtualization is built from KubeVirt
+    contains: "KubeVirt"
+  - desc: Notes former name CNV
+    contains: "CNV"
+  - desc: Notes upstream versus product
+    contains: "upstream"

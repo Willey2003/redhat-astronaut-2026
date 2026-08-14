@@ -1,0 +1,33 @@
+kind: knowledge
+domain: troubleshooting-install
+level: core
+title: Which commands diagnose a bootstrap that hangs
+prompt: |
+  An install is stuck at "Waiting for bootstrap-complete". The administrator
+  logs into the bootstrap node as core. Which command shows the bootkube and
+  crio logs to diagnose the stalled bootstrap?
+options:
+  A: journalctl -b -f -u release-image.service -u bootkube.service
+  B: oc get clusterversion
+  C: systemctl status worker
+  D: tail -f /var/log/install.log
+answer: A
+explanation: |
+  On the bootstrap node, `journalctl -b -f -u release-image.service -u
+  bootkube.service` streams the services that pull the release image and run
+  the bootkube control-plane bring-up; their errors reveal why the bootstrap
+  hangs. oc get clusterversion needs a working API, worker is not a unit name,
+  and the installer writes no /var/log/install.log.
+solution: |
+  On the bootstrap node, run `journalctl -b -f -u release-image.service -u
+  bootkube.service`. The release-image service pulls the release payload and
+  bootkube initializes the temporary control plane; failing output there shows
+  missing pull credentials, DNS, or network errors. Use `journalctl -b -u
+  crio` if the issue looks like a container runtime problem.
+checks:
+  - desc: Names the journalctl command
+    contains: "journalctl"
+  - desc: Mentions bootkube
+    contains: "bootkube"
+  - desc: Mentions release-image
+    contains: "release-image"

@@ -1,0 +1,13 @@
+id: ex432
+title: EX432 OpenShift Installation Lab Mock
+description: "Knowledge bank for Red Hat OpenShift Installation Lab (EX432) 2026 objectives: cluster installation, installation methods, post-install configuration, and troubleshooting installs."
+engine: knowledge
+duration_minutes: 180
+pass_threshold: 0.7
+draw_size: 16
+seed: null
+domains:
+  cluster-installation: 0.30
+  installation-methods: 0.20
+  post-install-configuration: 0.25
+  troubleshooting-install: 0.25

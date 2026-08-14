@@ -1,0 +1,32 @@
+kind: knowledge
+domain: automation-controller
+level: core
+title: Projects and source-control sync
+prompt: |
+  A team stores its playbooks in a Git repository and wants automation
+  controller to fetch the latest revision before each run. Which object
+  represents the repository inside AAP?
+options:
+  A: A Project with the SCM URL and branch
+  B: An Inventory with an inventory source
+  C: A Job Template with a cron
+  D: An Execution Environment image
+answer: A
+explanation: |
+  A Project points at an SCM repository (Git/SVN) and can auto-update its
+  working copy. Job Templates reference the Project, so a project update
+  fetches the newest playbooks before a job launches. Inventories hold hosts,
+  not repository code.
+solution: |
+  A Project stores the SCM configuration: the repository URL, branch or tag,
+  and optional source-control credentials. Automation controller can schedule
+  project updates so the latest playbooks are fetched before jobs run. Job
+  Templates pick a playbook path from the project, and the project's working
+  directory becomes the context for the run.
+checks:
+  - desc: Names Project
+    contains: "Project"
+  - desc: Mentions repository URL
+    contains: "repository"
+  - desc: Project updates fetch playbooks
+    contains: "update"

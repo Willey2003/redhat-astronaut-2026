@@ -1,0 +1,34 @@
+kind: knowledge
+domain: troubleshooting-install
+level: core
+title: The API server cannot be reached during the wait-for phase
+prompt: |
+  The installer fails late with messages that the API server at
+  api.<cluster>.<base-domain> could not be reached during the wait-for phase.
+  What should the administrator check first?
+options:
+  A: That DNS resolves api.<cluster>.<base-domain> to the load balancer
+  B: That the SSH key is in the authorized_keys file
+  C: That the pullSecret contains more than one token
+  D: That worker replicas exceed control plane replicas
+answer: A
+explanation: |
+  In the wait-for phases the installer probes the public API endpoint by name;
+  if DNS does not resolve it (or resolves to a stale address) the wait fails
+  even though the cluster may be healthy. SSH key access, pullSecret contents,
+  and replica counts do not explain a name-resolution failure of the API
+  endpoint.
+solution: |
+  First verify that api.<cluster>.<base-domain> resolves to the load balancer
+  (or node) that fronts the API server: `dig +short
+  api.<cluster>.<base-domain>` and check that it points at the right IP. Also
+  confirm that the wildcard apps.<cluster>.<base-domain> record exists for the
+  ingress. If DNS is correct, next check whether ports 6443 and 22623 are
+  reachable from the installer machine.
+checks:
+  - desc: Names the api DNS record
+    contains: "api."
+  - desc: Mentions DNS resolution
+    contains: "resolv"
+  - desc: Mentions the load balancer
+    contains: "load balancer"

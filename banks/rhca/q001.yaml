@@ -1,0 +1,32 @@
+kind: knowledge
+domain: enterprise-architecture
+level: quick
+title: What enterprise architecture is
+prompt: |
+  An architect is asked to define enterprise architecture to a new hire. Which
+  description is the most accurate?
+options:
+  A: "The physical layout of data center server racks"
+  B: "A discipline that aligns business goals with technology through principles, standards, and architecture domains"
+  C: "A synonym for cloud spending and cost management"
+  D: "A single diagram of the corporate network"
+answer: B
+explanation: |
+  Enterprise architecture aligns business goals with technology through explicit
+  principles, standards, and architecture domains: business, application, data,
+  and infrastructure. It sets the guardrails for consistent technology
+  decisions rather than describing physical layouts.
+solution: |
+  Enterprise architecture is the discipline of aligning business goals with
+  technology through explicit principles, standards, and architecture domains:
+  business, application, data, and infrastructure. It exists so decisions stay
+  consistent across teams and products, choosing platforms that meet regulatory,
+  cost, and operational requirements while the principles guide everyone. It
+  sets the guardrails, not the day-to-day operations.
+checks:
+  - desc: Mentions business alignment
+    contains: "aligning business goals"
+  - desc: Names architecture domains
+    contains: "infrastructure"
+  - desc: Names principles and standards
+    contains: "principles"

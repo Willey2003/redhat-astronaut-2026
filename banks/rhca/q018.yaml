@@ -1,0 +1,31 @@
+kind: knowledge
+domain: security-architecture
+level: deep
+title: Identity at the platform edge
+prompt: |
+  Enterprises want their existing directory to authenticate OpenShift users.
+  Which mechanism integrates corporate identity with the cluster?
+options:
+  A: "OAuth configured with an OIDC or LDAP identity provider on the cluster"
+  B: "Hard-coded admin passwords in manifests"
+  C: "A shared SSH key for every user"
+  D: "The etcd user database"
+answer: A
+explanation: |
+  OpenShift authenticates through OAuth; configuring an OIDC or LDAP identity
+  provider lets the corporate directory authenticate users, and group mappings
+  connect directory groups to cluster roles.
+solution: |
+  OpenShift delegates authentication through OAuth and configurable identity
+  providers: an OIDC provider such as Keycloak, or LDAP or Active Directory,
+  authenticates users so corporate credentials work at the cluster edge.
+  Authorization then maps identities and directory groups to RBAC roles through
+  ClusterRoleBindings, keeping identity centralized and role grants auditable
+  instead of proliferating local accounts.
+checks:
+  - desc: Names OAuth
+    contains: "OAuth"
+  - desc: Mentions OIDC or LDAP
+    contains: "OIDC"
+  - desc: Mentions group to role mapping
+    contains: "RBAC roles"

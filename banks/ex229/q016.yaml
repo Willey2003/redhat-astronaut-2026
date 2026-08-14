@@ -1,0 +1,31 @@
+kind: knowledge
+domain: logging-monitoring
+level: core
+title: Checking resource usage
+prompt: |
+  A worker node looks overloaded and an administrator wants to see current CPU
+  and memory consumption per node and per Pod. Which commands report that from
+  the metrics pipeline?
+options:
+  A: oc adm top node and oc adm top pod
+  B: oc logs and oc describe pod
+  C: oc get events --sort-by
+  D: oc rsh <pod> free -m
+answer: A
+explanation: |
+  `oc adm top node` and `oc adm top pod` query the metrics server (Prometheus
+  adapter) for live CPU and memory usage. Logs, events, and a shell inside the
+  container do not give an aggregate view of the whole cluster.
+solution: |
+  `oc adm top node` prints per-node CPU and memory usage and
+  `oc adm top pod` shows usage per Pod, optionally filtered with -n for a
+  namespace. These rely on the cluster's metrics pipeline, so the metric
+  server and cluster monitoring must be running. For historical trends,
+  administrators query Prometheus dashboards in the monitoring console.
+checks:
+  - desc: Uses oc adm top node
+    contains: "oc adm top node"
+  - desc: Uses oc adm top pod
+    contains: "oc adm top pod"
+  - desc: Relies on metrics pipeline
+    contains: "Prometheus"

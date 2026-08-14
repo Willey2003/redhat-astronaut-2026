@@ -1,0 +1,33 @@
+kind: knowledge
+domain: advanced-cluster-configuration
+level: quick
+title: Which resource caps usage across many namespaces at once
+prompt: |
+  An administrator must cap total CPU and memory usage across a set of related
+  namespaces (for example all team namespaces) with a single quota object.
+  Which OpenShift resource supports this?
+options:
+  A: ClusterResourceQuota
+  B: A separate ResourceQuota applied to each namespace
+  C: A LimitRange in the cluster scope
+  D: A PriorityClass
+answer: A
+explanation: |
+  A ClusterResourceQuota aggregates resource usage across the namespaces
+  selected by spec.selector and counts their combined usage against spec.hard.
+  A plain ResourceQuota is namespace-scoped, so it cannot cap a set of
+  namespaces at once; a LimitRange sets per-container defaults and limits
+  rather than caps; a PriorityClass affects scheduling, not quotas.
+solution: |
+  A ClusterResourceQuota caps aggregate CPU and memory usage across the
+  namespaces matched by its spec.selector. The quota totals the usage of all
+  selected namespaces against the spec.hard limits, so one object enforces a
+  global cap for a team. Use `oc get clusterresourcequota` to list them and
+  `oc describe clusterresourcequota <name>` to see per-namespace usage.
+checks:
+  - desc: Names the resource
+    contains: "ClusterResourceQuota"
+  - desc: Selects namespaces by label
+    contains: "spec.selector"
+  - desc: Mentions hard limits
+    contains: "spec.hard"

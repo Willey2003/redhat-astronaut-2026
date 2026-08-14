@@ -1,0 +1,31 @@
+kind: knowledge
+domain: hybrid-cloud-strategy
+level: deep
+title: Edge computing with a single node
+prompt: |
+  A remote factory needs a small OpenShift footprint on one machine with very
+  limited local staff. Which deployment model fits best?
+options:
+  A: "A full three-master HA cluster with dozens of workers"
+  B: "Single Node OpenShift (SNO), which runs control plane and workloads on one node"
+  C: "OpenShift on a shared VM with no operators"
+  D: "An API server on a laptop"
+answer: B
+explanation: |
+  Single Node OpenShift (SNO) collapses the control plane and worker onto one
+  node, designed for constrained edge sites where a full HA cluster is
+  impossible or uneconomical, and it is installed and managed centrally.
+solution: |
+  Single Node OpenShift (SNO) runs the control plane and worker functions on
+  one physical host, sized for constrained edge sites such as factories or
+  retail stores where a full HA cluster is impossible or uneconomical. It is
+  installed and managed centrally, keeping a consistent OpenShift API and
+  policy at the edge with minimal local staffing, so the edge behaves like the
+  rest of the fleet.
+checks:
+  - desc: Names Single Node OpenShift
+    contains: "Single Node OpenShift"
+  - desc: Mentions edge sites
+    contains: "edge"
+  - desc: Notes minimal local staffing
+    contains: "staffing"

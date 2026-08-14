@@ -1,0 +1,33 @@
+kind: knowledge
+domain: post-install-configuration
+level: core
+title: Which resource holds cluster-wide proxy settings
+prompt: |
+  The cluster sits behind a corporate HTTP proxy, and all platform components
+  (operators, image pulls) must route traffic through it. Which cluster-scoped
+  resource holds those proxy settings?
+options:
+  A: A Proxy resource named cluster
+  B: An HTTPProxy custom resource
+  C: The IngressController config
+  D: An environment variable on each MachineConfig
+answer: A
+explanation: |
+  The Proxy resource (config.openshift.io/v1) named cluster carries
+  spec.httpProxy, spec.httpsProxy, and spec.noProxy. Operators and cluster
+  components read it and update their workloads accordingly. An HTTPProxy CR
+  belongs to the Ingress Operator for routing HTTP(S), not proxy settings, and
+  editing each MachineConfig is not the supported mechanism.
+solution: |
+  Create or patch the Proxy resource named cluster with spec.httpProxy,
+  spec.httpsProxy, and spec.noProxy. Platform operators consume this object so
+  that cluster components and image pulls use the proxy. Set spec.trustedCA to
+  reference a ConfigMap with the corporate CA if the proxy terminates TLS with a
+  private certificate.
+checks:
+  - desc: Names the Proxy resource
+    contains: "Proxy"
+  - desc: Mentions httpProxy
+    contains: "httpProxy"
+  - desc: Mentions noProxy
+    contains: "noProxy"

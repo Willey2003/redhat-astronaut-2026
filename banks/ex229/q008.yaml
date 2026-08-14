@@ -1,0 +1,32 @@
+kind: knowledge
+domain: security-rbac
+level: core
+title: Granting an SCC to a service account
+prompt: |
+  A Deployment uses the ServiceAccount `builder` and must mount hostPath
+  volumes. Which step lets that workload pass the SCC admission check?
+options:
+  A: 'Set "securityContext: privileged" in the Deployment alone.'
+  B: Delete the default ServiceAccount so the SCC is skipped.
+  C: Bind the builder service account to an SCC such as hostaccess or privileged.
+  D: Create a NetworkPolicy allowing the mount.
+answer: C
+explanation: |
+  SCC admission keys on the Pod's service account. An administrator binds the
+  SA to an SCC with the needed capabilities, e.g. `oc adm policy
+  add-scc-to-user hostaccess -z builder`. Pod securityContext alone cannot
+  grant permissions the SCC layer refuses.
+solution: |
+  Use `oc adm policy add-scc-to-user <scc> -z <serviceaccount>` in the
+  workload's namespace (the -z flag means a ServiceAccount in the current
+  project). The SCC named hostaccess permits hostPath volumes, while privileged
+  is far more permissive and should be used rarely. After the binding, Pods
+  using that SA pass admission and may request the corresponding security
+  context.
+checks:
+  - desc: Uses add-scc-to-user
+    contains: "add-scc-to-user"
+  - desc: Binds the service account
+    contains: "ServiceAccount"
+  - desc: Names an SCC
+    contains: "hostaccess"

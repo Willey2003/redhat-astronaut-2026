@@ -1,0 +1,35 @@
+kind: knowledge
+domain: building-deploying-applications
+level: core
+title: Build triggers for automatic rebuilds
+prompt: |
+  A BuildConfig should rebuild automatically when its builder image is updated
+  in the cluster's internal registry. Which trigger makes that happen?
+options:
+  A: An ImageChange trigger watching the builder ImageStreamTag.
+  B: A ConfigChange trigger, which fires only when the BuildConfig spec changes.
+  C: A Webhook trigger, which only fires from Git pushes.
+  D: A cron trigger, which fires on a schedule.
+answer: A
+explanation: |
+  An ImageChange trigger causes a new build whenever the ImageStreamTag that the
+  BuildConfig's from references points to a new image. ConfigChange triggers
+  rebuild on BuildConfig spec edits, webhook triggers respond to Git
+  push/pull-request events, and there is no cron trigger in the standard
+  BuildConfig trigger set.
+solution: |
+  BuildConfigs support three trigger types: ImageChange, ConfigChange, and
+  Webhook. The ImageChange trigger watches an ImageStreamTag (for example, a
+  builder image such as registry.example.com/language-builder:latest) and starts
+  a build when that tag moves to a new image digest. The ConfigChange trigger
+  starts a build whenever the BuildConfig itself is modified. Webhook triggers
+  start builds on GitHub, GitLab, or generic HTTP callbacks. For
+  "rebuild when my base image is updated," the ImageChange trigger is the
+  correct choice.
+checks:
+  - desc: Names ImageChange trigger
+    contains: "ImageChange"
+  - desc: Mentions ImageStreamTag
+    contains: "ImageStreamTag"
+  - desc: Names webhook and ConfigChange
+    contains: "ConfigChange"

@@ -1,0 +1,30 @@
+kind: knowledge
+domain: playbooks-templating
+level: core
+title: Conditional task execution
+prompt: |
+  A task may only run on hosts whose operating system family is RedHat. Which
+  `when` condition is written correctly for Jinja2 in Ansible?
+options:
+  A: 'when: ansible_os_family = "RedHat"'
+  B: 'when: ansible_os_family == "RedHat"'
+  C: 'if: ansible_os_family == RedHat'
+  D: 'when: os.family is "RedHat"'
+answer: B
+explanation: |
+  Jinja2 comparisons use `==`. A single `=` is an assignment and fails to
+  parse in a `when` expression, and the `if:` keyword does not exist on a task.
+  ansible_os_family for RHEL-family systems evaluates to "RedHat".
+solution: |
+  Tasks use `when:` with a Jinja2 expression, for example `when:
+  ansible_os_family == "RedHat"`. Comparison is done with `==`; the single
+  equals sign is invalid in Jinja2. The fact ansible_os_family holds the
+  operating system family, so the condition restricts the task to RedHat-based
+  hosts such as RHEL, CentOS, and Rocky Linux.
+checks:
+  - desc: Uses the when keyword
+    contains: "when:"
+  - desc: Uses the equality operator
+    contains: "=="
+  - desc: Uses the os family fact
+    contains: "ansible_os_family"

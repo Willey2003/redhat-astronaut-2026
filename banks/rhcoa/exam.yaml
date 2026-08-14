@@ -1,0 +1,14 @@
+id: rhcoa
+title: RHCOA Red Hat Certified OpenStack Administrator Mock
+description: OpenStack administrator knowledge across core cloud services.
+engine: knowledge
+duration_minutes: 60
+pass_threshold: 0.7
+draw_size: 18
+seed: null
+domains:
+  openstack-core: 0.25
+  compute-nova: 0.20
+  networking-neutron: 0.20
+  storage-cinder: 0.15
+  identity-keystone: 0.20

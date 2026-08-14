@@ -1,0 +1,34 @@
+kind: knowledge
+domain: networking-advanced
+level: core
+title: Which resource attaches a secondary network to a pod
+prompt: |
+  A pod must attach a secondary interface to an external VLAN in addition to
+  the cluster network. Which resource defines that additional network so it
+  can be referenced by a pod annotation?
+options:
+  A: NetworkAttachmentDefinition
+  B: NetworkPolicy
+  C: Ingress
+  D: EgressNetworkPolicy
+answer: A
+explanation: |
+  A NetworkAttachmentDefinition (k8s.cni.cncf.io) defines a secondary network
+  using a CNI plugin such as bridge, macvlan, or ipvlan. Pods attach to it
+  with the k8s.v1.cni.cncf.io/networks annotation. A NetworkPolicy filters
+  traffic on the cluster network, an Ingress routes HTTP(S) into services, and
+  an EgressNetworkPolicy is a legacy project-network egress filter.
+solution: |
+  A NetworkAttachmentDefinition declares a secondary network for pods,
+  describing the CNI config (for example type: bridge or macvlan, plus a
+  cidr). A pod requests it by setting the annotation
+  k8s.v1.cni.cncf.io/networks to the namespace/name of the definition, and
+  multus then attaches the extra interface. This is separate from a
+  NetworkPolicy, which only filters cluster-network traffic.
+checks:
+  - desc: Names NetworkAttachmentDefinition
+    contains: "NetworkAttachmentDefinition"
+  - desc: Mentions the networks annotation
+    contains: "k8s.v1.cni.cncf.io/networks"
+  - desc: Mentions multus
+    contains: "multus"

@@ -1,0 +1,14 @@
+id: rhca
+title: RHCA Red Hat Certified Architect Mock
+description: Senior architect knowledge across the open hybrid cloud.
+engine: knowledge
+duration_minutes: 60
+pass_threshold: 0.7
+draw_size: 20
+seed: null
+domains:
+  enterprise-architecture: 0.20
+  hybrid-cloud-strategy: 0.20
+  openshift-architecture: 0.25
+  automation-at-scale: 0.15
+  security-architecture: 0.20

@@ -1,0 +1,31 @@
+kind: knowledge
+domain: compute-nova
+level: deep
+title: Moving a running instance
+prompt: |
+  A hypervisor must be rebooted for maintenance without killing the instances
+  on it. Which Nova operation does this?
+options:
+  A: "Live migration of running instances to another compute node"
+  B: "Deleting the instances"
+  C: "Cold restart of every instance with data loss"
+  D: "Moving the volumes to another project"
+answer: A
+explanation: |
+  Live migration moves a running instance from one compute node to another with
+  no downtime, letting administrators evacuate hosts for maintenance while the
+  guest stays responsive.
+solution: |
+  Nova's live migration moves a running instance from one compute node to
+  another with no downtime: the instance stays responsive while its memory is
+  copied across. Administrators use it before host maintenance or when
+  evacuating a failing node, with openstack server migrate --live <target>
+  scheduling the move and openstack server migration list tracking progress.
+  Shared or Cinder-backed storage makes the move transparent to the guest.
+checks:
+  - desc: Names live migration
+    contains: "live migration"
+  - desc: Gives the migrate command
+    contains: "openstack server migrate"
+  - desc: Notes zero downtime
+    contains: "no downtime"

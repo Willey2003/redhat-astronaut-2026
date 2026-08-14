@@ -1,0 +1,32 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: core
+title: Software required on managed nodes
+prompt: |
+  You are asked whether managed nodes need the Ansible package installed on
+  them before a playbook can run. What is the actual requirement?
+options:
+  A: "Each managed node must run the full Ansible package and an ansible-controller service"
+  B: "Managed nodes need Python 3 and SSH access so the control node can push modules to them"
+  C: "Managed nodes need only a browser to reach the Automation Controller UI"
+  D: "Managed nodes must run the same OS release as the control node"
+answer: B
+explanation: |
+  Ansible is agentless. The control node connects over SSH, copies the selected
+  module plus its Python dependencies to the managed node, runs them with the
+  node's Python interpreter, and cleans up. Managed nodes need SSH reachable
+  and a working Python (Python 3 on current RHEL); nothing is installed there.
+solution: |
+  Ansible is agentless, so managed nodes do not run the Ansible package at
+  all. The control node connects over SSH, transfers the selected module to the
+  managed host, executes it with the host's Python interpreter (Python 3 on
+  current RHEL), and removes it afterwards. Nodes therefore need only SSH
+  reachability and a working Python; there is no agent or daemon to install or
+  keep updated on them.
+checks:
+  - desc: Calls out agentless architecture
+    contains: "agentless"
+  - desc: Names SSH transport
+    contains: "SSH"
+  - desc: Names Python requirement
+    contains: "Python"

@@ -1,0 +1,31 @@
+kind: knowledge
+domain: cluster-administration
+level: quick
+title: Preparing a node for maintenance
+prompt: |
+  A worker node must be taken down for hardware work. Which sequence safely
+  moves its workloads elsewhere first?
+options:
+  A: oc adm cordon <node> followed by oc adm drain <node> --ignore-daemonsets --delete-emptydir-data
+  B: oc delete node <node> and then restart the kubelet.
+  C: Scale every Deployment to zero before touching the node.
+  D: Stop the node's storage pods manually with oc delete pod --all -n openshift-storage.
+answer: A
+explanation: |
+  Cordon marks the node unschedulable so no new Pods land on it; drain evicts
+  existing Pods (with the ignore-daemonsets flag so daemonsets stay, and
+  delete-emptydir-data so Pods using emptyDir can be evicted). Deleting the
+  Node object does not remove workloads and can affect machine reconciliation.
+solution: |
+  `oc adm cordon <node>` prevents new scheduling, then `oc adm drain <node>
+  --ignore-daemonsets --delete-emptydir-data` evicts the workloads so they
+  reschedule on other nodes. DaemonSets are exempted because they must run
+  everywhere, and emptyDir volumes are deleted to allow eviction. After
+  maintenance, `oc adm uncordon <node>` re-enables scheduling.
+checks:
+  - desc: Uses oc adm cordon
+    contains: "cordon"
+  - desc: Uses oc adm drain
+    contains: "drain"
+  - desc: Uncordon re-enables scheduling
+    contains: "uncordon"

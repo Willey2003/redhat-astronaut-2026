@@ -1,0 +1,32 @@
+kind: knowledge
+domain: configuration-secrets
+level: core
+title: Which command injects ConfigMap keys as environment variables
+prompt: |
+  A developer wants to set environment variables on a Deployment from the keys
+  of a ConfigMap without editing YAML by hand. Which command injects all
+  ConfigMap keys as environment variables?
+options:
+  A: oc set env deployment/<name> --from=configmap/<cm-name>
+  B: oc set triggers deployment/<name>
+  C: oc env deployment/<name> --merge
+  D: oc import-image deployment/<name>
+answer: A
+explanation: |
+  `oc set env <object> --from=configmap/<cm-name>` injects every key of the
+  ConfigMap as an environment variable; a `--from=secret/<name>` variant works
+  for Secrets. oc set triggers manages deployment triggers, oc env is not a
+  real command, and oc import-image imports images.
+solution: |
+  Run `oc set env deployment/<name> --from=configmap/<cm-name>` to add each
+  ConfigMap key as an environment variable on every container that does not
+  already define the variable. Use `--from=secret/<name>` for Secrets and
+  `--overwrite` to replace existing values. The Deployment rolls out so the new
+  environment applies.
+checks:
+  - desc: Names oc set env
+    contains: "oc set env"
+  - desc: Mentions the configmap source
+    contains: "configmap"
+  - desc: Mentions overwrite
+    contains: "overwrite"

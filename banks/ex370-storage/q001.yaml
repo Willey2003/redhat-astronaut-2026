@@ -1,0 +1,33 @@
+kind: knowledge
+domain: storage-concepts
+level: quick
+title: Dynamic volume provisioning
+prompt: |
+  A developer creates a PersistentVolumeClaim but no PersistentVolume exists
+  yet, and the cluster still provisions storage automatically. What triggers
+  that on-demand creation of a PersistentVolume?
+options:
+  A: The PVC references a StorageClass whose provisioner creates the volume.
+  B: A Pod declares resources.requests.storage.
+  C: A Service targets the claim by name.
+  D: The node's emptyDir exceeds its size limit.
+answer: A
+explanation: |
+  When a PVC names a StorageClass, the provisioner referenced by that class
+  dynamically creates the underlying volume and a matching PersistentVolume.
+  Without a storageClassName the PVC can only bind to a pre-existing static PV
+  (or to the cluster default class if one is set).
+solution: |
+  Dynamic provisioning starts when a PersistentVolumeClaim includes
+  `storageClassName` referencing a StorageClass whose `provisioner` field names
+  a CSI driver or legacy provisioner. The controller then provisions the
+  backing volume, creates a PersistentVolume, and binds it to the claim. If no
+  class is named, the PVC uses the cluster default class or must bind a
+  manually created static PV.
+checks:
+  - desc: Names storageClassName
+    contains: "storageClassName"
+  - desc: Mentions the provisioner
+    contains: "provisioner"
+  - desc: PVC and PV binding
+    contains: "bind"

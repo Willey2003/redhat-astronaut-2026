@@ -1,0 +1,38 @@
+kind: knowledge
+domain: building-deploying-applications
+level: core
+title: ImageStreams and tags
+prompt: |
+  A developer wants deployments to always run the newest image pushed to the
+  latest tag of an ImageStream while builds push to dated tags. What is the
+  recommended pattern?
+options:
+  A: Keep the ImageStream latest tag moving via oc tag, and reference
+    latest in the DeploymentConfig image-change trigger.
+  B: Reference the raw image digest directly in every DeploymentConfig.
+  C: Create one DeploymentConfig per image version with no tags.
+  D: Tags are immutable; the DeploymentConfig must be recreated each push.
+answer: A
+explanation: |
+  ImageStreams decouple image registry tags from the stream's own tags. A build
+  can push to a timestamped tag, and oc tag <stream>:<build-tag> <stream>:latest
+  updates the latest tag. The DeploymentConfig watches latest, so a rollout
+  is triggered without editing the deployment. Digests in deployment specs are
+  precise but lose the automatic-update behavior, and tags are definitely
+  mutable.
+solution: |
+  An ImageStream is a metadata object that represents a set of related images
+  and their tags. It lets the project refer to images by stream tag rather than
+  by registry path or digest, and it triggers deployments when the referenced
+  tag changes. oc tag <image-stream>:<source-tag> <image-stream>:latest moves
+  the latest tag to the source tag's image, which then fires the DeploymentConfig
+  image-change trigger and rolls out the new image. Tags on an ImageStream are
+  mutable pointers, which is precisely what enables the "promote by retagging"
+  workflow.
+checks:
+  - desc: Names oc tag
+    contains: "oc tag"
+  - desc: Mentions the latest tag
+    contains: "latest"
+  - desc: Names the image-change trigger
+    contains: "image-change trigger"

@@ -1,0 +1,31 @@
+kind: knowledge
+domain: automation-at-scale
+level: deep
+title: Deploying to many clusters with GitOps
+prompt: |
+  A team must roll the same configuration to hundreds of clusters while keeping
+  git as the source of truth. Which pattern fits best at that scale?
+options:
+  A: "Argo CD ApplicationSets that generate and sync applications across clusters from a template"
+  B: "A manually run oc apply per cluster"
+  C: "A shared kubeconfig checked into git"
+  D: "A cron job running kubectl exec"
+answer: A
+explanation: |
+  ApplicationSets generate Argo CD Applications across target clusters using
+  generators such as the cluster list or git, keeping declarative GitOps at
+  fleet scale and syncing each cluster to the desired manifests.
+solution: |
+  The GitOps pattern scales with Argo CD ApplicationSets: a generator enumerates
+  target clusters from the Argo CD cluster list, and a template produces one
+  Argo CD Application per cluster that syncs the desired manifests from git.
+  Each cluster's Argo CD instance reconciles drift, so the fleet converges to
+  exactly what git declares, and nothing is applied by hand or by shared
+  credentials.
+checks:
+  - desc: Names ApplicationSets
+    contains: "ApplicationSets"
+  - desc: Mentions git as source of truth
+    contains: "git"
+  - desc: Names Argo CD
+    contains: "Argo CD"

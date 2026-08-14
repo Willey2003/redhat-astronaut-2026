@@ -1,0 +1,30 @@
+kind: knowledge
+domain: compute-nova
+level: quick
+title: Who runs the instances
+prompt: |
+  Which OpenStack service is responsible for managing the lifecycle of virtual
+  machines?
+options:
+  A: "Nova"
+  B: "Neutron"
+  C: "Keystone"
+  D: "Designate"
+answer: A
+explanation: |
+  Nova is the compute service: it manages the instance lifecycle, booting,
+  stopping, resizing, migrating, and rebuilding virtual machines on hypervisors
+  such as KVM.
+solution: |
+  Nova is the OpenStack compute service responsible for the instance lifecycle:
+  booting, stopping, restarting, resizing, rebuilding, shelving, and migrating
+  virtual machines on hypervisors such as KVM and libvirt. The nova-compute
+  service runs on each compute node and drives the local hypervisor, while the
+  API and scheduler components coordinate placement across the fleet.
+checks:
+  - desc: Names Nova
+    contains: "Nova"
+  - desc: Mentions the instance lifecycle
+    contains: "lifecycle"
+  - desc: Names KVM
+    contains: "KVM"

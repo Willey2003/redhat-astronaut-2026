@@ -1,0 +1,37 @@
+kind: knowledge
+domain: migration-networking
+level: core
+title: Migrating VMs from vSphere with MTV
+prompt: |
+  An organization runs virtual machines in VMware vSphere and wants to move
+  them onto OpenShift Virtualization with minimal reconfiguration. Which Red
+  Hat tooling is built for this migration?
+options:
+  A: The Migration Toolkit for Virtualization (MTV), which can import VMs from
+    sources such as vSphere and OpenStack into OpenShift Virtualization.
+  B: A manual export of every vmdk followed by hand-authored VM YAML.
+  C: The OCP installer, which migrates VMs during cluster install.
+  D: A cron job that rsyncs the VM files to a PVC.
+answer: A
+explanation: |
+  MTV (Migration Toolkit for Virtualization) is Red Hat's tool for migrating
+  VMs from vSphere, RHV, OpenStack, and OVA sources into OpenShift
+  Virtualization. It creates Migration objects that provision DataVolumes and
+  VMs automatically. Manual disk exports and rsync jobs are ad-hoc approaches
+  that lack the tooling's inventory discovery and validation.
+solution: |
+  The Migration Toolkit for Virtualization (MTV) automates moving virtual
+  machines from external virtualization platforms, including VMware vSphere,
+  Red Hat Virtualization, and OpenStack, into OpenShift Virtualization. MTV
+  connects to the source provider, lists the VM inventory, and creates a
+  Migration resource that drives the import: the Containerized Data Importer
+  copies the virtual disks into DataVolumes while a VirtualMachine is created
+  with the matching configuration. Warm migration support can also cut downtime
+  for large disks.
+checks:
+  - desc: Names the Migration Toolkit for Virtualization
+    contains: "MTV"
+  - desc: Names vSphere as a source
+    contains: "vSphere"
+  - desc: Names the Migration resource
+    contains: "Migration"

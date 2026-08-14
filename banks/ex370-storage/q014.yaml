@@ -1,0 +1,30 @@
+kind: knowledge
+domain: backup-recovery
+level: core
+title: Scheduling backups with OADP
+prompt: |
+  A team wants an ODF-protected application's resources and PVC data backed up
+  every night without manual steps. Which OADP objects accomplish that?
+options:
+  A: A Restore object run by a cron job.
+  B: A Schedule object that creates a Backup at the defined interval.
+  C: A SnapshotClass plus a nightly kubelet restart.
+  D: A PVC clone that mirrors continuously.
+answer: B
+explanation: |
+  OADP Schedule objects define a cron expression and a backup template; Velero
+  creates a Backup on each scheduled fire. A one-off run is just a Backup
+  object, and Restore is used to bring data back, not to create backups.
+solution: |
+  A Schedule custom resource holds a cron expression and the spec of the Backup
+  it should produce. Every time the schedule fires, Velero creates a new Backup
+  containing the selected namespaces, labels, and volume data. For immediate
+  one-off runs an administrator creates a Backup directly; a Restore object is
+  only used later to recover that backup.
+checks:
+  - desc: Names the Schedule object
+    contains: "Schedule"
+  - desc: Schedule creates Backups
+    contains: "Backup"
+  - desc: Uses a cron expression
+    contains: "cron"

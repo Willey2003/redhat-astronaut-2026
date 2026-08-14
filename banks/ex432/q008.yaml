@@ -1,0 +1,31 @@
+kind: knowledge
+domain: installation-methods
+level: quick
+title: What install-config settings produce a Single Node OpenShift
+prompt: |
+  A small edge deployment needs a full OpenShift cluster on a single host. What
+  must install-config.yaml specify for a Single Node OpenShift (SNO) install?
+options:
+  A: "controlPlane.replicas: 1 and no worker nodes"
+  B: Three control plane and three worker replicas
+  C: "controlPlane.replicas: 0"
+  D: A separate external load balancer for the single node
+answer: A
+explanation: |
+  For SNO, install-config.yaml sets controlPlane.replicas to 1 and removes the
+  compute pool (or sets its replicas to 0), typically with platform none. The
+  single node runs both the control plane and workloads. Three/three is a
+  regular or compact cluster, and SNO does not use an external load balancer.
+solution: |
+  In install-config.yaml set platform to none, controlPlane.replicas: 1, and
+  compute replicas: 0 (or no compute pool), producing a single-node cluster that
+  runs the control plane and user workloads together. SNO is deployed with a
+  single node IP and needs no load balancer. It is a common Assisted or
+  Agent-based install profile for edge sites.
+checks:
+  - desc: Names SNO
+    contains: "SNO"
+  - desc: Mentions controlPlane.replicas
+    contains: "controlPlane.replicas"
+  - desc: Mentions compute replicas
+    contains: "compute"

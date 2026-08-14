@@ -1,0 +1,32 @@
+kind: knowledge
+domain: openshift-data-foundation
+level: core
+title: OSD backing devices
+prompt: |
+  During ODF planning, an architect asks what the Ceph OSDs will use as their
+  backing storage on the worker nodes. What does an ODF StorageCluster expect
+  to find?
+options:
+  A: Raw block devices or partitions on the nodes, claimed by the cluster's deviceSets.
+  B: NFS exports served from the control plane.
+  C: S3 buckets hosted in the public cloud.
+  D: Memory-backed tmpfs directories.
+answer: A
+explanation: |
+  Ceph OSDs store data on raw block devices on the worker nodes. ODF's
+  StorageCluster declares deviceSets that reference devices, often provisioned
+  through the Local Storage Operator, and the Rook operator claims and formats
+  them for OSDs.
+solution: |
+  ODF OSDs require raw block devices (or partitions) on the cluster nodes.
+  Administrators make them available through the Local Storage Operator's
+  LocalVolume, or declare deviceSets in the StorageCluster; Rook then creates
+  and manages OSDs on those devices. The devices must be empty and unformatted,
+  because Rook takes ownership of the disk for Ceph.
+checks:
+  - desc: Names raw block devices
+    contains: "block devices"
+  - desc: Mentions deviceSets
+    contains: "deviceSets"
+  - desc: Mentions the Local Storage Operator
+    contains: "Local Storage Operator"

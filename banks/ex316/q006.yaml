@@ -1,0 +1,33 @@
+kind: knowledge
+domain: openshift-virtualization
+level: quick
+title: virtctl start and stop
+prompt: |
+  A VirtualMachine named db-server is currently stopped. Which virtctl
+  command starts it so it can be used?
+options:
+  A: virtctl start db-server
+  B: virtctl create db-server
+  C: virtctl run db-server
+  D: virtctl apply db-server
+answer: A
+explanation: |
+  virtctl start <vm> starts a stopped VirtualMachine by creating its
+  VirtualMachineInstance (or resuming from a stopped state). The other commands
+  are not virtctl verbs; virtctl focuses on VM lifecycle operations such as
+  start, stop, restart, pause, migrate, console, and vnc.
+solution: |
+  virtctl is the CLI companion to the oc/kubectl tooling for KubeVirt. For a
+  stopped VirtualMachine, virtctl start db-server boots the guest by
+  instantiating the underlying VirtualMachineInstance. The counterpart
+  virtctl stop db-server gracefully shuts the guest down, and
+  virtctl restart db-server performs a stop followed by a start. VMs can also
+  be created with oc create -f vm.yaml; virtctl's role is lifecycle control
+  and console access.
+checks:
+  - desc: Names virtctl start
+    contains: "virtctl start"
+  - desc: Names virtctl stop
+    contains: "virtctl stop"
+  - desc: Names VirtualMachineInstance
+    contains: "VirtualMachineInstance"

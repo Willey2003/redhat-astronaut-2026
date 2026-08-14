@@ -1,0 +1,34 @@
+kind: knowledge
+domain: operators
+level: core
+title: Which OLM resource describes an operator itself
+prompt: |
+  In OLM terms, which custom resource describes an operator itself — its
+  metadata, install strategy (deployments and permissions), and the CRDs it
+  owns — and is the unit that OLM installs?
+options:
+  A: ClusterServiceVersion
+  B: Subscription
+  C: OperatorGroup
+  D: CatalogSource
+answer: A
+explanation: |
+  A ClusterServiceVersion (CSV) is the operator's descriptor: it declares the
+  operator's install strategy with its deployments and RBAC, plus the CRDs the
+  operator owns and provides. Subscriptions track the desired operator and
+  channel, OperatorGroups scope the namespaces operators watch, and
+  CatalogSources feed the catalog of CSVs.
+solution: |
+  A ClusterServiceVersion (CSV) packages the operator's identity and install
+  strategy: spec.installStrategy declares the deployments and RBAC to create,
+  and the CSV lists the CustomResourceDefinitions the operator owns. OLM
+  installs operators by reconciling CSVs onto the cluster. Subscriptions,
+  OperatorGroups, and CatalogSources are the supporting objects that feed and
+  scope CSVs.
+checks:
+  - desc: Names ClusterServiceVersion
+    contains: "ClusterServiceVersion"
+  - desc: Mentions installStrategy
+    contains: "installStrategy"
+  - desc: Mentions owned CRDs
+    contains: "CustomResourceDefinitions"

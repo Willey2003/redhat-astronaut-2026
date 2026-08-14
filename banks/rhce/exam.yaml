@@ -1,0 +1,14 @@
+id: rhce
+title: RHCE Red Hat Certified Engineer Mock
+description: Ansible-based EX294-style automation knowledge bank.
+engine: knowledge
+duration_minutes: 60
+pass_threshold: 0.7
+draw_size: 20
+seed: null
+domains:
+  ansible-fundamentals: 0.20
+  playbooks: 0.25
+  roles: 0.15
+  automation-controller: 0.20
+  system-configuration: 0.20

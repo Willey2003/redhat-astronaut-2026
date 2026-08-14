@@ -1,0 +1,38 @@
+kind: knowledge
+domain: developer-workflows
+level: quick
+title: What oc new-app scaffolds
+prompt: |
+  A developer runs oc new-app https://github.com/example/myapp.git in an
+  empty project. Which set of resources does the command typically create?
+options:
+  A: A BuildConfig, an ImageStream, a DeploymentConfig, and a Service.
+  B: Only a single Pod with no controllers or services.
+  C: A Route, a NetworkPolicy, and a PersistentVolumeClaim.
+  D: An Ingress, a CronJob, and a ConfigMap.
+answer: A
+explanation: |
+  oc new-app on a Git URL creates the application scaffolding: an
+  ImageStream for the produced image, a BuildConfig that builds from the source
+  using the best-matching builder image, a DeploymentConfig to roll out the
+  image, and a Service so other components can reach it. A Route is not created
+  by default unless you pass --route or expose it separately.
+solution: |
+  oc new-app <git-url> inspects the repository and creates a logical
+  application: an ImageStream to hold the built image tags, a BuildConfig
+  configured with the appropriate strategy (often Source-to-Image using a
+  detected builder image such as Node.js or Python), a DeploymentConfig that
+  rolls out the image and exposes container ports, and a Service that makes the
+  deployment reachable inside the cluster. A Route must be requested explicitly
+  (--route) or created later with oc expose service/<name>.
+checks:
+  - desc: Names BuildConfig
+    contains: "BuildConfig"
+  - desc: Names ImageStream
+    contains: "ImageStream"
+  - desc: Names DeploymentConfig
+    contains: "DeploymentConfig"
+  - desc: Names Service
+    contains: "Service"
+  - desc: Notes Route requires an explicit step
+    contains: "Route"

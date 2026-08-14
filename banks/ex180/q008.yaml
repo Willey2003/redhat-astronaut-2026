@@ -1,0 +1,34 @@
+kind: knowledge
+domain: kubernetes-basics
+level: quick
+title: Kubernetes Pod fundamentals
+prompt: |
+  A developer writes a Pod manifest for a single application. What is the
+  correct high-level understanding of a Pod?
+options:
+  A: The smallest deployable unit in Kubernetes, consisting of one or more
+    containers that share a network namespace, storage, and lifecycle.
+  B: A group of machines that run container runtimes.
+  C: A registry holding container images.
+  D: A scheduling rule that binds containers to CPUs.
+answer: A
+explanation: |
+  A Pod is Kubernetes' smallest schedulable unit: its containers share the same
+  network namespace, can share volumes, and are scheduled and managed together.
+  Nodes are the machines, image registries store images, and affinity/rules are
+  separate objects.
+solution: |
+  A Pod is the smallest and most basic unit in the Kubernetes object model. It
+  wraps one or more containers that are co-scheduled onto the same node and
+  share the pod's network namespace, IP address, and any declared volumes.
+  Kubernetes schedules pods onto nodes; the kubelet on the node asks a container
+  runtime (such as CRI-O or containerd) to start the containers. Because a pod
+  represents a single "logical host" for its containers, it is the unit of
+  scaling, scheduling, and lifecycle in Kubernetes.
+checks:
+  - desc: Says a Pod is the smallest deployable unit
+    contains: "smallest"
+  - desc: Mentions shared network namespace
+    contains: "network namespace"
+  - desc: Mentions kubelet and node
+    contains: "kubelet"

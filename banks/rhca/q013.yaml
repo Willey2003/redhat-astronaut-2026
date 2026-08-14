@@ -1,0 +1,30 @@
+kind: knowledge
+domain: openshift-architecture
+level: core
+title: Persistent storage plumbing
+prompt: |
+  Workloads need durable storage on many platforms. Which OpenShift mechanism
+  provides platform-consistent volume provisioning?
+options:
+  A: "The Container Storage Interface (CSI) with driver Operators per backend"
+  B: "A shared NFS export configured per pod"
+  C: "HostPath volumes pinned to one node"
+  D: "Copying files into container images"
+answer: A
+explanation: |
+  OpenShift provisions storage through CSI drivers installed by Operators; a
+  PersistentVolumeClaim requests storage and the CSI driver creates the
+  underlying volume on the backend, such as AWS EBS, vSphere, or Ceph RBD.
+solution: |
+  OpenShift uses the Container Storage Interface for block and file storage: an
+  Operator installs the CSI driver for the backend, whether AWS EBS, vSphere,
+  Azure Disk, or Ceph RBD through OpenShift Data Foundation, and storage classes map requests to backends. An application requests a
+  PersistentVolumeClaim, and the CSI driver dynamically provisions the
+  underlying volume, giving the same workflow on every platform.
+checks:
+  - desc: Names CSI
+    contains: "Container Storage Interface"
+  - desc: Mentions storage classes
+    contains: "storage classes"
+  - desc: Mentions PVC claims
+    contains: "PersistentVolumeClaim"

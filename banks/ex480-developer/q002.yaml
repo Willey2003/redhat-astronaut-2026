@@ -1,0 +1,31 @@
+kind: knowledge
+domain: application-development
+level: core
+title: Which command promotes an image between ImageStream tags
+prompt: |
+  A built image lives under the tag `v1` in an ImageStream. A deployment
+  consumes the `prod` tag. Which command promotes the image by making `prod`
+  point at the same image as `v1`?
+options:
+  A: oc tag <is>/v1 <is>/prod
+  B: oc import-image <is>/prod
+  C: oc new-app --image <is>/v1
+  D: oc expose <is>/v1
+answer: A
+explanation: |
+  `oc tag is/image:v1 is/image:prod` creates or updates the `prod` tag on the
+  ImageStream to reference the image the `v1` tag points to. `oc import-image`
+  fetches from an external registry, `oc new-app` creates an application, and
+  `oc expose` creates a Service or Route.
+solution: |
+  Run `oc tag is/<is-name>:v1 is/<is-name>:prod` to repoint the prod tag at the
+  v1 image without rebuilding. Deployments that use image triggers on prod then
+  roll out the new image. You can also use `oc tag --reference` for
+  metadata-only references when the images are immutable.
+checks:
+  - desc: Names the oc tag command
+    contains: "oc tag"
+  - desc: Mentions repointing the tag
+    contains: "repoint"
+  - desc: Mentions the image trigger
+    contains: "image trigger"

@@ -1,0 +1,32 @@
+kind: knowledge
+domain: advanced-deployments
+level: core
+title: Which lifecycle hook runs after a rollout finishes
+prompt: |
+  After a new DeploymentConfig rollout finishes and all pods are ready, a
+  developer wants to run a one-off command to migrate the database schema.
+  Which lifecycle hook should they configure?
+options:
+  A: A post deployment hook
+  B: A pre deployment hook
+  C: A mid deployment hook
+  D: An abort hook
+answer: A
+explanation: |
+  DeploymentConfigs support pre and post lifecycle hooks. A post hook runs
+  after the new deployment reaches ready and is the right place for one-off
+  migration steps. There is no mid or abort hook in the DeploymentConfig
+  lifecycle.
+solution: |
+  Configure a post deployment hook with `oc set deployment-hook dc/<name>
+  --post -c <container> -- /bin/sh -c 'migrate'`. It runs once after the new
+  pods are ready. A pre hook runs before the new pods start, for example to
+  pause traffic. Failures can be set to retry or abort the deployment based on
+  the hook's failure policy.
+checks:
+  - desc: Names the post hook
+    contains: "post deployment hook"
+  - desc: Mentions oc set deployment-hook
+    contains: "oc set deployment-hook"
+  - desc: Mentions the pre hook
+    contains: "pre"

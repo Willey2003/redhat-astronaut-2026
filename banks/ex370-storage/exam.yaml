@@ -1,0 +1,12 @@
+id: ex370-storage
+title: EX370 OpenShift Data Foundation Mock
+engine: knowledge
+duration_minutes: 90
+pass_threshold: 0.7
+draw_size: 16
+seed: null
+domains:
+  storage-concepts: 0.25
+  openshift-data-foundation: 0.30
+  persistent-storage: 0.20
+  backup-recovery: 0.25

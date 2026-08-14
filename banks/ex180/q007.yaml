@@ -1,0 +1,34 @@
+kind: knowledge
+domain: kubernetes-basics
+level: core
+title: Running a Kubernetes manifest locally
+prompt: |
+  A developer receives a Kubernetes Pod YAML and wants to run it on their
+  workstation without a cluster, using Podman. Which command reads the manifest
+  and starts the workload?
+options:
+  A: podman kube play <file.yaml>
+  B: podman run <file.yaml>
+  C: podman pull <file.yaml>
+  D: podman generate kube <file.yaml>
+answer: A
+explanation:  |
+  podman kube play parses a Kubernetes YAML manifest (Pod, Deployment, or
+  similar) and runs it as Podman pods and containers. podman run starts a
+  container from an image, not a manifest; podman pull downloads images; and
+  podman generate kube creates a manifest from a container instead of
+  consuming one.
+solution: |
+  podman kube play pod.yaml reads Kubernetes-style YAML and launches the
+  described workloads as rootless Podman pods and containers. It supports Pod
+  and Deployment manifests and honors fields such as environment variables,
+  ports, volumes, and restart policies. podman kube down pod.yaml stops and
+  removes the workloads the same manifest started, making the pair ideal for
+  local development against the same YAML that will be deployed to a cluster.
+checks:
+  - desc: Names podman kube play
+    contains: "podman kube play"
+  - desc: Says it reads Kubernetes YAML
+    contains: "YAML"
+  - desc: Names podman kube down
+    contains: "podman kube down"

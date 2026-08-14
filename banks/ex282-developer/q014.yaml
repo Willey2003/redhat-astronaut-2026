@@ -1,0 +1,38 @@
+kind: knowledge
+domain: pipelines-gitops
+level: core
+title: Tekton Workspaces and step isolation
+prompt: |
+  A Tekton Task has two steps that must share a checkout directory and a
+  credential for pushing images. How should these be wired?
+options:
+  A: Mount a Workspace for the shared directory and a Secret-backed Workspace or
+    service account for the credentials.
+  B: Hard-code the directory path inside the container image.
+  C: Use a single step that runs everything in one shell command.
+  D: Copy files between containers using oc rsync during the run.
+answer: A
+explanation: |
+  Tekton Workspaces are the recommended way to share data between steps of a
+  Task and between Tasks. A Workspace backed by a PVC or emptyDir can be
+  mounted into multiple steps, and a Workspace backed by a Secret provides
+  credentials without baking them into images. Service accounts also grant
+  registry push access. Hard-coded paths and rsync during a run are not how
+  Tekton is designed to work.
+solution: |
+  Workspaces are Tekton's mechanism for sharing volumes across Task steps and
+  between Tasks. A Task declares workspaces and each step mounts them, so a
+  git-checkout step can write to a workspace that a build step reads from the
+  same Pod. A Workspace can be backed by a PersistentVolumeClaim, an emptyDir, a
+  ConfigMap, or a Secret. Binding a Secret-backed workspace or using a
+  service account keeps image-push credentials out of the image and lets the
+  same Task run against different secrets in different environments.
+checks:
+  - desc: Names Workspaces
+    contains: "Workspace"
+  - desc: Mentions Secret-backed workspace
+    contains: "Secret"
+  - desc: Mentions service account
+    contains: "service account"
+  - desc: Mentions PVC backing
+    contains: "PersistentVolumeClaim"

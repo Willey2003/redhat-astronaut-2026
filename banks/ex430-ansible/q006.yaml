@@ -1,0 +1,31 @@
+kind: knowledge
+domain: playbooks-templating
+level: core
+title: Jinja2 delimiters
+prompt: |
+  While editing a template file that Ansible renders with Jinja2, an engineer
+  wants to output the value of a variable and also loop over a list. Which
+  delimiter pairs are used for expressions and control structures?
+options:
+  A: '{{ expression }} and {% statement %}'
+  B: '{% expression %} and {{ statement }}'
+  C: '#{ expression }# and #! statement !#'
+  D: '{= expression =} and {; statement ;}'
+answer: A
+explanation: |
+  In Jinja2, `{{ ... }}` evaluates and prints an expression, while `{% ... %}`
+  is a statement such as `{% for %}` or `{% if %}`. Mixing them up is a
+  frequent cause of "template runtime error" messages.
+solution: |
+  Jinja2 uses `{{ variable }}` to render an expression and `{% for item in
+  list %}` / `{% if condition %}` style statements for control flow. Comments
+  use `{# ... #}`. Ansible renders these templates with the `template` module
+  or in `when:`, and the two delimiter families must not be swapped: braces
+  with percent signs never print output.
+checks:
+  - desc: Double braces for expressions
+    contains: "{{"
+  - desc: Percent braces for statements
+    contains: "{%"
+  - desc: Mentions the template module
+    contains: "template"

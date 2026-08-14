@@ -1,0 +1,31 @@
+kind: knowledge
+domain: identity-keystone
+level: deep
+title: Delegating access without passwords
+prompt: |
+  An external tool must script OpenStack API calls. What is the safe, limited
+  way to give it identity?
+options:
+  A: "Application credentials: scoped, time-limited, revocable credentials for a project"
+  B: "Sharing the admin password in the script"
+  C: "Creating a user with the global admin role"
+  D: "Embedding a token in public documentation"
+answer: A
+explanation: |
+  Application credentials give non-interactive clients a scoped, revocable
+  identity, created with openstack application credential create, with limited
+  roles and optional expiry, without exposing the user's password.
+solution: |
+  For scripts and third-party tools, application credentials are the safe
+  choice: openstack application credential create generates credentials scoped
+  to a specific project with a limited set of roles and an optional expiration,
+  and they can be revoked at any time without rotating the user's password.
+  Unlike embedding a password or a long-lived unscoped token, this keeps
+  exposure narrow and auditable.
+checks:
+  - desc: Names application credentials
+    contains: "application credential"
+  - desc: Mentions scoping and revocation
+    contains: "revoked"
+  - desc: Gives the create command
+    contains: "openstack application credential create"

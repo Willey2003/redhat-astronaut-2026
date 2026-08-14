@@ -1,0 +1,35 @@
+kind: knowledge
+domain: observability-apps
+level: quick
+title: Which probe defers liveness checks until startup finishes
+prompt: |
+  An application takes up to two minutes to initialize, and the kubelet
+  currently restarts it during startup because the liveness probe fails while
+  it is still warming up. Which probe type is specifically meant to defer
+  liveness and readiness checks until startup finishes?
+options:
+  A: startupProbe
+  B: livenessProbe
+  C: readinessProbe
+  D: execProbe
+answer: A
+explanation: |
+  A startupProbe runs first; the kubelet disables liveness and readiness probes
+  until the startup probe succeeds. This lets slow-starting apps warm up without
+  being killed, while a failureThreshold still lets the kubelet eventually kill
+  the pod if it never becomes ready. livenessProbe checks health continuously,
+  readinessProbe gates traffic, and execProbe is a probe mechanism, not a probe
+  type.
+solution: |
+  Configure a startupProbe whose initialDelaySeconds and failureThreshold cover
+  the warm-up window; until it succeeds, the kubelet does not run the liveness
+  and readiness probes. A common pattern is a TCP or exec startupProbe with a
+  high failureThreshold. Once the startup probe passes, liveness takes over and
+  restarts the container if it later becomes unhealthy.
+checks:
+  - desc: Names startupProbe
+    contains: "startupProbe"
+  - desc: Mentions failureThreshold
+    contains: "failureThreshold"
+  - desc: Mentions liveness
+    contains: "liveness"

@@ -1,0 +1,12 @@
+id: ex180
+title: Red Hat Podman and Kubernetes Specialist (EX180) Mock
+engine: knowledge
+duration_minutes: 90
+pass_threshold: 0.7
+draw_size: 18
+seed: null
+domains:
+  containers-podman: 0.30
+  kubernetes-basics: 0.30
+  building-images: 0.20
+  container-security: 0.20

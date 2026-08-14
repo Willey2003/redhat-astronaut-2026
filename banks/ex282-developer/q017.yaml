@@ -1,0 +1,35 @@
+kind: knowledge
+domain: debugging-troubleshooting
+level: core
+title: Pod stuck in ImagePullBackOff
+prompt: |
+  A newly rolled out pod stays in ImagePullBackOff. Which set of commands best
+  surfaces the root cause?
+options:
+  A: oc describe pod <name> to read events and status, then fix the image
+    reference or credentials and oc rollout latest.
+  B: oc get projects to check quotas.
+  C: oc get nodes -o wide to inspect hardware load.
+  D: Restart the node that hosts the pod.
+answer: A
+explanation: |
+  ImagePullBackOff means the kubelet could not pull the image: a bad tag, an
+  unauthorized registry, or an inaccessible repository. oc describe pod shows
+  the pull error in the events, and oc get pods shows the restart count and
+  the container status. Correcting the image stream tag or the pull secret is
+  the fix; node-level commands will not help with a failed image pull.
+solution: |
+  ImagePullBackOff is a pod phase reached when image pulls keep failing. To
+  diagnose, run oc describe pod <name> and read the Events section for the
+  exact pull error, for example "manifest unknown" for a wrong tag or "denied"
+  for registry authentication. oc get pods confirms the state and the restart
+  count. Common fixes are correcting the image reference or the ImageStreamTag
+  the deployment watches, adding a pull secret to the service account, or
+  restarting the rollout with oc rollout latest dc/<name> after the fix.
+checks:
+  - desc: Names oc describe pod
+    contains: "oc describe pod"
+  - desc: Names ImagePullBackOff
+    contains: "ImagePullBackOff"
+  - desc: Mentions pull secret
+    contains: "pull secret"

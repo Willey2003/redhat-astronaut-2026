@@ -1,0 +1,32 @@
+kind: knowledge
+domain: networking-cluster
+level: deep
+title: Exposing services with a Route
+prompt: |
+  An HTTP application behind a Service must be reachable from the internet at a
+  hostname with TLS termination. Which OpenShift resource provides that
+  hostname-based external exposure?
+options:
+  A: Route
+  B: NetworkPolicy
+  C: Endpoints
+  D: ConfigMap
+answer: A
+explanation: |
+  A Route is the OpenShift resource that maps a hostname to a Service using the
+  HAProxy-based ingress router. It supports edge, passthrough, and re-encrypt
+  TLS termination. Endpoints and ConfigMaps do not expose external hostnames.
+solution: |
+  A Route connects an external hostname, such as app.example.com, to a Service
+  inside the cluster. The OpenShift router implements it with HAProxy and
+  supports TLS termination modes: edge (TLS terminates at the router),
+  re-encrypt (router re-encrypts to the service), and passthrough (TLS goes
+  straight to the Pod). `oc create route edge myroute --service=mysvc
+  --hostname=app.example.com` is a typical command.
+checks:
+  - desc: Names Route
+    contains: "Route"
+  - desc: Mentions HAProxy router
+    contains: "HAProxy"
+  - desc: Lists edge termination
+    contains: "edge"

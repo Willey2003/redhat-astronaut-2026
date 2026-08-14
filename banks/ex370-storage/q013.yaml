@@ -1,0 +1,32 @@
+kind: knowledge
+domain: backup-recovery
+level: core
+title: OADP components
+prompt: |
+  An administrator needs to back up OpenShift resources along with the data in
+  persistent volumes. Which open-source project does the OADP operator deploy
+  to coordinate those backups?
+options:
+  A: Velero, extended with restic or kopia for file-level volume backup.
+  B: etcd's built-in snapshot tool.
+  C: The rook toolset's RBD mirroring alone.
+  D: oc adm backup.
+answer: A
+explanation: |
+  OADP (OpenShift API for Data Protection) installs and manages Velero as its
+  core backup engine. Velero snapshots API resources and, using restic (now
+  kopia), performs file-level backups of pod volumes to object storage.
+solution: |
+  The OADP operator deploys Velero, which backs up Kubernetes API resources
+  and, combined with restic or kopia nodes, backs up the contents of pod
+  volumes. Backups, schedules, and restores are declared as Velero custom
+  resources (Backup, Schedule, Restore). Velero uploads everything to an
+  S3-compatible object store, which is what makes cluster and PV recovery
+  possible after an outage.
+checks:
+  - desc: Names Velero
+    contains: "Velero"
+  - desc: Mentions restic or kopia
+    contains: "restic"
+  - desc: Backups go to object storage
+    contains: "object store"

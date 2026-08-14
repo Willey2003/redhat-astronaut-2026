@@ -1,0 +1,31 @@
+kind: knowledge
+domain: storage-cinder
+level: quick
+title: The block storage service
+prompt: |
+  Which OpenStack service provisions persistent block storage volumes attached
+  to instances?
+options:
+  A: "Cinder"
+  B: "Nova"
+  C: "Neutron"
+  D: "Keystone"
+answer: A
+explanation: |
+  Cinder is the block storage service: it provisions volumes on backends such
+  as LVM, Ceph RBD, and NFS, attaches them to instances, and supports
+  snapshots and volume types.
+solution: |
+  Cinder is OpenStack's block storage service: it creates persistent volumes on
+  configurable backends, including LVM, Ceph RBD, and NFS, and attaches them to
+  instances as raw block devices. openstack volume create makes a volume,
+  openstack server add volume attaches it, and volume types let administrators
+  offer different tiers such as SSD and HDD. The volume survives the instance,
+  which is what makes it persistent.
+checks:
+  - desc: Names Cinder
+    contains: "Cinder"
+  - desc: Mentions volume create
+    contains: "openstack volume create"
+  - desc: Mentions volume types
+    contains: "volume types"

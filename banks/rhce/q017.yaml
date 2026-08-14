@@ -1,0 +1,32 @@
+kind: knowledge
+domain: system-configuration
+level: core
+title: Managing systemd services idempotently
+prompt: |
+  A task must ensure the httpd service is running and enabled at boot, and must
+  do nothing if it already is. Which Ansible module and arguments are correct?
+options:
+  A: "The service module with state: started and enabled: yes"
+  B: "The command module running systemctl restart httpd"
+  C: "The dnf module with state: installed"
+  D: "The firewalld module with service: http"
+answer: A
+explanation: |
+  ansible.builtin.service with state: started and enabled: yes ensures the
+  service is running and enabled at boot, and is idempotent: it reports ok and
+  changes nothing when the state already matches. The command module runs every
+  time and is not idempotent.
+solution: |
+  The service module (or its systemd variant) ensures a systemd service is
+  running and enabled at boot in one idempotent task: state: started brings the
+  service up, enabled: yes sets it to start at boot, and when the host already
+  matches the module reports ok with no change. Never use the command module
+  for this, because systemctl restart runs unconditionally and forces a
+  restart on every playbook run.
+checks:
+  - desc: Names the service module
+    contains: "service module"
+  - desc: Names state and enabled
+    contains: "enabled"
+  - desc: Emphasizes idempotence
+    contains: "idempotent"

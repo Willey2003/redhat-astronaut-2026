@@ -1,0 +1,31 @@
+kind: knowledge
+domain: roles
+level: core
+title: What a role encapsulates
+prompt: |
+  A team wants to package HTTP server configuration so it is reusable across
+  many playbooks. Which Ansible construct is the right unit?
+options:
+  A: "A handler"
+  B: "A role with its own tasks, handlers, variables, templates, and defaults"
+  C: "An inventory group"
+  D: "An ad-hoc command"
+answer: B
+explanation: |
+  A role is a self-contained, reusable unit with a standard directory layout
+  for tasks, handlers, defaults, vars, files, and templates, and it can depend
+  on other roles. Plays invoke roles with the roles keyword.
+solution: |
+  A role is the reusable unit of Ansible content: a directory tree with tasks,
+  handlers, defaults, vars, files, and templates that ships with its own logic
+  and configuration. Plays invoke it with the roles keyword, and ansible-galaxy
+  installs roles from Galaxy or a git repository. Packaging a web server as a
+  role keeps playbooks short and lets the same configuration be shared and
+  versioned across projects.
+checks:
+  - desc: Names roles as reusable units
+    contains: "reusable"
+  - desc: Lists role content directories
+    contains: "templates"
+  - desc: Mentions ansible-galaxy
+    contains: "ansible-galaxy"

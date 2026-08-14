@@ -1,0 +1,29 @@
+kind: knowledge
+domain: openstack-core
+level: core
+title: Tenancy and isolation
+prompt: |
+  Two departments share one OpenStack cloud but must not see each other's
+  resources. What is the primary isolation boundary?
+options:
+  A: "The project (tenant), with role-based access controlling who belongs"
+  B: "Separate physical servers per department"
+  C: "Different hypervisor brands"
+  D: "The region name"
+answer: A
+explanation: |
+  OpenStack isolates tenants through projects (formerly called tenants): users
+  are assigned to projects with roles, most resources belong to a project, and
+  per-project quotas cap consumption.
+solution: |
+  OpenStack organizes the cloud into projects, formerly called tenants, and the
+  project is the fundamental isolation boundary: instances, networks, volumes,
+  and images are created inside a project, and users gain access through role
+  assignments on that project. Per-project quotas then cap consumption, so two
+  departments sharing the cloud cannot see or exhaust each other's resources,
+  and identity policy controls everything across that boundary.
+checks:
+  - desc: Names project as the boundary
+    contains: "project"
+  - desc: Mentions quotas
+    contains: "quotas"

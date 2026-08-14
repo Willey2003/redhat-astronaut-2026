@@ -1,0 +1,31 @@
+kind: knowledge
+domain: compute-nova
+level: core
+title: Getting a shell into an instance
+prompt: |
+  A user wants to SSH to a new instance. What must exist before the instance is
+  created?
+options:
+  A: "A keypair imported into the cloud and referenced at boot"
+  B: "A console password baked into the image"
+  C: "SSH keys pasted into Horizon after boot"
+  D: "A Cinder volume with the keys"
+answer: A
+explanation: |
+  Nova injects the public key of a keypair registered with the cloud, created
+  or imported with openstack keypair, into the instance at boot, so the
+  matching private key can log in over SSH.
+solution: |
+  Before booting, the user registers a keypair with the cloud using openstack
+  keypair create or openstack keypair import, then passes its name at instance
+  creation, for example openstack server create --key-name mykey. Nova injects
+  the public key into the instance's authorized_keys at first boot, and the
+  private key on the user's laptop completes the SSH login. Without it there is
+  no way to log in remotely unless the image otherwise allows console access.
+checks:
+  - desc: Names keypairs
+    contains: "keypair"
+  - desc: Mentions injection at boot
+    contains: "boot"
+  - desc: Gives create command
+    contains: "openstack server create"

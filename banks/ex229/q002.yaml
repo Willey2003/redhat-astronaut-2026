@@ -1,0 +1,31 @@
+kind: knowledge
+domain: cluster-administration
+level: core
+title: Scaling worker nodes
+prompt: |
+  An OpenShift cluster installed with the Machine API needs three more worker
+  instances. Which resource does the administrator scale to add them?
+options:
+  A: The worker Deployment
+  B: The MachineSet that describes the worker machines
+  C: The Node object by editing its spec
+  D: A ReplicaSet of worker Pods
+answer: B
+explanation: |
+  Worker nodes are created from MachineSets in the openshift-machine-api
+  namespace. Scaling the MachineSet's replicas makes the cluster provision
+  more machines that become Nodes. In OpenShift Local (CRC) there is no
+  Machine API, but for IPI clusters MachineSet scaling is the standard path.
+solution: |
+  MachineSets define a template of machines backed by the cloud or
+  virtualization provider. `oc scale machineset <ms> --replicas=N -n
+  openshift-machine-api` adds or removes worker machines, and the new machines
+  join the cluster as Nodes once the kubelet registers. This is the normal way
+  to grow a cluster installed with the Machine API.
+checks:
+  - desc: Names the MachineSet
+    contains: "MachineSet"
+  - desc: Mentions openshift-machine-api
+    contains: "openshift-machine-api"
+  - desc: Scaling replicas
+    contains: "replicas"

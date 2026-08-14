@@ -1,0 +1,34 @@
+kind: knowledge
+domain: cluster-installation
+level: quick
+title: What is the temporary node that boots first during install
+prompt: |
+  During an OpenShift installation, a temporary node starts etcd and the
+  control plane, then is removed once the cluster is healthy. What is this node
+  called?
+options:
+  A: The bootstrap node
+  B: The bastion host
+  C: The infra node
+  D: The compute node
+answer: A
+explanation: |
+  The bootstrap node is a temporary machine that boots first, runs the initial
+  control plane (including a single-node etcd and the cluster version
+  operator), and is destroyed once the control plane is fully initialized. A
+  bastion host is an external access or jump host, infra nodes run platform
+  workloads, and compute nodes run user workloads.
+solution: |
+  The bootstrap node boots first and hosts the initial control plane: it runs
+  etcd, the kube-apiserver, and the Cluster Version Operator to drive the
+  install, and control-plane nodes register against it. Once the permanent
+  control plane is healthy, the bootstrap node is destroyed. Installer-
+  provisioned installs create it automatically from the bootstrap Ignition
+  config.
+checks:
+  - desc: Names bootstrap
+    contains: "bootstrap"
+  - desc: Mentions the initial control plane
+    contains: "control plane"
+  - desc: Mentions it is destroyed
+    contains: "destroyed"

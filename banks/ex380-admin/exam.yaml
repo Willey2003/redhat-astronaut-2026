@@ -1,0 +1,15 @@
+id: ex380-admin
+title: EX380 OpenShift Administration II Mock
+description: "Knowledge bank for Red Hat OpenShift Administration II (EX380) 2026 objectives: advanced cluster configuration, scaling and performance, storage, networking, Operators, and security/compliance."
+engine: knowledge
+duration_minutes: 180
+pass_threshold: 0.7
+draw_size: 18
+seed: null
+domains:
+  advanced-cluster-configuration: 0.20
+  scaling-performance: 0.15
+  storage-advanced: 0.15
+  networking-advanced: 0.20
+  operators: 0.15
+  security-compliance: 0.15

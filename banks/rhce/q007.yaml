@@ -1,0 +1,31 @@
+kind: knowledge
+domain: playbooks
+level: core
+title: Facts and when they are gathered
+prompt: |
+  Playbook tasks reference ansible_facts to branch on OS details. Where do
+  those facts come from?
+options:
+  A: "They are hard-coded in every inventory"
+  B: "They are gathered from managed nodes by default at the start of a play and exposed as ansible_facts"
+  C: "They come only from the Automation Controller web console"
+  D: "They exist only on the control node"
+answer: B
+explanation: |
+  The setup module runs by default at the start of each play, gathering facts
+  such as distribution, hostname, interfaces, and memory, exposed under
+  ansible_facts. Setting gather_facts: false disables gathering for speed.
+solution: |
+  At the start of a play Ansible runs the setup module by default, collecting
+  facts from each managed host: OS distribution, hostname, interfaces, and
+  memory. They are exposed under ansible_facts and referenced directly, such as
+  ansible_facts['distribution'] or ansible_distribution. Setting gather_facts:
+  false disables gathering when a play does not need it, which speeds up runs
+  against large inventories.
+checks:
+  - desc: Names the setup module
+    contains: "setup"
+  - desc: Names ansible_facts
+    contains: "ansible_facts"
+  - desc: Mentions gather_facts
+    contains: "gather_facts"

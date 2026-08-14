@@ -1,0 +1,30 @@
+kind: knowledge
+domain: roles
+level: deep
+title: Defaults vs vars precedence
+prompt: |
+  A role defines the same variable in defaults/main.yml and in vars/main.yml,
+  and a play also sets it in its vars block. Which value wins when the play
+  runs?
+options:
+  A: "The role default, because role defaults load last"
+  B: "The play's vars, because play-level vars override role defaults"
+  C: "The role vars, because role vars beat play-level vars"
+  D: "All three values merge alphabetically"
+answer: B
+explanation: |
+  Role variables declared in defaults/main.yml have the lowest precedence of
+  any source, so anything else overrides them, including play vars. Role vars
+  in vars/main.yml sit higher than defaults but lower than play-level vars.
+solution: |
+  Role variables declared in defaults/main.yml have the lowest precedence of
+  all, so they act as safe fallbacks that any other source can override. Role
+  vars in vars/main.yml sit higher than defaults, but play-level vars outrank
+  both. Because of that, a variable set in a play's vars key overrides the role
+  default of the same name, which is why roles ship sensible defaults but never
+  force them on consumers.
+checks:
+  - desc: Notes defaults are lowest precedence
+    contains: "lowest precedence"
+  - desc: Says play vars override role defaults
+    contains: "play-level vars"

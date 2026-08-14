@@ -1,4 +1,4 @@
-name: golden-astronaut
+name: redhat-astronaut
 
 services:
   facilitator:
@@ -8,7 +8,7 @@ services:
     hostname: facilitator
     restart: unless-stopped
     ports:
-      - "${GA_BIND:-127.0.0.1}:8900:8900"
+      - "${GA_BIND:-127.0.0.1}:8903:8900"
     environment:
       GA_BANKS: /app/banks
       GA_STATE: /app/state
@@ -51,7 +51,7 @@ services:
     hostname: registry
     restart: unless-stopped
     ports:
-      - "${GA_BIND:-127.0.0.1}:5100:5000"
+      - "${GA_BIND:-127.0.0.1}:5103:5000"
     environment:
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
     volumes:

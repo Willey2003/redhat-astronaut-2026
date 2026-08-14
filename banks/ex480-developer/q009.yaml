@@ -1,0 +1,33 @@
+kind: knowledge
+domain: services-networking
+level: quick
+title: Which resource lists the namespaces in the service mesh
+prompt: |
+  With the OpenShift Service Mesh control plane installed, a developer must
+  add their application namespace to the mesh so sidecars are injected. Which
+  resource lists the namespaces that belong to the mesh?
+options:
+  A: ServiceMeshMemberRoll
+  B: ServiceMeshControlPlane
+  C: DestinationRule
+  D: Gateway
+answer: A
+explanation: |
+  The ServiceMeshMemberRoll (members field) names the namespaces that
+  participate in the mesh; the control plane only injects and proxies pods in
+  member namespaces. The ServiceMeshControlPlane configures the mesh
+  infrastructure (Istiod, proxies), a DestinationRule defines traffic policies
+  and subsets, and a Gateway handles ingress and egress.
+solution: |
+  Update the ServiceMeshMemberRoll named default in the control plane namespace
+  by adding the application namespace to spec.members. Once a namespace is a
+  member, the istio-injection=enabled label or the sidecar annotation injects
+  Envoy sidecars into pods. Check injection with `oc get pod -n <ns> -o wide`
+  and look for the 2/2 ready container count.
+checks:
+  - desc: Names ServiceMeshMemberRoll
+    contains: "ServiceMeshMemberRoll"
+  - desc: Mentions spec.members
+    contains: "spec.members"
+  - desc: Mentions sidecar injection
+    contains: "sidecar"

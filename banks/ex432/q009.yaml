@@ -1,0 +1,33 @@
+kind: knowledge
+domain: post-install-configuration
+level: core
+title: Which resource reports the cluster's overall version and updates
+prompt: |
+  After installation, the administrator wants one object that reports the
+  cluster's overall current version, desired version, and upgrade history.
+  Which resource provides this?
+options:
+  A: ClusterVersion
+  B: ClusterOperator
+  C: Node
+  D: MachineConfigPool
+answer: A
+explanation: |
+  The ClusterVersion object named version (config.openshift.io/v1) records
+  spec.desiredUpdate and reports status including the current version, available
+  updates, and history. ClusterOperators each report the health of one
+  component, Nodes describe machines, and MachineConfigPools report OS config
+  state.
+solution: |
+  `oc get clusterversion` shows the version object's status with the cluster's
+  current version, the desired version, and the upgrade history. The command
+  `oc adm upgrade` reads and writes its spec.desiredUpdate. For per-component
+  health, also check `oc get clusteroperator`, since ClusterVersion only
+  reports the overall update state.
+checks:
+  - desc: Names ClusterVersion
+    contains: "ClusterVersion"
+  - desc: Mentions desiredUpdate
+    contains: "desiredUpdate"
+  - desc: Mentions oc adm upgrade
+    contains: "oc adm upgrade"

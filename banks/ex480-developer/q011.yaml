@@ -1,0 +1,32 @@
+kind: knowledge
+domain: services-networking
+level: core
+title: Which Istio resource splits traffic between subsets by weight
+prompt: |
+  A service mesh application has two versions behind one Service, and a
+  developer wants to send 10% of requests to the new version. Which Istio
+  resource distributes traffic between subsets by weight?
+options:
+  A: VirtualService
+  B: DestinationRule
+  C: ServiceEntry
+  D: Sidecar
+answer: A
+explanation: |
+  A VirtualService defines routing rules; each HTTPRouteDestination carries a
+  weight, so a VirtualService can split traffic between subsets (for example
+  90/10). A DestinationRule declares the subsets and their labels and traffic
+  policies, a ServiceEntry registers external services, and a Sidecar configures
+  proxy scope.
+solution: |
+  Define a DestinationRule that declares subsets (such as v1 and v2) by pod
+  labels, then a VirtualService whose http routes carry destination weights, for
+  example 90 to v1 and 10 to v2. The sidecars implement the split. Weights do
+  not need to sum to 100; they are relative.
+checks:
+  - desc: Names VirtualService
+    contains: "VirtualService"
+  - desc: Mentions subsets
+    contains: "subsets"
+  - desc: Mentions weights
+    contains: "weight"

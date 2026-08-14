@@ -1,0 +1,37 @@
+kind: knowledge
+domain: pipelines-gitops
+level: core
+title: Tekton building blocks in OpenShift Pipelines
+prompt: |
+  A developer is defining a CI pipeline with Red Hat OpenShift Pipelines
+  (Tekton). Which set of resources describes the core building blocks?
+options:
+  A: Task, Pipeline, and PipelineRun, where a Task is a set of steps that run in
+    a Pod and a PipelineRun binds inputs, outputs, and parameters.
+  B: Deployment, Service, and Ingress, reused to model CI steps.
+  C: BuildConfig and ImageStream only.
+  D: Job and CronJob, which replace Tasks in Tekton.
+answer: A
+explanation: |
+  Tekton uses Tasks to define ordered steps executed as a Pod, Pipelines to
+  chain Tasks, and PipelineRuns (and TaskRuns) to execute them with concrete
+  parameters, workspaces, and service accounts. Steps are containers sharing a
+  Pod. Deployments and Ingress are runtime objects, and BuildConfigs are for
+  image builds; neither models the pipeline itself.
+solution: |
+  Red Hat OpenShift Pipelines is a Tekton-based CI/CD system. A Task is a
+  reusable list of steps (container commands) that run sequentially in a single
+  Pod, and its inputs and outputs are declared with results and params. A
+  Pipeline arranges Tasks into a DAG using runAfter or from clauses. A
+  PipelineRun (or TaskRun) executes a Pipeline (or Task) with concrete
+  parameter values, workspaces, and a service account. This is how developers
+  model build, test, and deploy stages natively on OpenShift.
+checks:
+  - desc: Names Task
+    contains: "Task"
+  - desc: Names Pipeline
+    contains: "Pipeline"
+  - desc: Names PipelineRun
+    contains: "PipelineRun"
+  - desc: Mentions steps run in a Pod
+    contains: "Pod"

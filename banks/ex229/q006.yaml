@@ -1,0 +1,31 @@
+kind: knowledge
+domain: security-rbac
+level: core
+title: Granting a namespace-scoped permission
+prompt: |
+  The user jane must be able to manage Pods in the `prod` namespace and
+  nowhere else. Which RBAC combination is correct?
+options:
+  A: A ClusterRoleBinding that binds the cluster-admin role to jane.
+  B: A Role in prod that allows Pod operations, bound to jane with a RoleBinding in prod.
+  C: Adding jane to the node group so she can edit Pods.
+  D: A ServiceAccount named jane with a Secret.
+answer: B
+explanation: |
+  Namespace-scoped access uses a Role (or a ClusterRole bound via RoleBinding)
+  and a RoleBinding in the same namespace. ClusterRoleBinding would grant the
+  permission everywhere, and editing node groups is not an RBAC mechanism.
+solution: |
+  Create a Role in the prod namespace with rules for Pods, then a RoleBinding
+  in prod that links that Role to the user jane. RBAC then only applies inside
+  prod. `oc create role pod-admin --verb=* --resource=pods -n prod` and `oc
+  adm policy add-role-to-user pod-admin jane -n prod` are the concrete
+  commands. A ClusterRoleBinding would wrongly extend the permission
+  cluster-wide.
+checks:
+  - desc: Role in the prod namespace
+    contains: "prod"
+  - desc: RoleBinding ties Role to user
+    contains: "RoleBinding"
+  - desc: Permission scoped to prod
+    contains: "namespace"

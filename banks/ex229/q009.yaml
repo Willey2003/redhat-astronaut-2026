@@ -1,0 +1,33 @@
+kind: knowledge
+domain: networking-cluster
+level: core
+title: Controlling pod-to-pod traffic
+prompt: |
+  Two application teams share a namespace and one team wants to block the
+  other's Pods from reaching it. Which resource controls that at the network
+  layer?
+options:
+  A: NetworkPolicy
+  B: Route
+  C: Service
+  D: SCC
+answer: A
+explanation: |
+  NetworkPolicy rules select Pods by label and define allowed ingress and
+  egress peers, either by label selector, namespace selector, or IP block. The
+  cluster network provider must implement NetworkPolicy, as OVN-Kubernetes in
+  OpenShift does.
+solution: |
+  NetworkPolicy is a Kubernetes resource that filters Pod traffic. A policy
+  selects Pods with podSelector and lists ingress and/or egress rules matching
+  peers by Pod label, namespace label, or CIDR, with optional port
+  restrictions. The OVN-Kubernetes cluster network provider enforces these
+  rules. Without any policy, traffic is allowed by default; adding a policy
+  restricts only the selected Pods.
+checks:
+  - desc: Names NetworkPolicy
+    contains: "NetworkPolicy"
+  - desc: Uses podSelector
+    contains: "podSelector"
+  - desc: OVN-Kubernetes enforces it
+    contains: "OVN-Kubernetes"

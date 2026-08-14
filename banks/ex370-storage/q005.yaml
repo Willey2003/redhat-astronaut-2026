@@ -1,0 +1,32 @@
+kind: knowledge
+domain: openshift-data-foundation
+level: core
+title: Underlying storage software of ODF
+prompt: |
+  OpenShift Data Foundation provides block, file, and object storage to
+  workloads. Which software stack does it deploy and manage inside the cluster?
+options:
+  A: GlusterFS with Heketi
+  B: Rook orchestrating a Ceph cluster
+  C: A standalone Swift service
+  D: Hadoop HDFS
+answer: B
+explanation: |
+  OpenShift Data Foundation (formerly OpenShift Container Storage) deploys
+  Ceph for storage and Rook as the operator that runs and manages the Ceph
+  cluster, together with the MultiCloud Object Gateway (NooBaa) for object
+  access. Rook handles Ceph orchestration in Kubernetes/OpenShift.
+solution: |
+  ODF is built on Rook and Ceph: the Rook operator deploys Ceph components
+  such as monitors, OSDs, and the CSI drivers that expose RBD block, CephFS
+  file, and RGW object storage. The StorageCluster custom resource drives
+  provisioning, and NooBaa (the MultiCloud Object Gateway) provides S3
+  compatibility. This design is why ODF storage classes are automatically
+  created in the cluster.
+checks:
+  - desc: Names Rook
+    contains: "Rook"
+  - desc: Names Ceph
+    contains: "Ceph"
+  - desc: Mentions NooBaa
+    contains: "NooBaa"

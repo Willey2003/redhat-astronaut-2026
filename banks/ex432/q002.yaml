@@ -1,0 +1,33 @@
+kind: knowledge
+domain: cluster-installation
+level: quick
+title: Which install-config field provides the SSH public key
+prompt: |
+  During installation, the installer needs a way to access the bootstrap,
+  control-plane, and worker nodes with SSH. Which field in install-config.yaml
+  supplies the public key used for that access?
+options:
+  A: sshKey
+  B: pullSecret
+  C: baseDomain
+  D: additionalTrustBundle
+answer: A
+explanation: |
+  install-config.yaml's sshKey field holds an SSH public key (or a list of
+  keys) injected into the nodes' authorized_keys so you can log in as the core
+  user during and after installation. pullSecret authorizes pulling the release
+  images, baseDomain names the cluster domain, and additionalTrustBundle adds
+  CAs for registry mirrors.
+solution: |
+  Set the sshKey field in install-config.yaml to the public key of an SSH key
+  pair. The installer adds it to the authorized_keys of the core user on every
+  node, so you can connect with `ssh core@<node>` to inspect the bootstrap or
+  gather logs. The matching private key stays with you and is not written to
+  install-config.yaml.
+checks:
+  - desc: Names sshKey
+    contains: "sshKey"
+  - desc: Mentions authorized_keys
+    contains: "authorized_keys"
+  - desc: Mentions the core user
+    contains: "core"

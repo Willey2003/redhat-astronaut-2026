@@ -1,0 +1,31 @@
+kind: knowledge
+domain: security-rbac
+level: core
+title: What Security Context Constraints govern
+prompt: |
+  A workload needs to use host networking and run privileged. Which admission
+  component in OpenShift decides whether that Pod is allowed?
+options:
+  A: NetworkPolicy
+  B: Security Context Constraints (SCC)
+  C: PodDisruptionBudget
+  D: ResourceQuota
+answer: B
+explanation: |
+  SCCs control the security context a Pod may request: hostNetwork, hostPID,
+  hostPath volumes, privileged containers, allowed users, and capabilities.
+  NetworkPolicy handles traffic flow, not admission of Pod capabilities.
+solution: |
+  Security Context Constraints are admission controllers that restrict the
+  security attributes of Pods. Each SCC defines what is permitted, such as
+  hostNetwork, hostPID, hostIPC, hostPath volumes, privileged containers, and
+  allowed SELinux contexts or users. A Pod is admitted only if its service
+  account is bound to an SCC that permits its requested security context, and
+  then the most permissive matching SCC is applied.
+checks:
+  - desc: Names SCC
+    contains: "SCC"
+  - desc: Controls hostNetwork and privileged
+    contains: "privileged"
+  - desc: Bound to a service account
+    contains: "service account"

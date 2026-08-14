@@ -1,0 +1,36 @@
+kind: knowledge
+domain: building-images
+level: core
+title: Multi-stage builds
+prompt: |
+  A compiled application needs a full toolchain to build but only a minimal
+  runtime to execute. How should the Containerfile be structured to keep the
+  final image small?
+options:
+  A: Use a multi-stage build that compiles in a first stage and copies only
+    the artifacts into a smaller runtime stage.
+  B: Install the toolchain and the application in one single stage.
+  C: Build the application on the host and import a root filesystem.
+  D: Use a FROM scratch image that includes the entire toolchain.
+answer: A
+explanation: |
+  Multi-stage builds use several FROM instructions. The first stages compile and
+  package the application; the final stage copies only the needed artifacts
+  from earlier stages, so the toolchain and build caches never enter the final
+  image. A single stage keeps the toolchain in the image, and scratch with a
+  full toolchain contradicts the point of a minimal image.
+solution: |
+  A multi-stage Containerfile begins with FROM build stages, for example a
+  language image with the compiler and dependencies, and ends with a final
+  runtime stage such as a slim base image or scratch. Artifacts are moved
+  between stages with COPY --from=<stage> /path/to/artifact /destination.
+  Because only the final stage becomes the image, build tools, package managers,
+  and intermediate files are excluded, producing a much smaller image with a
+  smaller attack surface.
+checks:
+  - desc: Names multi-stage
+    contains: "multi-stage"
+  - desc: Names COPY --from
+    contains: "COPY --from"
+  - desc: Notes smaller final image
+    contains: "smaller"

@@ -1,0 +1,32 @@
+kind: knowledge
+domain: observability-apps
+level: core
+title: Which stack provides distributed tracing on OpenShift
+prompt: |
+  A microservices team wants to visualize the path a request takes across
+  services as spans, with a backend that ingests, stores, and queries the trace
+  data. Which operator/stack provides distributed tracing on OpenShift?
+options:
+  A: OpenShift distributed tracing (Jaeger/Tempo)
+  B: OpenShift Pipelines
+  C: OpenShift Serverless
+  D: OpenShift Logging
+answer: A
+explanation: |
+  The OpenShift distributed tracing operator deploys the tracing infrastructure
+  (collector, storage, query UI) backed by Jaeger or Tempo, and instrumented
+  applications send spans to it. Pipelines run CI/CD, Serverless provides
+  scale-to-zero, and Logging aggregates logs rather than traces.
+solution: |
+  Install the Red Hat OpenShift distributed tracing operator and create a Jaeger
+  CR (with strategy all-in-one, production, or streaming) or use a
+  Tempo-backed deployment. Applications instrumented with OpenTelemetry or
+  Jaeger SDKs send spans to the collector, and the query UI visualizes them.
+  Configure the sampler so the collector accepts and forwards the spans.
+checks:
+  - desc: Names distributed tracing
+    contains: "distributed tracing"
+  - desc: Mentions Jaeger
+    contains: "Jaeger"
+  - desc: Mentions spans
+    contains: "spans"

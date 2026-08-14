@@ -1,0 +1,31 @@
+kind: knowledge
+domain: security-architecture
+level: core
+title: Trusting what runs in production
+prompt: |
+  To prevent tampered images from reaching production, what must the platform
+  enforce beyond vulnerability scanning?
+options:
+  A: "Signature verification and admission enforcement of trusted image sources"
+  B: "Allowing any image tag from any registry"
+  C: "Relying on curl over HTTP"
+  D: "Ignoring provenance"
+answer: A
+explanation: |
+  Supply-chain security requires verifying image signatures and enforcing that
+  only trusted, signed images from approved registries are admitted at deploy
+  time through admission policies built on signature and attestation checks.
+solution: |
+  Beyond vulnerability scanning, production platforms must enforce
+  supply-chain trust: images are signed by their build pipeline, the platform
+  verifies signatures against a trusted store, and admission policies built on
+  signature and attestation checks reject unsigned or unapproved images at
+  deploy time. Restricting registries and enforcing policy closes the loop on
+  what actually runs, so scanning alone is never enough.
+checks:
+  - desc: Mentions signature verification
+    contains: "signed"
+  - desc: Mentions admission enforcement
+    contains: "admission"
+  - desc: Mentions trusted registries
+    contains: "registries"

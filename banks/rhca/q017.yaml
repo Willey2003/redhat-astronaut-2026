@@ -1,0 +1,32 @@
+kind: knowledge
+domain: security-architecture
+level: core
+title: Defense in depth on OpenShift
+prompt: |
+  An architect must layer security around a container platform. Which set best
+  reflects layered container security?
+options:
+  A: "Platform hardening, container isolation and SCCs, and supply-chain protection of images"
+  B: "Only a strong firewall"
+  C: "Disabling audit logs"
+  D: "A single shared admin account"
+answer: A
+explanation: |
+  Container platform security is layered: harden the host and platform (FIPS,
+  OS updates), restrict container privileges with SecurityContextConstraints
+  and Pod Security Admission, and secure the image supply chain with signing
+  and trusted registries.
+solution: |
+  Defense in depth for OpenShift stacks several layers: platform and host
+  hardening such as FIPS mode and minimal images, container isolation through
+  SecurityContextConstraints and Pod Security Admission, least-privilege RBAC,
+  network policy, and supply-chain protection with signed and scanned images
+  from trusted registries. No single control is sufficient on its own, so each
+  layer must fail without exposing the workload.
+checks:
+  - desc: Names SecurityContextConstraints
+    contains: "SecurityContextConstraints"
+  - desc: Mentions RBAC
+    contains: "RBAC"
+  - desc: Mentions supply chain
+    contains: "supply-chain"

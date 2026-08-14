@@ -1,0 +1,33 @@
+kind: knowledge
+domain: storage-advanced
+level: core
+title: Which volumeBindingMode delays binding until a pod schedules
+prompt: |
+  An administrator wants PVCs to remain unbound until a pod that uses them is
+  scheduled, so the storage lands in the correct availability zone. Which
+  volumeBindingMode on the StorageClass produces this behavior?
+options:
+  A: WaitForFirstConsumer
+  B: Immediate
+  C: DelayedExpansion
+  D: AttachAndMount
+answer: A
+explanation: |
+  volumeBindingMode: WaitForFirstConsumer delays binding a dynamically
+  provisioned PV until the first pod that references the PVC is scheduled. The
+  scheduler then considers storage topology (such as zones) when placing the
+  pod. Immediate binds at PVC creation time, and the other two are not valid
+  volumeBindingMode values.
+solution: |
+  A StorageClass with volumeBindingMode: WaitForFirstConsumer leaves PVCs
+  Pending until a pod that mounts them is scheduled. At scheduling time the
+  topology of the storage (for example the availability zone where the volume
+  can be provisioned) is factored into pod placement, so the volume lands near
+  the workload. Immediate binds as soon as the PVC is created.
+checks:
+  - desc: Names WaitForFirstConsumer
+    contains: "WaitForFirstConsumer"
+  - desc: Mentions scheduling topology
+    contains: "topology"
+  - desc: Mentions Immediate as alternative
+    contains: "Immediate"

@@ -1,0 +1,32 @@
+kind: knowledge
+domain: openstack-core
+level: quick
+title: What OpenStack actually is
+prompt: |
+  A manager calls OpenStack "the thing that runs VMs." What is the more precise
+  description?
+options:
+  A: "An open-source cloud operating system made of cooperating projects: compute, networking, storage, and identity"
+  B: "A single monolithic hypervisor"
+  C: "A Kubernetes distribution"
+  D: "A backup utility"
+answer: A
+explanation: |
+  OpenStack is an open-source cloud platform composed of cooperating projects:
+  Nova for compute, Neutron for networking, Cinder and Swift for storage,
+  Keystone for identity, Glance for images, and Horizon as the dashboard, all
+  driven through one REST API.
+solution: |
+  OpenStack is an open-source cloud operating system that assembles many
+  cooperating services into an IaaS platform: Nova provides compute instances,
+  Neutron manages networks, Cinder and Swift deliver block and object storage,
+  Glance stores boot images, Keystone provides identity and the service
+  catalog, and Horizon is the web dashboard. All are driven through one
+  consistent REST API, so no single component is "OpenStack" on its own.
+checks:
+  - desc: Names Nova
+    contains: "Nova"
+  - desc: Names Neutron
+    contains: "Neutron"
+  - desc: Names Keystone
+    contains: "Keystone"

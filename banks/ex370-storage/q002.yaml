@@ -1,0 +1,32 @@
+kind: knowledge
+domain: storage-concepts
+level: core
+title: Read-write-many access mode
+prompt: |
+  Several Pods scheduled on different nodes must all mount the same volume at
+  the same time with read and write access. Which PersistentVolume access mode
+  permits that?
+options:
+  A: ReadWriteOnce
+  B: ReadWriteMany
+  C: ReadOnlyMany
+  D: ReadWriteOncePod
+answer: B
+explanation: |
+  ReadWriteMany (RWX) allows many nodes and many Pods to mount the volume
+  simultaneously for reading and writing. ReadWriteOnce limits a volume to one
+  node, and ReadWriteOncePod limits it to a single Pod. Whether RWX actually
+  works depends on the storage backend, such as CephFS or NFS.
+solution: |
+  The ReadWriteMany (RWX) access mode lets the volume be mounted read-write by
+  Pods on multiple nodes at once. ReadWriteOnce (RWO) restricts mounting to a
+  single node, and ReadWriteOncePod to exactly one Pod. Backends such as
+  CephFS and NFS support RWX, while a raw RBD block volume cannot be mounted
+  simultaneously by multiple clients.
+checks:
+  - desc: Names the RWX mode
+    contains: "ReadWriteMany"
+  - desc: Contrasts with ReadWriteOnce
+    contains: "ReadWriteOnce"
+  - desc: Cites CephFS or NFS backend
+    contains: "CephFS"

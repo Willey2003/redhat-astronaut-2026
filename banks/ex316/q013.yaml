@@ -1,0 +1,36 @@
+kind: knowledge
+domain: vm-lifecycle
+level: core
+title: VM templates and common images
+prompt: |
+  An administrator wants to create a new Linux VM without authoring its domain
+  spec from scratch. What does OpenShift Virtualization provide for this?
+options:
+  A: A catalog of common VM templates that define OS-specific settings and can
+    be instantiated from the web console or the command line.
+  B: Nothing; every VM must be written by hand.
+  C: A single hard-coded template that works for every operating system.
+  D: A script that downloads a finished VM image and bypasses the API.
+answer: A
+explanation: |
+  OpenShift Virtualization ships common-templates for operating systems such as
+  RHEL, Fedora, and Windows Server. Each template bundles the right OS-specific
+  domain settings, disk, and defaults, and can be instantiated into a
+  VirtualMachine with parameters (name, size, storage class). Templates make VM
+  creation repeatable, which is also how the OpenShift Virtualization catalog
+  presents "Create VirtualMachine."
+solution: |
+  The web console's Virtualization catalog and the command line expose common
+  templates for popular operating systems. Each template is a Template CR that
+  contains the VM definition with OS-specific parameters, for example disk bus,
+  firmware type, recommended memory, and a boot source reference. Instantiating
+  it (from the console, or with oc process/oc apply) produces a ready
+  VirtualMachine. Boot sources such as golden images or DataVolume imports
+  supply the initial OS disk.
+checks:
+  - desc: Names common templates
+    contains: "common templates"
+  - desc: Mentions instantiating from the console
+    contains: "web console"
+  - desc: Names boot source
+    contains: "boot source"

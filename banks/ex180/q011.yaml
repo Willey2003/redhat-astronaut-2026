@@ -1,0 +1,32 @@
+kind: knowledge
+domain: building-images
+level: quick
+title: Building with an explicit Containerfile
+prompt: |
+  A project keeps its build definition in a file named app.containerfile.
+  Which podman build invocation uses it?
+options:
+  A: podman build -f app.containerfile -t myapp:latest .
+  B: podman build app.containerfile
+  C: podman run -f app.containerfile -t myapp:latest
+  D: podman import -f app.containerfile
+answer: A
+explanation: |
+  -f (or --file) selects the build definition file, and -t tags the
+  result; the final argument is the build context directory. podman build is
+  the only build command among the options, podman run starts containers, and
+  podman import creates an image from a tarball, not a build file.
+solution: |
+  podman build -f app.containerfile -t myapp:latest . builds an image from
+  the instructions in app.containerfile using the current directory as the
+  build context. The -f flag works with any filename, including the common
+  Containerfile or Dockerfile names. -t applies one or more tags to the
+  finished image. The build context directory is what makes files available to
+  the COPY and ADD instructions.
+checks:
+  - desc: Names podman build
+    contains: "podman build"
+  - desc: Names the -f flag
+    contains: "-f"
+  - desc: Mentions build context
+    contains: "context"

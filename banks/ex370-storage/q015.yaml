@@ -1,0 +1,31 @@
+kind: knowledge
+domain: backup-recovery
+level: deep
+title: File-level volume backup in OADP
+prompt: |
+  During an OADP backup, a restic or kopia node process runs on the workers.
+  What is that process responsible for?
+options:
+  A: Replicating RBD images between clusters.
+  B: Backing up the files inside pod volumes to the object store.
+  C: Defragmenting the Ceph OSD devices.
+  D: Serving the OADP web console.
+answer: B
+explanation: |
+  The restic (and newer kopia) integration performs file-level backups of PVC
+  data: it reads the filesystem of a mounted volume and uploads a deduplicated
+  archive to the Velero object store. RBD image replication is a separate
+  Ceph feature and is not how OADP backs up data.
+solution: |
+  OADP's restic or kopia daemonset runs a node agent on every worker. During a
+  Backup, Velero invokes that agent to read the files of each selected pod
+  volume and store a deduplicated, encrypted archive in the S3-compatible
+  object store. On restore, the agent downloads and writes those files back,
+  making restic/kopia backups portable even to new clusters.
+checks:
+  - desc: Names restic or kopia
+    contains: "restic"
+  - desc: Reads pod volume files
+    contains: "files"
+  - desc: Uploads to the object store
+    contains: "object store"

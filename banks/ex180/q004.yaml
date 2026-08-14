@@ -1,0 +1,32 @@
+kind: knowledge
+domain: containers-podman
+level: quick
+title: Listing stopped containers
+prompt: |
+  A developer wants to see every container on the system, including containers
+  that have exited. Which command shows the full list?
+options:
+  A: podman ps -a
+  B: podman ps
+  C: podman stats
+  D: podman container list --running
+answer: A
+explanation: |
+  podman ps shows only running containers; podman ps -a (or --all) shows
+  running and stopped containers. podman stats reports live resource usage of
+  running containers, and podman container list --running deliberately
+  filters to running ones, the opposite of what is needed.
+solution: |
+  podman ps lists only containers in the running state, while podman ps -a
+  lists every container, including stopped and exited ones. This is the command
+  to use when hunting for a container that has finished or crashed. Container
+  IDs can then be reused with podman start or inspected with podman inspect.
+  Resource consumption for live containers is viewed separately with podman
+  stats.
+checks:
+  - desc: Names podman ps -a
+    contains: "podman ps -a"
+  - desc: Notes running containers only without -a
+    contains: "running"
+  - desc: Names podman inspect
+    contains: "podman inspect"

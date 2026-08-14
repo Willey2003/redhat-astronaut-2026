@@ -1,0 +1,33 @@
+kind: knowledge
+domain: security-compliance
+level: core
+title: How to grant a ServiceAccount the anyuid SCC
+prompt: |
+  A legacy application must run as a fixed UID (for example 1001), but the
+  restricted-v2 SCC blocks it. How does an administrator let a specific
+  ServiceAccount use the anyuid SCC without giving it cluster-admin?
+options:
+  A: Bind the ClusterRole system:openshift:scc:anyuid to the ServiceAccount
+  B: Delete the restricted-v2 SCC
+  C: Add the namespace to the privileged users list of the SCC
+  D: Grant the ServiceAccount the cluster-admin ClusterRole
+answer: A
+explanation: |
+  Each SCC has a matching ClusterRole named system:openshift:scc:<scc-name>.
+  Binding system:openshift:scc:anyuid to a ServiceAccount lets that account run
+  with the anyuid SCC, which permits arbitrary UIDs. Deleting restricted-v2 or
+  granting cluster-admin broadens security far more than needed.
+solution: |
+  To grant a ServiceAccount the anyuid SCC, bind the ClusterRole
+  system:openshift:scc:anyuid to it, for example with `oc adm policy
+  add-cluster-role-to-user system:openshift:scc:anyuid -z <sa> -n <ns>`. The
+  account can then run workloads that execute as any UID, as allowed by anyuid.
+  Keep restricted-v2 in place for other workloads and avoid granting
+  cluster-admin.
+checks:
+  - desc: Names the SCC cluster role
+    contains: "system:openshift:scc:anyuid"
+  - desc: Mentions anyuid
+    contains: "anyuid"
+  - desc: Mentions the ServiceAccount
+    contains: "ServiceAccount"

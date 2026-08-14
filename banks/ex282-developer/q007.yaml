@@ -1,0 +1,38 @@
+kind: knowledge
+domain: developer-workflows
+level: core
+title: DeploymentConfig versus Deployment
+prompt: |
+  An application was created with oc new-app and the developer wants a
+  rollout to a new image tag triggered from the image stream. Which controller
+  and command pair is most relevant?
+options:
+  A: DeploymentConfig, with oc rollout latest <dc-name> and image-change
+    triggers on ImageStreamTag.
+  B: A plain Deployment, with oc rollout restart only.
+  C: A StatefulSet, with oc scale only.
+  D: A DaemonSet, because every node must run the image.
+answer: A
+explanation: |
+  oc new-app creates a DeploymentConfig by default. DeploymentConfigs support
+  config-change and image-change triggers, so pushing a new tag to the
+  referenced ImageStream can start a rollout automatically. oc rollout latest
+  forces a new rollout. Plain Deployments do not integrate image-change
+  triggers with ImageStreams the same way, and a StatefulSet or DaemonSet is
+  for ordered or per-node workloads, not this trigger-based workflow.
+solution: |
+  A DeploymentConfig is the OpenShift controller created by oc new-app. It
+  supports rolling deployments and two trigger types: a config-change trigger
+  that starts a rollout when the template changes, and an image-change trigger
+  that watches an ImageStreamTag and rolls out automatically when the tag
+  points to a new image. oc rollout latest dc/<name> starts a new rollout
+  manually, oc rollout status waits for it, and oc rollout undo reverts it.
+  Because it reacts to image streams, DeploymentConfigs are central to the
+  OpenShift source-to-deploy workflow.
+checks:
+  - desc: Names DeploymentConfig
+    contains: "DeploymentConfig"
+  - desc: Names image-change trigger
+    contains: "image-change trigger"
+  - desc: Names oc rollout latest
+    contains: "oc rollout latest"

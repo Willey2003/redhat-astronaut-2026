@@ -1,0 +1,32 @@
+kind: knowledge
+domain: configuration-secrets
+level: quick
+title: Which resource stores non-sensitive application configuration
+prompt: |
+  A developer wants to store non-sensitive application settings and mount them
+  into a pod as files and environment variables. Which resource is the right
+  choice?
+options:
+  A: ConfigMap
+  B: Secret
+  C: PersistentVolumeClaim
+  D: ServiceAccount
+answer: A
+explanation: |
+  ConfigMaps store non-sensitive key/value data that can be consumed as files
+  via volume mounts or as environment variables via env and envFrom. Secrets
+  are intended for sensitive data such as credentials, PVCs are storage, and
+  ServiceAccounts provide pod identity.
+solution: |
+  Create a ConfigMap with `oc create configmap app-config --from-file=...` or
+  from literal values. Mount it as a volume so each key becomes a file under the
+  mount path, or consume the keys as environment variables. `oc set env
+  dc/<name> --from=configmap/app-config` injects them. For credentials use a
+  Secret instead, since ConfigMap data is not meant to be sensitive.
+checks:
+  - desc: Names ConfigMap
+    contains: "ConfigMap"
+  - desc: Mentions environment variables
+    contains: "environment variables"
+  - desc: Mentions volume mount
+    contains: "volume"

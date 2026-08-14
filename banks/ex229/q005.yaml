@@ -1,0 +1,30 @@
+kind: knowledge
+domain: security-rbac
+level: quick
+title: Role versus ClusterRole
+prompt: |
+  A permission must apply to a resource type in every namespace of the
+  cluster. Which RBAC object grants access across all namespaces?
+options:
+  A: Role
+  B: ClusterRole
+  C: ServiceAccount
+  D: ResourceQuota
+answer: B
+explanation: |
+  A ClusterRole defines permissions that apply cluster-wide or can be reused
+  per-namespace through a RoleBinding. A Role only applies within the namespace
+  it is created in. ServiceAccounts are identities, not permissions.
+solution: |
+  ClusterRole is the RBAC object whose rules apply across the whole cluster or
+  to cluster-scoped resources such as Nodes and ClusterRoles themselves. A
+  Role, by contrast, is scoped to one namespace. A ClusterRole can still be
+  bound to a single namespace with a RoleBinding, which limits its effect
+  there, but creating the ClusterRole is what makes cluster-wide use possible.
+checks:
+  - desc: Names ClusterRole
+    contains: "ClusterRole"
+  - desc: Contrasts with namespace Role
+    contains: "Role"
+  - desc: Mentions RoleBinding
+    contains: "RoleBinding"

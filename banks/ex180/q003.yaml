@@ -1,0 +1,34 @@
+kind: knowledge
+domain: containers-podman
+level: core
+title: Stopping containers versus removing images
+prompt: |
+  A developer needs to free disk space by removing an unused image, but the
+  removal fails with a "used by container" error. What is the correct sequence?
+options:
+  A: Stop and remove the referencing containers, then podman rmi <image>.
+  B: Run podman stop <image> to stop the image itself.
+  C: Run podman image prune which never fails on in-use images.
+  D: Remove the image with podman rm <image>.
+answer: A
+explanation: |
+  An image cannot be removed while a container (running or stopped) references
+  it. The fix is to remove those containers first with podman rm (after
+  podman stop if they are running), then podman rmi <image> succeeds. Images
+  are stopped by no command — podman stop only stops containers — and podman
+  rm removes containers, not images.
+solution: |
+  Containers and images are different objects: podman run creates a container
+  from an image, podman stop halts a running container, and podman rm
+  deletes a container. An image stays in use until every container created from
+  it is removed, so podman rmi <image> reports a conflict while such a
+  container exists. The sequence is podman stop <name> (if running), podman
+  rm <name>, and then podman rmi <image>. podman image prune removes
+  dangling images but still respects in-use references.
+checks:
+  - desc: Names podman rm
+    contains: "podman rm"
+  - desc: Names podman rmi
+    contains: "podman rmi"
+  - desc: Names podman stop
+    contains: "podman stop"

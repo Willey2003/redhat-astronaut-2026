@@ -1,0 +1,14 @@
+id: ex480-developer
+title: EX480 OpenShift Developer II Mock
+description: "Knowledge bank for Red Hat OpenShift Developer II (EX480) 2026 objectives: application development, advanced deployments, services and networking, configuration and secrets, and observability for applications."
+engine: knowledge
+duration_minutes: 180
+pass_threshold: 0.7
+draw_size: 18
+seed: null
+domains:
+  application-development: 0.25
+  advanced-deployments: 0.20
+  services-networking: 0.20
+  configuration-secrets: 0.20
+  observability-apps: 0.15

@@ -1,0 +1,36 @@
+kind: knowledge
+domain: pipelines-gitops
+level: deep
+title: GitOps application delivery with Argo CD
+prompt: |
+  A team wants Git to be the single source of truth so that every cluster
+  state change is declared in a repository and applied automatically. Which
+  approach matches the GitOps model?
+options:
+  A: Store the desired manifests in a Git repository and use Argo CD's
+    Application resource to reconcile the cluster to the repository state.
+  B: Manually run oc apply from developer laptops whenever code changes.
+  C: Keep the running cluster state and periodically export it to Git.
+  D: Store manifests in a database that the operator reads on demand.
+answer: A
+explanation: |
+  GitOps means declarative configuration stored in Git, with an operator such
+  as Argo CD continuously reconciling the live cluster to the desired state.
+  The cluster is updated only through repository changes (pull-based delivery),
+  not by ad-hoc oc apply commands. Exporting live state back to Git is the
+  reverse of GitOps, since Git, not the cluster, must be authoritative.
+solution: |
+  In the GitOps model the Git repository is the source of truth for the desired
+  cluster state. Argo CD, the default GitOps engine for OpenShift GitOps,
+  watches a repository, renders the Kubernetes manifests, and reconciles them
+  into the cluster with an Application resource. Any drift between the live
+  cluster and the repository is corrected automatically, and changes are made
+  by merging commits rather than by running imperative oc commands. This
+  provides auditability, rollback by revert, and consistent environments.
+checks:
+  - desc: Names Argo CD
+    contains: "Argo CD"
+  - desc: Names the Application resource
+    contains: "Application"
+  - desc: Says Git is the source of truth
+    contains: "source of truth"

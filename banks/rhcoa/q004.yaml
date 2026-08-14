@@ -1,0 +1,28 @@
+kind: knowledge
+domain: openstack-core
+level: quick
+title: The self-service web interface
+prompt: |
+  Which OpenStack component provides the web-based self-service portal where
+  users boot instances and manage networks?
+options:
+  A: "Horizon"
+  B: "Nova"
+  C: "Cinder"
+  D: "Swift"
+answer: A
+explanation: |
+  Horizon is the OpenStack dashboard, a web UI over the same REST APIs the CLI
+  uses, providing self-service instance, image, network, and volume management
+  in the browser.
+solution: |
+  Horizon is OpenStack's web dashboard: a browser-based self-service portal
+  where users log in with the same credentials the CLI uses and manage
+  instances, images, networks, volumes, and security groups through the REST API. It is an optional component, because the openstack CLI and SDKs provide
+  identical function, but it is the primary interface for many end users who do
+  not work at a terminal.
+checks:
+  - desc: Names Horizon
+    contains: "Horizon"
+  - desc: Notes it wraps the REST API
+    contains: "REST API"

@@ -1,0 +1,33 @@
+kind: knowledge
+domain: configuration-secrets
+level: core
+title: Which Secret type stores registry credentials for image pulls
+prompt: |
+  A Deployment must pull an image from a private registry, and OpenShift needs
+  the registry credentials to authorize the pull. Which Secret type stores
+  these credentials?
+options:
+  A: kubernetes.io/dockerconfigjson
+  B: Opaque
+  C: kubernetes.io/service-account-token
+  D: kubernetes.io/tls
+answer: A
+explanation: |
+  kubernetes.io/dockerconfigjson holds a .dockerconfigjson blob with registry
+  credentials and can be referenced as a pod's imagePullSecrets. Opaque is
+  generic key/value data, service-account-token carries the ServiceAccount's
+  token, and tls stores a certificate and private key.
+solution: |
+  Create the secret with `oc create secret docker-registry <name>
+  --docker-server=... --docker-username=... --docker-password=...`; it is
+  stored as type kubernetes.io/dockerconfigjson. Reference it in a pod's
+  spec.imagePullSecrets so the kubelet can pull from the private registry. To
+  cover all pods in a namespace, add it to the namespace's default
+  ServiceAccount.
+checks:
+  - desc: Names the dockerconfigjson type
+    contains: "kubernetes.io/dockerconfigjson"
+  - desc: Mentions imagePullSecrets
+    contains: "imagePullSecrets"
+  - desc: Mentions oc create secret docker-registry
+    contains: "docker-registry"

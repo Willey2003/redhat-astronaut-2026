@@ -1,0 +1,37 @@
+kind: knowledge
+domain: vm-lifecycle
+level: core
+title: DataVolumes and the Containerized Data Importer
+prompt: |
+  A VM needs a persistent virtual disk whose contents are imported from a
+  source such as a disk image or a container disk. Which object manages that
+  provisioning?
+options:
+  A: A DataVolume, which triggers the Containerized Data Importer (CDI) to
+    populate a PVC from the declared source.
+  B: An emptyDir volume mounted by hand into the guest.
+  C: A ConfigMap that stores the raw disk bytes.
+  D: A Service that streams the image on first boot only.
+answer: A
+explanation: |
+  A DataVolume is a CR that combines a PVC with an import, clone, or upload
+  source. The Containerized Data Importer (CDI) runs a pod that populates the
+  PVC with the requested data (for example, from an HTTP image or a DataVolume
+  clone), and the VM then uses the resulting PVC as its disk. emptyDir is
+  ephemeral, ConfigMaps are not disk images, and Services do not provision
+  disks.
+solution: |
+  A DataVolume (dv.kubevirt.io) declares a persistent disk and its source. The
+  Containerized Data Importer (CDI) controller sees the DataVolume, creates the
+  backing PVC, and runs an importer pod that writes data from sources such as
+  an HTTP URL, a registry container disk, an existing PVC clone, or a local
+  upload. When the PVC is populated the DataVolume becomes ready, and the VM
+  template references it as the disk. This is the standard way to give VMs
+  persistent storage with OpenShift Virtualization.
+checks:
+  - desc: Names DataVolume
+    contains: "DataVolume"
+  - desc: Names CDI
+    contains: "Containerized Data Importer"
+  - desc: Names PVC backing
+    contains: "PVC"

@@ -1,0 +1,29 @@
+kind: knowledge
+domain: identity-keystone
+level: core
+title: Where clients learn the endpoints
+prompt: |
+  After login, how does a client know the URL of Nova's API versus Cinder's?
+options:
+  A: "From the service catalog in the Keystone response"
+  B: "By probing every port on the control plane"
+  C: "By reading the Nova database"
+  D: "From the instance console"
+answer: A
+explanation: |
+  The Keystone token response includes the service catalog listing each
+  service's public, internal, and admin endpoints, so clients route each API
+  call to the correct service without guessing URLs.
+solution: |
+  When a client authenticates, Keystone returns a token plus the service catalog: a list of every service and its public, internal, and admin
+  endpoints. The client then calls each service's API at the matching endpoint,
+  Nova's compute endpoint for servers and Cinder's volume endpoint for volumes,
+  without ever guessing URLs. openstack catalog list prints the catalog an
+  administrator can inspect.
+checks:
+  - desc: Names the service catalog
+    contains: "service catalog"
+  - desc: Explains per-service endpoints
+    contains: "endpoints"
+  - desc: Mentions the catalog list command
+    contains: "openstack catalog list"

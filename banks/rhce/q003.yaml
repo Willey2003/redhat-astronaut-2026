@@ -1,0 +1,33 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: deep
+title: Precedence of configuration sources
+prompt: |
+  A playbook run picks settings from several configuration files. Which
+  precedence order does Ansible apply, from highest to lowest?
+options:
+  A: "/etc/ansible/ansible.cfg, then ~/.ansible.cfg, then a config file in the working directory"
+  B: "ANSIBLE_CONFIG environment variable, then ./ansible.cfg, then ~/.ansible.cfg, then /etc/ansible/ansible.cfg"
+  C: "The environment variable, then /etc/ansible/ansible.cfg, then ./ansible.cfg"
+  D: "Precedence never applies; all configuration files are merged in arbitrary order"
+answer: B
+explanation: |
+  Ansible reads configuration in this order of precedence, highest first: the
+  ANSIBLE_CONFIG environment variable, then ansible.cfg in the current working
+  directory, then the per-user ~/.ansible.cfg, and finally the system
+  /etc/ansible/ansible.cfg. A setting in a higher-precedence source wins.
+solution: |
+  Ansible applies configuration sources with a strict precedence, highest
+  first: the ANSIBLE_CONFIG environment variable, then ansible.cfg in the
+  current working directory, then the per-user ~/.ansible.cfg, and finally the
+  system /etc/ansible/ansible.cfg. A setting found in a higher-precedence
+  source wins, and lower sources act only as defaults. This matters in the lab
+  because the inventory and roles_path in a repo's ./ansible.cfg will override
+  anything you set globally.
+checks:
+  - desc: Names ANSIBLE_CONFIG env var
+    contains: "ANSIBLE_CONFIG"
+  - desc: Names working directory config
+    contains: "working directory"
+  - desc: Names ~/.ansible.cfg
+    contains: "~/.ansible.cfg"

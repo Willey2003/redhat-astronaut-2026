@@ -1,6 +1,6 @@
 FROM python:3.12-slim
 LABEL org.opencontainers.image.title="Golden Astronaut 2026 - conductor"
-LABEL org.opencontainers.image.source="https://github.com/<owner>/golden-astronaut-2026"
+LABEL org.opencontainers.image.source="https://github.com/<owner>/redhat-astronaut-2026"
 
 ARG KUBECTL_VERSION=v1.31.0
 ARG OC_VERSION=stable-4.17

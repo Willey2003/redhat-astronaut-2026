@@ -1,0 +1,12 @@
+id: ex316
+title: Red Hat OpenShift Virtualization (EX316) Mock
+engine: knowledge
+duration_minutes: 90
+pass_threshold: 0.7
+draw_size: 16
+seed: null
+domains:
+  virtualization-concepts: 0.25
+  openshift-virtualization: 0.30
+  vm-lifecycle: 0.25
+  migration-networking: 0.20

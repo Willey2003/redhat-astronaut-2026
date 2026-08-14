@@ -1,0 +1,35 @@
+kind: knowledge
+domain: container-security
+level: core
+title: Running containers as a non-root user
+prompt: |
+  A security review flags that a service image runs its process as root by
+  default. What is the recommended way to make the container drop privileges?
+options:
+  A: Add a USER directive to the Containerfile and create/own the needed
+    directories before switching users.
+  B: Add RUN chmod 777 / to the image so all users can write anywhere.
+  C: Run the container with --privileged to manage its own security.
+  D: Rely on the runtime to rewrite every container to run as root.
+answer: A
+explanation: |
+  A USER directive in the Containerfile sets the user the entrypoint runs as,
+  and the image should create and chown writable paths (for example
+  RUN useradd -r app && mkdir /data && chown app /data) before the USER line.
+  Running with --privileged and permissive permissions widen the attack
+  surface rather than reduce it.
+solution: |
+  The Containerfile USER instruction changes the identity used to run the
+  container's process. Best practice is to create an unprivileged user, prepare
+  any writable directories and chown them to that user, then switch with USER
+  before the ENTRYPOINT. The runtime can also enforce a user with
+  podman run --user <uid>, which overrides the USER in the image. Running as a
+  non-root user, with read-only root filesystems where feasible, limits the
+  damage a compromised process can do.
+checks:
+  - desc: Names the USER directive
+    contains: "USER"
+  - desc: Mentions chown
+    contains: "chown"
+  - desc: Names --user flag
+    contains: "--user"

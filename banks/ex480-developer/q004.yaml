@@ -1,0 +1,32 @@
+kind: knowledge
+domain: application-development
+level: core
+title: Which resource provides serverless scale-to-zero
+prompt: |
+  A developer deploys an event-driven API that should consume no pods when
+  idle and scale automatically with traffic. Which resource provides serverless
+  scale-to-zero on OpenShift?
+options:
+  A: Knative Service
+  B: A Deployment with replicas 0
+  C: BuildConfig
+  D: Job
+answer: A
+explanation: |
+  A Knative Service (serving.knative.dev) creates a Revision and manages a
+  Deployment that scales down to zero pods when idle and scales up in response
+  to traffic or events. A plain Deployment pinned to zero needs a human or an
+  HPA to come back, a BuildConfig builds images, and a Job runs to completion.
+solution: |
+  A Knative Service from OpenShift Serverless manages Revisions and the
+  underlying Deployment, scaling to zero instances when idle and scaling up
+  with incoming traffic. Set spec.template.spec.containerConcurrency to bound
+  concurrency. Because scale-to-zero needs no permanent pod, the revision costs
+  nothing while idle; requests wake it through the activator.
+checks:
+  - desc: Names Knative Service
+    contains: "Knative Service"
+  - desc: Mentions scale to zero
+    contains: "scaling to zero"
+  - desc: Mentions revisions
+    contains: "Revision"

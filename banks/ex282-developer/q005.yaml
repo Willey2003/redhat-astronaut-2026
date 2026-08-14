@@ -1,0 +1,34 @@
+kind: knowledge
+domain: developer-workflows
+level: quick
+title: Creating and switching to a new project
+prompt: |
+  A developer wants to create a new namespace for a demo application and make
+  it the current context for all subsequent oc commands. Which single command
+  accomplishes both steps?
+options:
+  A: oc new-project demo
+  B: oc create namespace demo
+  C: oc apply -f demo.yaml
+  D: oc project demo
+answer: A
+explanation: |
+  oc new-project demo both creates the Project (and its backing Namespace)
+  and switches the current project so subsequent commands target it. oc create
+  namespace demo creates a Namespace but does not switch context, and oc
+  project demo only switches to an already-existing project. Applying a
+  manifest simply creates whatever objects it declares.
+solution: |
+  oc new-project demo creates a new Project named demo, creates the backing
+  Namespace, and immediately makes it the active project in the current CLI
+  context. From then on, oc commands default to that project. The lower-level
+  alternative oc create namespace demo creates only a Namespace and does not
+  change the active project, while oc project demo switches context but
+  requires the project to already exist.
+checks:
+  - desc: Presents oc new-project
+    contains: "oc new-project"
+  - desc: Notes the active project changes
+    contains: "active project"
+  - desc: Contrasts with oc create namespace
+    contains: "oc create namespace"

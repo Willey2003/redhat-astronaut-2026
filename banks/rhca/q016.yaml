@@ -1,0 +1,31 @@
+kind: knowledge
+domain: automation-at-scale
+level: quick
+title: Reacting to events with automation
+prompt: |
+  Automation should react to events such as a service going down without a
+  human polling. Which Red Hat capability does this?
+options:
+  A: "Event-Driven Ansible, which evaluates rulebooks and fires automation when conditions match"
+  B: "Manual SSH sessions"
+  C: "The podman restart policy"
+  D: "A static dashboard"
+answer: A
+explanation: |
+  Event-Driven Ansible watches event sources, evaluates rulebooks containing
+  conditional rules, and triggers actions such as launching automation
+  controller jobs or runbooks when events match.
+solution: |
+  Event-Driven Ansible closes the loop between events and automation: an event
+  stream from a source such as a monitoring webhook or Kafka topic is evaluated
+  against rulebooks, which are declarative if/then rules, and matching events
+  trigger actions like launching a controller Job Template. This removes human
+  polling and makes response times consistent instead of depending on whoever
+  happens to be on call.
+checks:
+  - desc: Names Event-Driven Ansible
+    contains: "Event-Driven Ansible"
+  - desc: Mentions rulebooks
+    contains: "rulebooks"
+  - desc: Mentions triggering jobs
+    contains: "Job Template"

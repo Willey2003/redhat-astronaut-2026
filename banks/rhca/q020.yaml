@@ -1,0 +1,31 @@
+kind: knowledge
+domain: security-architecture
+level: quick
+title: Proving compliance continuously
+prompt: |
+  Regulators require proof that clusters meet hardening baselines. Which
+  approach continuously produces that evidence?
+options:
+  A: "Automated compliance scanning and reporting, such as OpenShift's Compliance Operator with OpenSCAP profiles"
+  B: "A one-off manual checklist"
+  C: "Screenshots of dashboards"
+  D: "Disabling scanning to avoid failures"
+answer: A
+explanation: |
+  The Compliance Operator runs OpenSCAP-based profiles against cluster nodes
+  and the platform, generating scan results, findings, and remediations that
+  prove compliance continuously rather than as a one-time event.
+solution: |
+  Continuous compliance on OpenShift is delivered by the Compliance Operator,
+  which runs OpenSCAP profiles, including CIS benchmarks, against platform
+  components and nodes, producing scan results, findings, and automated
+  remediations. Reports are generated on demand, turning compliance from a
+  one-time checklist into continuously provable evidence that auditors and
+  policy teams can query at any time.
+checks:
+  - desc: Names the Compliance Operator
+    contains: "Compliance Operator"
+  - desc: Mentions OpenSCAP
+    contains: "OpenSCAP"
+  - desc: Mentions remediation
+    contains: "remediations"

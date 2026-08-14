@@ -1,0 +1,37 @@
+kind: knowledge
+domain: migration-networking
+level: core
+title: VM network interface binding modes
+prompt: |
+  A VM must be directly reachable from the LAN as if it were a physical host,
+  while another VM only needs outbound connectivity through a NAT. Which
+  interface bindings fit?
+options:
+  A: A bridge interface for direct LAN connectivity and a masquerade interface
+    for outbound-only traffic behind a NAT.
+  B: Only masquerade is supported, and bridge does not exist.
+  C: Only bridge is supported, and masquerade does not exist.
+  D: Both modes are identical in behavior.
+answer: A
+explanation: |
+  KubeVirt supports multiple interface binding types. Bridge attaches the guest
+  to a pod-level bridge that is wired into the OpenShift network, giving the VM
+  direct network presence; masquerade uses iptables-style NAT so the VM shares
+  the pod's IP and only gets outbound connectivity. SR-IOV and other types exist
+  for specialized needs, but bridge versus masquerade is the primary LAN versus
+  NAT distinction.
+solution: |
+  A VirtualMachine's interfaces declare a name, model, and binding type. The
+  bridge binding connects the guest NIC to a bridge that participates in the
+  pod network, so the VM appears as a normal network participant and can be
+  reached directly. The masquerade binding hides the VM behind the pod's IP
+  using NAT, providing outbound connectivity while keeping inbound exposure
+  limited; it is a common default for templates. Choosing depends on whether the
+  VM needs direct inbound access from the cluster or the LAN.
+checks:
+  - desc: Names the bridge binding
+    contains: "bridge"
+  - desc: Names the masquerade binding
+    contains: "masquerade"
+  - desc: Notes NAT behavior for masquerade
+    contains: "NAT"

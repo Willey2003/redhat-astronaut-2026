@@ -1,0 +1,32 @@
+kind: knowledge
+domain: automation-controller
+level: quick
+title: What runs playbooks at scale
+prompt: |
+  A team wants scheduled, centrally logged playbook runs with role-based access
+  control instead of running ansible-playbook on individual laptops. Which
+  Red Hat product provides that?
+options:
+  A: "The ansible-lint engine"
+  B: "Red Hat Ansible Automation Platform, whose automation controller runs and schedules playbooks"
+  C: "The ansible.cfg remote execution daemon"
+  D: "A cron job on every managed host"
+answer: B
+explanation: |
+  Red Hat Ansible Automation Platform includes the automation controller, which
+  schedules and executes playbook runs, stores job history, and adds
+  role-based access control, projects, inventories, and credentials.
+solution: |
+  Red Hat Ansible Automation Platform manages automation centrally through the
+  automation controller, which schedules and executes playbook runs, records
+  job history, and exposes role-based access control over who may launch which
+  jobs. The controller ties inventories, credentials, and projects together and
+  launches them through Job Templates, giving teams an auditable, repeatable
+  home for automation instead of scattered laptop runs.
+checks:
+  - desc: Names the automation controller
+    contains: "controller"
+  - desc: Mentions scheduling
+    contains: "schedules"
+  - desc: Mentions RBAC
+    contains: "role-based access control"

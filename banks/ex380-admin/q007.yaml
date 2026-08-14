@@ -1,0 +1,32 @@
+kind: knowledge
+domain: storage-advanced
+level: quick
+title: Which StorageClass field permits PVC expansion
+prompt: |
+  Administrators want to let users grow an existing PVC. Which StorageClass
+  field permits online volume expansion for PVs created from that class?
+options:
+  A: 'allowVolumeExpansion: true'
+  B: 'reclaimPolicy: Delete'
+  C: 'volumeBindingMode: WaitForFirstConsumer'
+  D: 'allowLocalBlockVolume: true'
+answer: A
+explanation: |
+  allowVolumeExpansion: true on the StorageClass permits users to increase the
+  size of a PVC that uses that class, after which the CSI driver expands the
+  PV and the filesystem. reclaimPolicy controls what happens when a PVC is
+  deleted, volumeBindingMode controls when binding occurs, and
+  allowLocalBlockVolume is not a StorageClass field.
+solution: |
+  Setting allowVolumeExpansion to true on a StorageClass lets users grow PVCs
+  created from it by editing spec.resources.requests.storage on the PVC. The
+  CSI driver then expands the underlying PV and, for filesystems that support
+  it, resizes the filesystem automatically. `oc describe sc <name>` shows
+  whether expansion is allowed for the class.
+checks:
+  - desc: Names allowVolumeExpansion
+    contains: "allowVolumeExpansion"
+  - desc: Mentions resizing the PVC
+    contains: "requests.storage"
+  - desc: Mentions the CSI driver
+    contains: "CSI"

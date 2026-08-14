@@ -1,0 +1,32 @@
+kind: knowledge
+domain: backup-recovery
+level: core
+title: Restoring a backup
+prompt: |
+  A rebuilt OpenShift cluster must recover the namespaces and PVC data saved by
+  an OADP backup. Which steps bring that backup back?
+options:
+  A: Install OADP against the same object store, then create a Restore object referencing the Backup name.
+  B: Recreate every Deployment with the original YAML, then copy data with oc rsync.
+  C: Re-run the Schedule that produced the backup.
+  D: Mount the object bucket as a PVC and point pods at it.
+answer: A
+explanation: |
+  After OADP is installed and configured with the same backup storage
+  location, a Restore object tells Velero which Backup to unpack, recreating
+  resources and writing volume data back. Re-running the Schedule creates new
+  backups and does not restore anything.
+solution: |
+  Recovery requires the OADP operator installed with a BackupStorageLocation
+  pointing at the same S3-compatible bucket that holds the backup. The
+  administrator then creates a Restore object whose spec.backupName names the
+  Backup; Velero recreates the resources and restores PVC contents via the
+  restic or kopia node agents. Restore fields such as excludedResources let an
+  operator skip pieces that already exist.
+checks:
+  - desc: Names the Restore object
+    contains: "Restore"
+  - desc: References the Backup name
+    contains: "Backup"
+  - desc: Same backup storage location
+    contains: "BackupStorageLocation"

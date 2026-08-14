@@ -1,0 +1,32 @@
+kind: knowledge
+domain: advanced-deployments
+level: core
+title: Which trigger rolls out a DeploymentConfig when an image tag changes
+prompt: |
+  A DeploymentConfig has no image change trigger configured, so pushing a new
+  image does nothing. Which mechanism makes it start a new rollout
+  automatically when an ImageStreamTag it references changes?
+options:
+  A: An ImageChange trigger on the DeploymentConfig
+  B: A liveness probe on the pod
+  C: A ConfigMap hash annotation
+  D: A horizontal pod autoscaler
+answer: A
+explanation: |
+  DeploymentConfigs support lifecycle triggers; an ImageChange trigger watches
+  a referenced ImageStreamTag and, when it changes, starts a new deployment to
+  roll out the new image. Add it with `oc set triggers`. Liveness probes,
+  ConfigMap annotations, and HPAs do not react to image changes.
+solution: |
+  Add an image change trigger so the DeploymentConfig rolls out when the
+  referenced ImageStreamTag updates: `oc set triggers dc/<name>
+  --from-image=<is-name>:<tag> -c <container>`. When the tag's image digest
+  changes, the DeploymentConfig starts a new rollout. `oc rollout latest
+  dc/<name>` starts a rollout manually without waiting for an image change.
+checks:
+  - desc: Names the image change trigger
+    contains: "image change trigger"
+  - desc: Mentions oc set triggers
+    contains: "oc set triggers"
+  - desc: Mentions rollout latest
+    contains: "oc rollout latest"

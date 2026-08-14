@@ -1,0 +1,29 @@
+kind: knowledge
+domain: hybrid-cloud-strategy
+level: core
+title: Moving workloads between clouds
+prompt: |
+  An application must run unchanged on-premise and in a public cloud. Which
+  capability makes that realistic at the platform level?
+options:
+  A: "A portable application platform with consistent APIs, such as OpenShift on both environments"
+  B: "Rewriting the application for each cloud"
+  C: "Using provider-specific storage APIs directly"
+  D: "Screenshots of the UI as documentation"
+answer: A
+explanation: |
+  Workload portability comes from a consistent platform: the same Kubernetes
+  APIs, Operators, and tooling wherever the app runs, so manifests and
+  workflows transfer without a rewrite.
+solution: |
+  Portability across clouds comes from the platform, not the application's
+  luck: running the same OpenShift platform on-premise and in public clouds
+  means the same manifests, Operators, service accounts, and CI/CD workflows
+  behave identically. Applications should consume portable APIs, such as CSI
+  storage and routes, rather than provider-specific services, keeping them
+  relocatable when requirements change.
+checks:
+  - desc: Mentions consistent platform
+    contains: "same OpenShift platform"
+  - desc: Mentions portable APIs
+    contains: "portable APIs"

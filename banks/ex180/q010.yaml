@@ -1,0 +1,33 @@
+kind: knowledge
+domain: kubernetes-basics
+level: core
+title: Configuring pod environment variables
+prompt: |
+  A Pod must receive an API base URL at startup without rebuilding its image.
+  Which mechanism is correct in a Pod manifest?
+options:
+  A: Declare the value in the container's env field, optionally sourced from a
+    ConfigMap or Secret.
+  B: Edit the image's baked-in defaults inside the registry.
+  C: Pass values via the Pod name.
+  D: Set environment variables in the node's shell profile.
+answer: A
+explanation: |
+  The container env array sets environment variables per container. Values can
+  be literal strings or pulled from ConfigMaps/Secrets with valueFrom. Image
+  content is immutable at runtime, pod names are not a configuration channel,
+  and node-level variables are never visible inside a container.
+solution: |
+  Each container spec has an env list of name/value pairs. A literal value is
+  written with name and value, while configuration can be injected from a
+  ConfigMap with valueFrom.configMapKeyRef or from a Secret with
+  valueFrom.secretKeyRef. This keeps secrets and environment-specific settings
+  out of the image, so the same image can run in development and production
+  with different configuration.
+checks:
+  - desc: Names the env field
+    contains: "env"
+  - desc: Names ConfigMap source
+    contains: "ConfigMap"
+  - desc: Names Secret source
+    contains: "Secret"

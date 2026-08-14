@@ -1,0 +1,32 @@
+kind: knowledge
+domain: playbooks
+level: core
+title: How handlers fire
+prompt: |
+  A task notifies a handler when it changes a file. When does the handler
+  actually run?
+options:
+  A: "Immediately after the notifying task, before the next task"
+  B: "Once, at the end of the play, only if it was notified by a task that reported changed"
+  C: "Every time the play runs, regardless of any changed result"
+  D: "Only when a second play explicitly runs handlers:"
+answer: B
+explanation: |
+  Handlers run once, at the end of the play, and only when a task that reported
+  a changed result used notify to name them. Even if two tasks notify the same
+  handler it still runs a single time; a handler that is never notified never
+  runs.
+solution: |
+  A handler runs once, at the end of the play, and only when a task that
+  reported a changed result used notify to name it. If several tasks notify the
+  same handler it still runs a single time, and a handler that is never
+  notified never runs at all. This is why you notify a restart handler from a
+  template change: the service restarts once, after all tasks complete, not
+  after every file that changed.
+checks:
+  - desc: Names notify
+    contains: "notify"
+  - desc: Says handlers run at end of play
+    contains: "end of the play"
+  - desc: Mentions changed condition
+    contains: "changed"

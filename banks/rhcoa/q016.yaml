@@ -1,0 +1,31 @@
+kind: knowledge
+domain: identity-keystone
+level: quick
+title: The identity service
+prompt: |
+  Which OpenStack service handles users, projects, roles, and authentication
+  across the cloud?
+options:
+  A: "Keystone"
+  B: "Nova"
+  C: "Cinder"
+  D: "Horizon"
+answer: A
+explanation: |
+  Keystone is the identity service: it authenticates users, issues tokens,
+  assigns roles within projects, maintains the service catalog, and also
+  manages domains and application credentials.
+solution: |
+  Keystone is the OpenStack identity service: it authenticates users and issues
+  scoped tokens, defines projects and domains, assigns roles to users within a
+  project, and maintains the service catalog that every other client uses to
+  find endpoints. Because every OpenStack call starts with Keystone, it is the
+  first service an administrator configures and the first place to look when
+  authentication fails.
+checks:
+  - desc: Names Keystone
+    contains: "Keystone"
+  - desc: Mentions roles and projects
+    contains: "roles"
+  - desc: Mentions the service catalog
+    contains: "service catalog"

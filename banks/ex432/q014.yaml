@@ -1,0 +1,33 @@
+kind: knowledge
+domain: troubleshooting-install
+level: quick
+title: Why nodes cannot pull the release image
+prompt: |
+  A UPI install fails because the nodes cannot pull the OpenShift release image
+  from registry.redhat.io. Which misconfiguration is the most likely cause?
+options:
+  A: A missing or invalid pullSecret in install-config.yaml
+  B: The wrong baseDomain
+  C: An incorrect sshKey format
+  D: Too many worker replicas
+answer: A
+explanation: |
+  The pullSecret authenticates nodes against registry.redhat.io to pull the
+  release payload. If it is missing, wrong, or not valid for the account, pulls
+  fail and the install hangs or errors out. baseDomain affects DNS naming,
+  sshKey affects node access, and the replica count does not affect registry
+  pulls.
+solution: |
+  Verify install-config.yaml contains a valid pullSecret (a JSON string
+  obtained from Red Hat) with access to the required images on
+  registry.redhat.io. Node pulls of the release image use this secret; if pulls
+  are unauthorized, download errors appear on the bootstrap. A disconnected
+  cluster additionally needs an ImageContentSourcePolicy and an
+  additionalTrustBundle for the mirror.
+checks:
+  - desc: Names pullSecret
+    contains: "pullSecret"
+  - desc: Mentions registry.redhat.io
+    contains: "registry.redhat.io"
+  - desc: Mentions the release image
+    contains: "release image"

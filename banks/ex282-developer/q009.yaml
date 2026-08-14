@@ -1,0 +1,37 @@
+kind: knowledge
+domain: building-deploying-applications
+level: core
+title: Dockerfile build strategy
+prompt: |
+  A team has a repository with a Dockerfile and wants OpenShift to build the
+  image from that Dockerfile on the cluster. Which BuildConfig strategy is
+  correct?
+options:
+  A: The Docker strategy, which runs docker build-equivalent steps against
+    the context directory of the source repository.
+  B: The S2I strategy, because Dockerfiles are unsupported in OpenShift.
+  C: The Pipeline strategy, because only Pipelines can read a Dockerfile.
+  D: The Custom strategy, which always requires a Windows host.
+answer: A
+explanation: |
+  The Docker strategy tells the build to use the Dockerfile found in the
+  contextDir of the build's source, producing the image with the same
+  layering and caching model as docker build. The S2I strategy uses builder
+  images rather than a Dockerfile. Pipelines orchestrate build steps but are not
+  required for Dockerfile builds, and the Custom strategy is for building with
+  custom builder images, unrelated to Dockerfiles or Windows.
+solution: |
+  The Docker strategy in a BuildConfig builds an image from a Dockerfile in the
+  source repository's context directory. You can set the Dockerfile inline with
+  the dockerfile field or point contextDir at the directory containing it. The
+  build runs on the cluster and produces an image pushed to the output
+  ImageStream. This is the right choice when the project already maintains a
+  Dockerfile and you want OpenShift to own the build instead of building images
+  locally.
+checks:
+  - desc: Names the Docker strategy
+    contains: "Docker strategy"
+  - desc: Mentions Dockerfile
+    contains: "Dockerfile"
+  - desc: Mentions contextDir
+    contains: "contextDir"

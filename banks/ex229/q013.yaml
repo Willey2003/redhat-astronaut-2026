@@ -1,0 +1,31 @@
+kind: knowledge
+domain: storage-apps
+level: deep
+title: Sharing a PVC between replicas
+prompt: |
+  A clustered application runs several replicas that must all read and write
+  the same persistent directory. Which PVC access mode does it require?
+options:
+  A: ReadWriteOnce
+  B: ReadWriteOncePod
+  C: ReadWriteMany
+  D: ReadOnlyMany
+answer: C
+explanation: |
+  ReadWriteMany lets multiple Pods on different nodes mount the volume with
+  read and write access. ReadWriteOnce limits mounts to one node and
+  ReadWriteOncePod to a single Pod. The backing storage must actually support
+  RWX, such as CephFS or NFS.
+solution: |
+  The PVC must use accessModes ReadWriteMany (RWX) so that every replica Pod,
+  possibly on different nodes, can mount the same volume for reading and
+  writing. OpenShift then attaches the shared volume to each node. Choose a
+  StorageClass whose backend supports RWX, such as a CephFS or NFS-backed
+  class, and be aware of consistency guarantees the application must provide.
+checks:
+  - desc: Names ReadWriteMany
+    contains: "ReadWriteMany"
+  - desc: Multiple replicas mount it
+    contains: "replicas"
+  - desc: Backend must support RWX
+    contains: "CephFS"

@@ -1,0 +1,30 @@
+kind: knowledge
+domain: networking-neutron
+level: quick
+title: What Neutron manages
+prompt: |
+  Which OpenStack service provides networking for instances?
+options:
+  A: "Neutron"
+  B: "Nova"
+  C: "Glance"
+  D: "Swift"
+answer: A
+explanation: |
+  Neutron is the networking service: it provides networks, subnets, routers,
+  ports, floating IPs, and security groups, implemented by agents and an
+  OVN/OVS backend.
+solution: |
+  Neutron is the OpenStack networking service, providing virtual networks,
+  subnets, routers, ports, and floating IPs, plus security groups that filter
+  traffic at the port level. Neutron's agents, such as DHCP, L2, and L3,
+  implement connectivity on the nodes, with modern deployments using OVN for
+  the forwarding plane, so instances connect exactly like physical VMs on a
+  real LAN.
+checks:
+  - desc: Names Neutron
+    contains: "Neutron"
+  - desc: Lists networks and subnets
+    contains: "subnets"
+  - desc: Mentions security groups
+    contains: "security groups"

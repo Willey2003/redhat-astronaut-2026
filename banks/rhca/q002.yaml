@@ -1,0 +1,31 @@
+kind: knowledge
+domain: enterprise-architecture
+level: core
+title: Designing for availability and recovery
+prompt: |
+  A workload must survive a region outage. Which pair of metrics defines the
+  recovery targets that the capacity design must satisfy?
+options:
+  A: "RPO (recovery point objective) and RTO (recovery time objective)"
+  B: "TTFB (time to first byte) and TTL (time to live)"
+  C: "MTTR and HTTP status codes"
+  D: "QPS and latency percentiles"
+answer: A
+explanation: |
+  RPO bounds how much data may be lost at failover and drives backup frequency
+  and replication; RTO bounds how long recovery may take and drives failover
+  automation and runbooks. Together they shape the architecture.
+solution: |
+  Recovery objectives shape every availability decision. RPO, the recovery
+  point objective, bounds how recent data must be at failover, driving backup
+  frequency and synchronous replication between sites. RTO, the recovery time
+  objective, bounds how long the service may stay down and drives failover
+  automation, standby capacity, and runbook depth. The chosen architecture must
+  demonstrably meet both, which is what separates a design from a wish.
+checks:
+  - desc: Defines RPO
+    contains: "RPO"
+  - desc: Defines RTO
+    contains: "RTO"
+  - desc: Mentions replication
+    contains: "replication"

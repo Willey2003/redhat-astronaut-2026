@@ -1,0 +1,31 @@
+kind: knowledge
+domain: system-configuration
+level: core
+title: Opening firewall ports
+prompt: |
+  A service listens on TCP port 8443. The firewall must allow it, persistently
+  across reboots. Which module does this idempotently?
+options:
+  A: "firewalld with port: 8443/tcp, state: enabled, and permanent: yes"
+  B: "service with port: 8443"
+  C: "shell with iptables -A INPUT -p tcp --dport 8443 -j ACCEPT"
+  D: "dnf with state: enabled"
+answer: A
+explanation: |
+  The firewalld module manages firewalld rules idempotently: port: 8443/tcp
+  with state: enabled and permanent: yes persists the rule across reboots and
+  reloads it. Raw iptables commands are neither idempotent nor persistent.
+solution: |
+  The firewalld module manages firewall rules declaratively: port: 8443/tcp,
+  state: enabled, and permanent: yes opens the port and persists it through
+  firewalld's permanent zone configuration, then reloads it into the runtime.
+  The module reports ok when the rule already exists, keeping the playbook
+  idempotent, and also supports managing zones, services, and rich rules for
+  more complex policies.
+checks:
+  - desc: Names the firewalld module
+    contains: "firewalld"
+  - desc: Names permanent flag
+    contains: "permanent"
+  - desc: Mentions idempotent behaviour
+    contains: "idempotent"

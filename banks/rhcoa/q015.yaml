@@ -1,0 +1,30 @@
+kind: knowledge
+domain: storage-cinder
+level: core
+title: Point-in-time recovery for volumes
+prompt: |
+  A user must protect a volume before an upgrade. What does Cinder offer for a
+  consistent, fast recovery point?
+options:
+  A: "Volume snapshots, which capture point-in-time copies and can restore a new volume"
+  B: "Copying the volume over SCP"
+  C: "Deleting and recreating the instance"
+  D: "A second network"
+answer: A
+explanation: |
+  Cinder snapshots capture a volume's state at a point in time, and snapshots
+  can create new volumes for restore, making them the standard pre-change
+  safety net.
+solution: |
+  Cinder snapshots capture a point-in-time state of a volume: openstack volume snapshot create <volume> makes the snapshot, and openstack volume create
+  --snapshot <snapshot> restores it as a new volume that can be attached in
+  place of the original. Snapshots are fast and space-efficient, making them
+  the standard pre-change safety net, complemented by backups to object storage
+  for disaster recovery beyond the same backend.
+checks:
+  - desc: Names volume snapshots
+    contains: "snapshots"
+  - desc: Gives snapshot create command
+    contains: "openstack volume snapshot create"
+  - desc: Mentions restoring from snapshot
+    contains: "--snapshot"

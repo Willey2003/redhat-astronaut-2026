@@ -1,0 +1,31 @@
+kind: knowledge
+domain: playbooks
+level: core
+title: Repeating a task over a list
+prompt: |
+  A task must apply to every item in a list of users. Which construct expresses
+  that without writing the task once per user?
+options:
+  A: "The loop keyword, which runs the task once per item, exposing it as item"
+  B: "A separate play per user"
+  C: "The copy module with force: yes"
+  D: "A handler for each user"
+answer: A
+explanation: |
+  loop: with a list (or the older with_items syntax) runs the task once per
+  element, and the special item variable holds the current element during each
+  iteration.
+solution: |
+  The loop keyword takes a list and runs the task once per element, with the
+  special item variable holding the current element on each iteration. For
+  example, the user module with loop: ['alice', 'bob'] creates both users in a
+  single task. The older with_items syntax is equivalent, and loop also accepts
+  hashes, so the same construct drives config file creation from a list of
+  key-value pairs.
+checks:
+  - desc: Names the loop keyword
+    contains: "loop"
+  - desc: Names the item variable
+    contains: "item"
+  - desc: Mentions with_items
+    contains: "with_items"

@@ -1,78 +1,99 @@
-# Golden Astronaut 2026 — Learning Curriculum
+# Red Hat Astronaut 2026 — Learning Curriculum
 
-This directory is the guided study path for the **EX280** (OpenShift
-Administration) and **EX288** (OpenShift Application Development) certification
-track. It is not a topic dump: it tells you **what** to study, **in what order**,
-and **when** to sit which practice attempt against the Golden Astronaut 2026
-simulator and your real cluster.
+This directory is the guided study path for the **Red Hat Astronaut 2026**
+platform. It is not a topic dump: it tells you **what** to study, **in what
+order**, and **when** to sit which practice attempt against the simulator and
+your real cluster. Work the modules top to bottom — later modules assume the
+skills of earlier ones.
 
-Two parallel paths live here:
+| Module | Title | Target certification | Bank | Engine |
+|---|---|---|---|---|
+| [01](01-containers-and-linux.md) | Containers and core Linux | EX180 | `banks/ex180` | knowledge |
+| [02](02-openshift-admin.md) | OpenShift administration | EX280 · EX229 | `banks/ex280-admin`, `banks/ex229` | mixed · mixed |
+| [03](03-openshift-developer.md) | OpenShift application development | EX282 · EX480 | `banks/ex282-developer`, `banks/ex480-developer` | mixed · mixed |
+| [04](04-advanced-admin.md) | Advanced administration, install, virtualization | EX380 · EX432 · EX316 | `banks/ex380-admin`, `banks/ex432`, `banks/ex316` | mixed · knowledge · mixed |
+| [05](05-automation-and-storage.md) | Automation and data storage | EX430 · EX370 | `banks/ex430-ansible`, `banks/ex370-storage` | mixed · mixed |
+| [06](06-capstones.md) | Capstones: RHCE, RHCA, RHCOA | RHCE · RHCA · RHCOA | `banks/rhce`, `banks/rhca`, `banks/rhcoa` | knowledge |
 
-| Path | Target | Modules | Bank |
-|---|---|---|---|
-| [admin/](admin/README.md) | EX280 — OpenShift Administration | 5 (admin/01..05) | `banks/ex280-admin` |
-| [developer/](developer/README.md) | EX288 — OpenShift Application Development | 4 (developer/01..04) | `banks/ex288-developer` |
+## Why this order
 
----
+The Red Hat track is a pyramid, and the curriculum climbs it. **Containers
+first** (EX180): every later exam assumes you can pull, run, build, and debug
+containers with `podman` and understand what Kubernetes does with them. Then
+the two OpenShift seats of the platform — **admin** (EX280) and **developer**
+(EX282) — cover the control plane, identity and security, networking, storage,
+and the build/deploy loop. **EX380** extends admin with scaling, Operators,
+and advanced networking, so it follows EX280 directly.
 
-## How to use this curriculum
+The specialist tracks hang off that core. **Virtualization** (EX316),
+**install** (EX432), and **EX430** automation, **EX370** storage, and **EX229**
+container management come after you own the platform — each is a "pick a lane"
+deep dive. Finally the capstones certify the *whole* person: **RHCE** proves
+you can automate RHEL with Ansible, **RHCA** proves you can design hybrid-cloud
+architecture, and **RHCOA** proves you can run an OpenStack cloud. They come
+last because they assume every other module's vocabulary.
 
-Work the two paths **in parallel**, one module per track per week (see the
-8-week schedule below). For every module:
+## How to use this path
 
-1. Read the **learning objectives** and the **key concepts**.
-2. Do the **hands-on exercises** against your real cluster (CRC/OpenShift Local
-   or OKD). Every exercise has a concrete task, an expected outcome, and the
-   exact `oc` command to verify it.
-3. Finish with the **test yourself** block: sit a simulator attempt on that
-   module's bank domain, starting in **Training** mode and escalating to
-   **Mastery**.
-
-The modules are numbered within each path, so follow them top to bottom. Later
-modules assume the skills of earlier ones.
+1. **Read the module.** Start with the learning objectives, then the key
+   concepts. Concepts are ordered so that each one builds on the last.
+2. **Do the exercises.** Every exercise has a concrete task, an expected
+   outcome, and the exact command (`podman`, `oc`, `ansible`) to verify it.
+   Do not skip verification — if the check fails, the cluster state is not what
+   you think it is.
+3. **Finish each module with its "test yourself" block.** Sit a simulator
+   attempt on the module's bank, narrowed to that module's `focus_domain`.
+   Start in **Training** mode (solutions shown), then redo it in **Mastery**
+   mode (timed, no hints). Escalate to **Exam** mode only after several clean
+   Mastery passes.
+4. **Let the attempt report drive review.** It ranks your domains
+   weakest-first. Re-run the matching exercises, then drill that domain with a
+   focused Mastery attempt. Repeat until you score at or above the 0.70
+   threshold on three consecutive full Exam attempts per bank.
 
 ## Prerequisite skills
 
-You should be comfortable with the following **before** starting Week 1:
+Be comfortable with the following **before** starting Week 1:
 
-- **Linux command line** — navigating the filesystem, running commands, piping
-  output, editing files (`vim` or similar).
-- **YAML** — indentation, mappings, and lists; you will write and read a lot of
-  it.
-- **Container basics** — what an image is, images vs containers, registries,
-  tags, and a rough idea of what a `Dockerfile` is.
-- **Networking fundamentals** — DNS names, ports, TCP, HTTP, and TLS at a
-  conceptual level.
-- **git** — clone, commit, push; used for source-to-image builds and GitOps.
+- **Linux command line** — navigating the filesystem, redirecting and piping
+  output, editing files with `vim`/`nano`.
+- **YAML** — indentation, mappings, lists. Nearly every exercise writes or
+  reads it, and it is the literal syntax of all three knowledge banks.
+- **Container basics** — what an image is, images vs containers, registries
+  and tags, and a rough idea of what a `Dockerfile` does.
+- **git** — clone, commit, push. Needed for source-to-image builds, GitOps,
+  and every Ansible role in the later modules.
+- **Networking fundamentals** — IP addresses, ports, TCP, HTTP, DNS, and TLS
+  at a conceptual level.
 
-No prior OpenShift experience is required, but familiarity with Kubernetes
-objects (pods, deployments, services) makes the early modules go faster.
+No Red Hat administration experience is required to start Module 1, but the
+faster you can type a `podman` or `oc` command the further each module's
+exercises take you.
 
 ## Tooling setup
 
-Install and verify these before your first attempt. Run `./ga doctor` in the
-repo root for a preflight check.
+Install these before your first attempt. Run `./ga doctor` in the repo root
+for a preflight check.
 
-- **`oc` CLI** — the OpenShift client. Install the version that matches your
-  cluster. On OpenShift Local the version is shown on the OpenShift web console
-  **Help > Command Line Tools** page; you can also grab it from the OpenShift
-  mirror. Verify with `oc version`.
-- **A cluster** — one of:
-  - **Red Hat OpenShift Local (CRC)** — the easiest local cluster. Minimum 4
-    vCPU and 16 GiB RAM, more is better. Single node, includes the web console,
-    integrated registry, and a built-in OperatorHub catalog. Default
-    credentials are `kubeadmin` (the password is printed by `crc start`).
-  - **OKD** — the community distribution, if you prefer an open-source build.
-  - A sandbox / lab cluster if you have access to one. The exercises in this
-    curriculum are written for a single-node local cluster and work on CRC.
-- **Terminal** — a real terminal, not the web console's command line. You will
-  run long `oc` commands and follow build/rollout logs.
-- **Python 3 + Docker** — used by the Golden Astronaut platform itself
-  (`./ga doctor`, `./ga up`).
-- **Optional but useful**: `tkn` (Tekton/Pipelines CLI) and `helm` for the
-  developer track's final module.
+- **`oc` CLI** — the OpenShift client, a superset of `kubectl`. On Red Hat
+  OpenShift Local, download the matching version from the web console
+  **Help > Command Line Tools** page.
+- **`podman`** — the container engine used throughout Module 1 (Red Hat
+  Container Toolkit): `dnf install podman`.
+- **`ansible` + `ansible-core`** — needed from Module 5 onward for RHCE work.
+- **`openstack` client** — the RHCOA CLI (`python-openstackclient`).
+- **A cluster** — the OpenShift-heavy modules require one:
+  - **Red Hat OpenShift Local (CRC)** — the easiest local cluster. Minimum
+    4 vCPU and 16 GiB RAM. Single node, includes the web console.
+  - **OKD** — the community distribution.
+  - A sandbox/lab cluster if you have access.
+  Module 1 works with **no cluster at all** (plain `podman`); Modules 2–4 and
+  EX316 need CRC; the RHCOA module describes a minimal OpenStack environment
+  and notes which exercises are theory-only.
+- **Python 3 + Docker** — the platform stack itself (`./ga doctor`, `./ga up`).
+- **Optional but useful**: `tkn` (Tekton), `helm`, `jq`, `virtctl`, `oc-mirror`.
 
-Once the cluster is up, log in:
+Log in to the cluster once it is up:
 
 ```bash
 oc login -u kubeadmin -p <password> https://api.crc.testing:6443
@@ -80,79 +101,106 @@ oc whoami
 oc get nodes
 ```
 
-## Modes and bank domains
+## Simulator modes
 
-The simulator serves attempts in three modes:
+Every bank can be attempted in three modes. They exist to be used **in that
+order**:
 
-| Mode | Timer | Answer reveal | Best used for |
+| Mode | Timer | Answer reveal | Use it for |
 |---|---|---|---|
-| **Training** | Off | Answers + explanations shown immediately | Learning each domain right after a module |
+| **Training** | Off | Solutions + explanations shown immediately | Learning each domain right after a module |
 | **Mastery** | On | Hidden until graded | Practicing under time pressure without hints |
 | **Exam** | On | Hidden until graded | Full dress rehearsal at real exam duration |
 
-The banks are stratified by **domains** (declared in `banks/<bank>/exam.yaml`).
-You can run an attempt restricted to one domain (`focus_domain`) — this is how
-you target exactly what a module just taught. This is the recommended rhythm:
+Attempts are drawn stratified by **domain**. You can restrict a Mastery or
+Training attempt to a single domain with `focus_domain` — that is how you
+target exactly what a module just taught. The domain names live in each bank's
+`exam.yaml` and match the vocabulary below.
 
-1. **After each module** → **Training** attempt, focused on that module's
-   domain. Read every explanation, even for questions you got right.
-2. **After every two modules** → **Mastery** attempt on those domains. No
-   reveal; time yourself.
-3. **After a full path** → one full-bank **Training** attempt, then one full
-   **Mastery** attempt.
-4. **The week before the exam** → repeated full-length **Exam** attempts until
-   you score at or above the bank's `pass_threshold` (0.70) on three in a row.
+## Bank domains (the `focus_domain` vocabulary)
 
-If a domain shows up as a weakness on the post-attempt report, drill it with a
-focused Mastery attempt and re-run the corresponding hands-on exercises.
+| Bank | Domains |
+|---|---|
+| `ex180` | `containers-podman`, `kubernetes-basics`, `building-images`, `container-security` |
+| `ex280-admin` | `cluster-configuration`, `authentication-security`, `networking`, `storage`, `operators`, `application-lifecycle` |
+| `ex229` | `cluster-administration`, `security-rbac`, `networking-cluster`, `storage-apps`, `logging-monitoring` |
+| `ex282-developer` | `openshift-concepts`, `developer-workflows`, `building-deploying-applications`, `pipelines-gitops`, `debugging-troubleshooting` |
+| `ex480-developer` | `application-development`, `advanced-deployments`, `services-networking`, `configuration-secrets`, `observability-apps` |
+| `ex380-admin` | `advanced-cluster-configuration`, `scaling-performance`, `storage-advanced`, `networking-advanced`, `operators`, `security-compliance` |
+| `ex432` | `cluster-installation`, `installation-methods`, `post-install-configuration`, `troubleshooting-install` |
+| `ex316` | `virtualization-concepts`, `openshift-virtualization`, `vm-lifecycle`, `migration-networking` |
+| `ex430-ansible` | `ansible-fundamentals`, `playbooks-templating`, `roles-collections`, `automation-controller`, `content-collections-execution` |
+| `ex370-storage` | `storage-concepts`, `openshift-data-foundation`, `persistent-storage`, `backup-recovery` |
+| `rhce` | `ansible-fundamentals`, `playbooks`, `roles`, `automation-controller`, `system-configuration` |
+| `rhca` | `enterprise-architecture`, `hybrid-cloud-strategy`, `openshift-architecture`, `automation-at-scale`, `security-architecture` |
+| `rhcoa` | `openstack-core`, `compute-nova`, `networking-neutron`, `storage-cinder`, `identity-keystone` |
 
-## Recommended 8-week schedule (both tracks combined)
+> The `ex432` bank is expanded as its question set grows; the `draw_size`
+> validator will fail until it has enough questions, which is expected while a
+> bank is in progress. Everything else above validates clean.
 
-Roughly 10–12 hours per week. Weeks 1–4 introduce one module per track per
-week; weeks 5–8 are consolidation, timed practice, and full rehearsal.
+## Reading your attempt report
 
-| Week | Admin (EX280) | Developer (EX288) | Practice attempts to sit |
+After every Mastery or Exam attempt the score screen shows per-domain
+performance. Treat domains below 70% as a backlog: do one focused Mastery
+attempt per weak domain, and re-run the module exercises named in that
+domain's row above. A weak domain is a command to **redo exercises**, not to
+re-read the module — the grader checks the same real cluster (or command
+line) the exercises used, so muscle memory is what scores.
+
+## Recommended 12-week schedule
+
+Roughly 10–12 hours per week. Weeks 1–8 introduce one module at a time; weeks
+9–12 are consolidation and capstone preparation. Compress by merging the
+specialist weeks you already know; stretch by giving virtualization or RHCA an
+extra week — the schedule is a floor, not a trap.
+
+| Week | Study | Hands-on | Simulator attempts (mode: bank → domain) |
 |---|---|---|---|
-| 1 | M1 — Architecture, install concepts, oc CLI | M1 — Deployments, DeploymentConfigs, scaling, probes | Training: `cluster-configuration`, `application-deployment` |
-| 2 | M2 — Projects, RBAC, users, ServiceAccounts | M2 — BuildConfigs, S2I, ImageStreams, triggers | Training: `authentication-security`, `application-build`; Mastery: week-1 domains |
-| 3 | M3 — SCC, pod security, quotas and limits | M3 — Routes, ConfigMaps and Secrets | Training: `authentication-security`, `application-routing`; Mastery: week-2 domains |
-| 4 | M4 — Services, Routes, NetworkPolicies | M4 — Pipelines, Argo CD, helm | Training: `networking`, `gitops-cicd`; Mastery: week-3 domains |
-| 5 | M5 — Storage, Operators and lifecycle | Review + full-path clean-up | Training: `storage`, `operators`, `application-lifecycle`; first full-bank **Training** on both banks |
-| 6 | Weak-domain drill + re-run exercises | Weak-domain drill + re-run exercises | Full-bank **Mastery** on both banks; focused Mastery on your weakest domains |
-| 7 | Time management practice | Time management practice | **Exam**-mode dry runs (any bank, focus on pacing and command speed) |
-| 8 | Final rehearsal | Final rehearsal | Full-length **Exam** attempts until ≥ 0.70 on three consecutive attempts per track |
+| 1 | Module 1 — Podman, images, registries | Ex 1–2 (`podman run/pull/build`) | Training: `ex180` → `containers-podman`, `building-images` |
+| 2 | Module 1 — Kubernetes basics + Linux admin | Ex 3–5 (`oc run`, systemd, users, dnf) | Training: `ex180` → `kubernetes-basics`, `container-security`; **Mastery**: `ex180` → `containers-podman` |
+| 3 | Module 2 — EX280 architecture, projects, RBAC | Ex 1–2 (projects, roles, bindings) | Training: `ex280-admin` → `cluster-configuration`, `authentication-security` |
+| 4 | Module 2 — networking, storage, Operators | Ex 3–5 (routes, NetworkPolicy, PVCs) | Training: `ex280-admin` → `networking`, `storage`; **Mastery**: `ex280-admin` → `authentication-security` |
+| 5 | Module 3 — EX282 builds, S2I, pipelines | Ex 1–3 (BuildConfig, ImageStream, Pipeline) | Training: `ex282-developer` → `building-deploying-applications`, `pipelines-gitops`; **Mastery**: `ex280-admin` full-bank |
+| 6 | Module 3 — EX480 GitOps, services, secrets | Ex 4–5 (Argo CD, Routes, ConfigMaps) | Training: `ex480-developer` → `advanced-deployments`, `configuration-secrets`; **Mastery**: `ex282-developer` → `developer-workflows` |
+| 7 | Module 4 — EX380 scaling, Operators, compliance | Ex 1–3 | Training: `ex380-admin` → `scaling-performance`, `operators`; **Mastery**: `ex480-developer` full-bank |
+| 8 | Module 4 — EX432 install + EX316 virtualization | Ex 4–5 (`openshift-install` concepts, `virtctl`) | Training: `ex432` → `cluster-installation`; Training: `ex316` → `openshift-virtualization`, `vm-lifecycle` |
+| 9 | Module 5 — EX430 Ansible + AAP | Ex 1–3 (playbook, role, controller) | Training: `ex430-ansible` → `playbooks-templating`, `automation-controller`; **Mastery**: `ex380-admin` → `advanced-cluster-configuration` |
+| 10 | Module 5 — EX370 OpenShift Data Foundation | Ex 4–5 (StorageClass, backup) | Training: `ex370-storage` → `openshift-data-foundation`, `backup-recovery`; **Mastery**: `ex430-ansible` full-bank |
+| 11 | Module 6 — RHCE + RHCA strategy | Practice exams + drills | Training then **Mastery**: `rhce` → `playbooks`, `system-configuration`; Training: `rhca` → `enterprise-architecture` |
+| 12 | Module 6 — RHCOA + full rehearsal | Re-run any failing exercise | Full-bank **Mastery** on weak banks; full-length **Exam** dry runs on `rhce`, `rhca`, `rhcoa`, and any open exam until ≥ 0.70 three times in a row |
 
-Adjust the pace: if week 3's security material is new to you, hold a full extra
-week before moving on rather than rushing. The schedule is a floor, not a trap.
+## Reading your attempt report
 
-## Relationship to the simulator
+After every Mastery or Exam attempt the score screen shows per-domain
+performance. Treat domains below 70% as a backlog: do one focused Mastery
+attempt per weak domain, and re-run the module exercises named in that
+domain's row above.
 
-- **Learning modules** teach the concepts and mechanics (`what` and `how`).
-- **Hands-on exercises** build muscle memory against the real cluster (`do it
-  yourself`).
-- **Bank attempts** measure recall and readiness (`can you do it on demand`).
-  Training mode is study material; Mastery is practice; Exam is evaluation.
-  Treat a low Mastery score as a signal to redo exercises, not just to re-read
-  the module.
+## Relationship to the official certifications
 
-The grader evaluates hands-on bank questions against your live cluster using
-the same `oc` commands you see in the module exercises, so the exercises are
-your best preparation for the hardest questions.
+The banks in `banks/` are original practice questions written to the published
+exam objectives of the official Red Hat certifications, which are referenced
+here **by name only** — always consult the Red Hat site for the current
+objectives, since they change between exam releases: **EX180** (Containers and
+Kubernetes), **EX280** (OpenShift Administration), **EX282** (OpenShift
+Application Development), **EX380** (OpenShift Enterprise Administration),
+**EX316** (OpenShift Virtualization), **EX432** (OpenShift Installation Lab),
+**EX430** (Automation with Ansible Automation Platform), **EX370** (OpenShift
+Data Administration), **EX229** (Managing Containers), **EX480** (OpenShift
+Application Developer), **RHCE** (Red Hat Certified Engineer), **RHCA** (Red
+Hat Certified Architect), and **RHCOA** (Red Hat Certified OpenStack
+Administrator). Product documentation for the OpenShift release you run is
+available from docs.openshift.com.
 
-## See also
-
-Official Red Hat certification exam pages (referenced by name — consult the
-Red Hat site for current objectives, which change between releases):
-
-- **EX280** — Red Hat Certified Specialist in OpenShift Administration exam:
-  redhat.com/training/ex280
-- **EX288** — Red Hat Certified Specialist in OpenShift Application Development
-  exam: redhat.com/training/ex288
-- Product documentation for the OpenShift 4 release you run is available from
-  the OpenShift docs portal (docs.openshift.com) — use the "What's new" and
-  exam-relevant sections as reference while studying.
+Red Hat Astronaut 2026 is an independent simulator, not affiliated with Red
+Hat. Certification names are trademarks of their owners.
 
 ## Contents
 
-- [Admin path index](admin/README.md) — EX280 modules 01–05
-- [Developer path index](developer/README.md) — EX288 modules 01–04
+- [Module 1 — Containers and core Linux (EX180)](01-containers-and-linux.md)
+- [Module 2 — OpenShift administration (EX280 · EX229)](02-openshift-admin.md)
+- [Module 3 — OpenShift application development (EX282 · EX480)](03-openshift-developer.md)
+- [Module 4 — Advanced administration, install, virtualization (EX380 · EX432 · EX316)](04-advanced-admin.md)
+- [Module 5 — Automation and data storage (EX430 · EX370)](05-automation-and-storage.md)
+- [Module 6 — Capstones: RHCE, RHCA, RHCOA](06-capstones.md)

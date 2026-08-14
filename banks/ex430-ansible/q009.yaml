@@ -1,0 +1,31 @@
+kind: knowledge
+domain: roles-collections
+level: core
+title: Role defaults versus vars
+prompt: |
+  A role ships sensible configuration values that operators are expected to
+  override from their playbooks. Which role subdirectory should hold those
+  values so they get the lowest variable precedence?
+options:
+  A: vars
+  B: templates
+  C: defaults
+  D: meta
+answer: C
+explanation: |
+  Values in a role's `defaults` directory have the lowest precedence and are
+  meant to be overridden. The `vars` directory holds higher-precedence role
+  variables that are harder to override, which is not what defaults are for.
+solution: |
+  The `defaults/main.yml` file inside a role holds low-precedence variables
+  that play, inventory, and command-line values can easily override. The
+  `vars` directory, in contrast, stores variables at higher precedence. This
+  split is why roles ship `defaults` for tunable options and reserve `vars` for
+  values that should rarely change.
+checks:
+  - desc: Names the defaults directory
+    contains: "defaults"
+  - desc: Contrasts with vars
+    contains: "vars"
+  - desc: Mentions low precedence
+    contains: "precedence"

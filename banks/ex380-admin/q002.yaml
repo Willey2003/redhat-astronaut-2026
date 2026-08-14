@@ -1,0 +1,34 @@
+kind: knowledge
+domain: advanced-cluster-configuration
+level: core
+title: Which resource enables a tech-preview feature set cluster-wide
+prompt: |
+  A cluster administrator wants to enable an optional, non-default feature set
+  that gates tech-preview APIs and behaviors for the entire cluster. Which
+  cluster-scoped resource do they edit?
+options:
+  A: The `cluster` FeatureGate resource
+  B: The ClusterVersion object's spec.desiredUpdate
+  C: A MachineConfig that flips feature gates
+  D: The kube-apiserver process command line
+answer: A
+explanation: |
+  The FeatureGate resource named `cluster` (config.openshift.io/v1) controls
+  which feature set the cluster enables. Setting spec.featureSet to a value
+  such as TechPreviewNoUpgrade turns on the associated tech-preview gates.
+  Feature gates are cluster-level; they are not controlled by the CVO's update
+  field, by a MachineConfig, or by hand-editing the apiserver arguments.
+solution: |
+  The FeatureGate resource named `cluster` enables or disables whole feature
+  sets for the cluster. Run `oc edit featuregate cluster` and set
+  spec.featureSet, for example TechPreviewNoUpgrade, to turn on tech-preview
+  features. Feature sets apply cluster-wide and are managed declaratively; do
+  not hand-edit the apiserver's process arguments because the operators
+  reconcile them away.
+checks:
+  - desc: Names the FeatureGate resource
+    contains: "FeatureGate"
+  - desc: Mentions featureSet
+    contains: "featureSet"
+  - desc: Cites TechPreview
+    contains: "TechPreviewNoUpgrade"

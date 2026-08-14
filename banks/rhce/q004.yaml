@@ -1,0 +1,32 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: core
+title: Anatomy of an ad-hoc command
+prompt: |
+  What does each part of this command do:
+  `ansible web -i hosts -m copy -a "src=x dest=/etc/y"`?
+options:
+  A: "hosts is the playbook, copy is the inventory, and web is the module"
+  B: "web is the target group, hosts is the inventory, copy is the module, and the -a string is the module arguments"
+  C: "copy is the target group, web is the module, and -i selects a remote host"
+  D: "The command is invalid because ad-hoc commands cannot take module arguments"
+answer: B
+explanation: |
+  The ad-hoc form is `ansible <pattern> -i <inventory> -m <module> -a
+  "<args>"`. Here web is the host pattern, hosts the inventory file, copy the
+  module, and the string after -a holds the module arguments (source and
+  destination for the copy).
+solution: |
+  In `ansible web -i hosts -m copy -a "src=x dest=/etc/y"`, web is the host pattern
+  that selects the inventory group, hosts is the inventory file, copy
+  is the module being executed, and the string after -a is that module's
+  arguments: src=x copies the local file to dest=/etc/y on the targets. Ad-hoc
+  commands are one-shot module runs with no persistence; anything you will run
+  more than once belongs in a playbook.
+checks:
+  - desc: Explains the host pattern
+    contains: "host pattern"
+  - desc: Names the copy module
+    contains: "copy"
+  - desc: Explains the -a arguments
+    contains: "arguments"

@@ -1,0 +1,37 @@
+kind: knowledge
+domain: migration-networking
+level: deep
+title: Live migration storage requirements
+prompt: |
+  A VMI is marked live-migratable, yet live migration fails. Which storage
+  characteristic is most likely to be the blocker?
+options:
+  A: The VM disk is backed by a single-node-only volume rather than shared,
+    multi-node-accessible storage such as ReadWriteMany.
+  B: The VM has too much memory allocated and no RAM left.
+  C: The guest operating system is running too many services.
+  D: The cluster has more nodes than the VM's replicas.
+answer: A
+explanation: |
+  Live migration moves guest memory to the destination node while the disk must
+  remain accessible from both nodes during the transition. If the PVC's access
+  mode or storage class is single-node (like ReadWriteOnce on a local disk),
+  the destination node cannot mount it and migration cannot proceed. Memory size
+  and service count affect resource capacity, not migration feasibility.
+solution: |
+  For live migration the destination node must be able to access the VM's disk
+  while the source node still has it mounted. Storage that is only attachable to
+  one node at a time, for example ReadWriteOnce PVCs on local or single-node
+  storage, therefore blocks migration. Shared storage that supports
+  ReadWriteMany access, such as an NFS-backed or other network storage class,
+  allows both nodes to use the volume simultaneously. The web console and
+  oc describe vmi surface migration failure reasons, and the storage class
+  must be verified before relying on automated migration during node
+  maintenance.
+checks:
+  - desc: Names ReadWriteMany
+    contains: "ReadWriteMany"
+  - desc: Names ReadWriteOnce as a blocker
+    contains: "ReadWriteOnce"
+  - desc: Mentions shared storage
+    contains: "shared"

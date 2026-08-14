@@ -1,0 +1,32 @@
+kind: knowledge
+domain: openshift-data-foundation
+level: deep
+title: Expanding ODF capacity
+prompt: |
+  The ODF storage cluster is running low on usable space. Which action
+  increases the capacity that the StorageCluster can hand out to PVCs?
+options:
+  A: Reboot all three Ceph monitor pods.
+  B: Increase the quota field on existing PVCs.
+  C: Add usable devices or nodes to the deviceSets so the Rook operator can create more OSDs.
+  D: Mount a larger emptyDir into the OSD pods.
+answer: C
+explanation: |
+  Capacity grows when the StorageCluster has more backing devices. Adding
+  devices (for example a new node with LocalVolume entries, or expanding the
+  count in an existing deviceSet) lets Rook create additional OSDs. Rebooting
+  monitors or resizing PVC quotas does not add raw capacity.
+solution: |
+  To scale up, make more raw storage available to the cluster: add nodes that
+  carry the storage devices, then update the StorageCluster deviceSets (or add
+  a new deviceSet) so the Rook operator provisions additional OSDs on them.
+  New OSDs join the Ceph cluster and expand the pool capacity that storage
+  classes allocate from. Quotas and PVC sizes limit individual claims but do
+  not create capacity.
+checks:
+  - desc: Mentions adding devices
+    contains: "devices"
+  - desc: Names deviceSets
+    contains: "deviceSets"
+  - desc: Rook provisions OSDs
+    contains: "OSDs"

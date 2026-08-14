@@ -1,0 +1,35 @@
+kind: knowledge
+domain: building-images
+level: core
+title: Tagging and pushing images
+prompt: |
+  A developer built myapp and must upload it to a registry namespace under a
+  second name/version. Which commands perform tag-and-push?
+options:
+  A: podman tag myapp registry.example.com/team/myapp:v1.0 followed by
+    podman push registry.example.com/team/myapp:v1.0.
+  B: podman push myapp only.
+  C: podman load myapp only.
+  D: podman save myapp only.
+answer: A
+explanation: |
+  podman tag creates an additional name (including the registry path and tag)
+  for the image, and podman push uploads the named image to its registry.
+  podman push myapp alone fails without a registry-qualified name, while
+  podman save/podman load export and import local archives rather than
+  pushing to a registry.
+solution: |
+  podman tag myapp registry.example.com/team/myapp:v1.0 adds a new reference
+  pointing at the same image, combining the registry, repository path, and tag.
+  podman push registry.example.com/team/myapp:v1.0 then uploads the image to
+  that registry location, honoring any configured credentials. Tags make the
+  same image available under versioned names, and pushing a latest tag as well
+  is common. podman save and podman load handle offline image transfer via
+  archives instead.
+checks:
+  - desc: Names podman tag
+    contains: "podman tag"
+  - desc: Names podman push
+    contains: "podman push"
+  - desc: Names podman save and load
+    contains: "podman load"

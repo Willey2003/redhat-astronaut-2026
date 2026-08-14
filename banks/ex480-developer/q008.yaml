@@ -1,0 +1,32 @@
+kind: knowledge
+domain: advanced-deployments
+level: quick
+title: Which field caps extra pods during a rolling update
+prompt: |
+  During a rolling update of a Deployment with 10 replicas, the developer wants
+  at most 3 extra pods above the desired count at any time. Which Deployment
+  field controls that ceiling?
+options:
+  A: spec.strategy.rollingUpdate.maxSurge
+  B: spec.strategy.rollingUpdate.maxUnavailable
+  C: spec.replicas
+  D: spec.revisionHistoryLimit
+answer: A
+explanation: |
+  maxSurge sets how many additional pods may be created above the desired
+  replicas during a rolling update. maxUnavailable sets how many pods may be
+  down at once. replicas is the desired count, and revisionHistoryLimit keeps
+  old ReplicaSets around for rollback.
+solution: |
+  In a Deployment's spec.strategy.rollingUpdate, maxSurge limits the pods above
+  the desired replica count during a rolling update; here it would be 3.
+  maxUnavailable bounds how many pods may be unavailable simultaneously. The
+  values can be absolute numbers or percentages of replicas, and at least one of
+  the two must be nonzero.
+checks:
+  - desc: Names maxSurge
+    contains: "maxSurge"
+  - desc: Mentions maxUnavailable
+    contains: "maxUnavailable"
+  - desc: Mentions rollingUpdate
+    contains: "rollingUpdate"

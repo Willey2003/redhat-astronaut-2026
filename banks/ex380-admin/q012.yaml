@@ -1,0 +1,33 @@
+kind: knowledge
+domain: networking-advanced
+level: core
+title: Which operator provides LoadBalancer Services on bare metal
+prompt: |
+  On a bare-metal cluster there is no cloud load balancer, but an application
+  must be reachable through a LoadBalancer-type Service. Which operator
+  provides external load balancing for such clusters?
+options:
+  A: MetalLB
+  B: OpenShift SDN
+  C: Cluster Network Operator
+  D: Ingress Operator
+answer: A
+explanation: |
+  MetalLB gives bare-metal clusters LoadBalancer Services by assigning
+  addresses from configured IP pools and advertising them with BGP or L2
+  announcements. The SDN/OVN-Kubernetes and the Cluster Network Operator manage
+  the cluster network itself, and the Ingress Operator exposes HTTP(S) routes,
+  not LoadBalancer Services.
+solution: |
+  MetalLB enables LoadBalancer Services on clusters without a cloud provider's
+  load balancer. The operator watches a MetalLB custom resource that declares
+  address pools, then the controller assigns an external IP and the speakers
+  advertise it using L2 or BGP. Install the MetalLB operator, create a config
+  of address pools, and request a Service with spec.type: LoadBalancer.
+checks:
+  - desc: Names MetalLB
+    contains: "MetalLB"
+  - desc: Mentions address pools
+    contains: "address pools"
+  - desc: Mentions BGP or L2
+    contains: "BGP"

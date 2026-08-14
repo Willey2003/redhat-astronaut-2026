@@ -1,0 +1,28 @@
+kind: knowledge
+domain: playbooks
+level: quick
+title: The key that every play needs
+prompt: |
+  A play is being written for the first time. Which key is required at the top
+  of every play in a playbook?
+options:
+  A: "vars:"
+  B: "hosts:"
+  C: "name:"
+  D: "roles:"
+answer: B
+explanation: |
+  Every play must declare which managed nodes it targets with the hosts key,
+  naming an inventory group, host, or pattern such as all or webservers. vars,
+  name, and roles are all optional.
+solution: |
+  A play must declare which managed nodes it targets using the hosts key, which
+  names an inventory group, host, or pattern such as all or webservers. The
+  tasks under tasks then run against those hosts, and the play ends when they
+  finish. vars, name, and roles are optional enhancements, so a play with no
+  hosts key is a syntax error no matter how well the rest of it is written.
+checks:
+  - desc: Names the hosts key
+    contains: "hosts key"
+  - desc: Mentions inventory patterns
+    contains: "pattern"

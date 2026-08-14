@@ -1,0 +1,33 @@
+kind: knowledge
+domain: storage-advanced
+level: core
+title: Which ODF storage type provides ReadWriteMany volumes
+prompt: |
+  A team must share a single PersistentVolume among many pods on different
+  nodes. Which OpenShift Data Foundation storage type provides ReadWriteMany
+  volumes?
+options:
+  A: CephFS file storage
+  B: RBD block storage
+  C: Local Storage Operator volumes
+  D: An NFS share exported from a host
+answer: A
+explanation: |
+  ODF's CephFS file storage supports ReadWriteMany: many pods on many nodes
+  can mount one CephFS PVC simultaneously. RBD provides block storage, which
+  is typically ReadWriteOnce, and Local Storage Operator volumes are
+  single-node. Relying on a hand-made host NFS share is not a managed ODF CSI
+  path.
+solution: |
+  OpenShift Data Foundation (ODF) exposes CephFS as a CSI-provisioned
+  filesystem that supports ReadWriteMany, letting multiple pods on multiple
+  nodes mount the same PVC concurrently. Use a StorageClass backed by the
+  CephFS CSI driver. RBD-based StorageClasses are block devices and are
+  normally ReadWriteOnce.
+checks:
+  - desc: Names CephFS
+    contains: "CephFS"
+  - desc: Mentions ReadWriteMany
+    contains: "ReadWriteMany"
+  - desc: Mentions RBD as block
+    contains: "RBD"

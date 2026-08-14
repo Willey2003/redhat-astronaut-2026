@@ -1,0 +1,32 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: quick
+title: Where the list of managed hosts lives
+prompt: |
+  A new team member wants to see which hosts Ansible can manage. Which file or
+  construct holds that authoritative list?
+options:
+  A: "The playbook's hosts: line only; there is no separate list"
+  B: "An inventory file, passed with -i or configured in ansible.cfg"
+  C: "The /etc/ssh/ssh_config file"
+  D: "The ansible-pull repository on each managed host"
+answer: B
+explanation: |
+  An inventory lists the managed nodes and groups them. You reference it with
+  `ansible -i <file>` or by setting the inventory path in ansible.cfg. The
+  playbook's hosts: line selects which groups of that inventory to target, so
+  it is a selection, not the list itself.
+solution: |
+  Ansible manages the set of nodes declared in an inventory, a plain-text INI
+  or YAML file listing hosts and groups. You point at it with `ansible -i
+  inventory`, or set the inventory path in ansible.cfg so every command and
+  playbook uses it automatically. A playbook's hosts: field then picks the
+  groups from that inventory to target, so the inventory is the authoritative
+  list and the play is only a selector.
+checks:
+  - desc: Names inventory as the host list
+    contains: "inventory"
+  - desc: Mentions the -i flag
+    contains: "-i"
+  - desc: Mentions ansible.cfg
+    contains: "ansible.cfg"

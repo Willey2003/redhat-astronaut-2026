@@ -1,0 +1,31 @@
+kind: knowledge
+domain: storage-concepts
+level: core
+title: Reclaim policy on delete
+prompt: |
+  A PVC bound to a dynamically provisioned PV is deleted. The StorageClass sets
+  `reclaimPolicy: Delete`. What happens to the PersistentVolume and its backing
+  storage?
+options:
+  A: The PV stays bound to a clone of the claim.
+  B: The PV remains but is marked Released and must be reused manually.
+  C: The PV and the underlying storage volume are deleted.
+  D: The PVC is automatically recreated with the same name.
+answer: C
+explanation: |
+  The Delete reclaim policy tells the volume plugin to remove the backing
+  volume when the PV is released. With Retain, the PV is left in a Released
+  state holding its data for the administrator to reuse manually.
+solution: |
+  When a PVC is deleted, its PersistentVolume becomes Released. A class with
+  `reclaimPolicy: Delete` then deletes the PV and the storage backend volume
+  behind it, freeing capacity. The Retain policy instead leaves the PV in a
+  Released state with its data intact for an administrator to inspect and
+  rebind manually, which is useful before a full data loss is acceptable.
+checks:
+  - desc: Names Delete policy
+    contains: "Delete"
+  - desc: Names Retain policy
+    contains: "Retain"
+  - desc: Mentions Released state
+    contains: "Released"

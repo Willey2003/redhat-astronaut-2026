@@ -1,0 +1,32 @@
+kind: knowledge
+domain: hybrid-cloud-strategy
+level: core
+title: Managing many clusters as one
+prompt: |
+  An enterprise runs dozens of OpenShift clusters across clouds. Which tooling
+  gives centralized observability, policy, and fleet lifecycle management?
+options:
+  A: "Red Hat Advanced Cluster Management (ACM)"
+  B: "A shared /etc/hosts file"
+  C: "Separate consoles per cluster with no aggregation"
+  D: "The OpenShift sample operator"
+answer: A
+explanation: |
+  Red Hat Advanced Cluster Management (ACM) provides multicluster management
+  from a hub: cluster lifecycle and upgrades, policy-based governance,
+  centralized observability, and placement rules for deploying applications
+  across the fleet.
+solution: |
+  Red Hat Advanced Cluster Management (ACM) manages fleets of OpenShift
+  clusters from a single hub: cluster lifecycle and upgrades, policy-based
+  governance applied consistently, centralized observability, and placement
+  rules that deploy applications across clusters by label and capability. That
+  is what makes a many-cluster hybrid cloud operable instead of a collection of
+  islands.
+checks:
+  - desc: Names ACM
+    contains: "Advanced Cluster Management"
+  - desc: Mentions governance policies
+    contains: "policy"
+  - desc: Mentions cluster lifecycle
+    contains: "lifecycle"

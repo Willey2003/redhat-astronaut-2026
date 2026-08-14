@@ -1,0 +1,34 @@
+kind: knowledge
+domain: vm-lifecycle
+level: quick
+title: VirtualMachineInstance phases
+prompt: |
+  An administrator checks a VM's status and sees the VMI is in the
+  Running phase. What does that phase mean?
+options:
+  A: The VirtualMachineInstance is bound to a node and the guest is actively
+    executing.
+  B: The VMI is still being scheduled and has no node assigned.
+  C: The VM was deleted and the disk is being cleaned up.
+  D: The VMI failed to start because of a scheduling error.
+answer: A
+explanation: |
+  A VMI moves through phases: Pending (being scheduled), Scheduling, Scheduled,
+  Running (guest executing on its node), then Succeeded or Failed at exit.
+  Running means the compute pod is up and QEMU is running the guest, so it can
+  be reached via console/SSH and migrated.
+solution: |
+  A VirtualMachineInstance has a phase reflecting its lifecycle, mirroring pod
+  phases. In Pending the VMI waits to be scheduled; once a node is assigned it
+  passes through Scheduling and Scheduled while the virt-launcher pod and QEMU
+  process start; Running means the guest OS is executing and the VMI is
+  accessible and eligible for live migration. A clean guest shutdown moves the
+  VMI to Succeeded, while a crash or start failure lands in Failed. oc get vmi
+  and oc describe vmi show the current phase and events.
+checks:
+  - desc: Names the Running phase
+    contains: "Running"
+  - desc: Names Pending phase
+    contains: "Pending"
+  - desc: Names Succeeded and Failed
+    contains: "Succeeded"

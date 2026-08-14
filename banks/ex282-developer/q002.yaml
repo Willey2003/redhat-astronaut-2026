@@ -1,0 +1,35 @@
+kind: knowledge
+domain: openshift-concepts
+level: quick
+title: Project versus Namespace
+prompt: |
+  A new hire sees both the terms "Project" and "Namespace" used in an
+  OpenShift cluster. How do the two concepts relate?
+options:
+  A: A Project is a Namespace with additional annotations and annotations-based
+    authorization metadata, managed through OpenShift's project API.
+  B: A Project is a separate quota system that does not use a Namespace.
+  C: A Namespace is a Project that has been scaled across multiple clusters.
+  D: Projects and Namespaces are unrelated resource kinds with no overlap.
+answer: A
+explanation: |
+  In OpenShift, a Project is a Kubernetes Namespace plus extra metadata
+  (display name, description) and is exposed through the project.openshift.io
+  API. Creating a project (oc new-project) creates a backing Namespace, so
+  oc get namespaces shows them. They are the same isolation boundary, just
+  surfaced through a friendlier developer-facing object.
+solution: |
+  A Project is OpenShift's developer-facing wrapper around a Kubernetes
+  Namespace. Each Project owns a Namespace that shares the same name, and the
+  Project adds convenience metadata such as a display name and description.
+  Authorization to a Project is managed with Roles and RoleBindings scoped to
+  the backing Namespace, and quotas/limits are applied at the Namespace level.
+  Running oc new-project <name> both creates the Project and the underlying
+  Namespace.
+checks:
+  - desc: Says a Project wraps a Namespace
+    contains: "Namespace"
+  - desc: Mentions oc new-project
+    contains: "new-project"
+  - desc: Notes extra metadata on projects
+    contains: "metadata"

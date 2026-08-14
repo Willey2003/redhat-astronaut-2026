@@ -181,14 +181,17 @@ class Bank:
                 ordered = []
                 for lvl, lw in sorted(levels.items(), key=lambda kv: -kv[1]):
                     lvl_pool = [q for q in pool if q.level == lvl and q.qid not in seen]
-                    n = max(1, round(lw * qty))
-                    chosen = rng.sample(lvl_pool, min(n, len(lvl_pool))) if lvl_pool else []
-                    ordered.extend(chosen)
-                    seen.update(q.qid for q in chosen)
-                remainder = [q for q in pool if q.qid not in seen]
-                for q in rng.sample(remainder, min(qty - len(ordered), len(remainder))):
-                    ordered.append(q)
-                    seen.add(q.qid)
+                    n = min(round(lw * qty), qty - len(ordered), len(lvl_pool))
+                    if n > 0:
+                        chosen = rng.sample(lvl_pool, n)
+                        ordered.extend(chosen)
+                        seen.update(q.qid for q in chosen)
+                short = qty - len(ordered)
+                if short > 0:
+                    remainder = [q for q in pool if q.qid not in seen]
+                    for q in rng.sample(remainder, min(short, len(remainder))):
+                        ordered.append(q)
+                        seen.add(q.qid)
                 drawn.extend(ordered[:qty])
             else:
                 pool = [q for q in pool if q.qid not in seen]

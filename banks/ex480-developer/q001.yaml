@@ -1,0 +1,32 @@
+kind: knowledge
+domain: application-development
+level: quick
+title: Which resource defines a build and its output
+prompt: |
+  A developer wants OpenShift to build a container image from source code
+  pushed to a Git repo and push the result to the internal registry. Which
+  resource defines the build and its output?
+options:
+  A: BuildConfig
+  B: ImageStream
+  C: DeploymentConfig
+  D: Pipeline Run
+answer: A
+explanation: |
+  A BuildConfig declares the build strategy (Docker, Source/Image such as S2I,
+  or Pipeline) and the output, usually an ImageStreamTag. An ImageStream stores
+  metadata about image tags rather than building anything; a DeploymentConfig
+  deploys workloads; a Pipeline Run executes a Tekton pipeline.
+solution: |
+  A BuildConfig defines how a build runs: its spec.strategy (for example
+  Source for S2I, Docker, or Buildah-based), the git spec.source, and
+  spec.output pointing at an ImageStreamTag. A Build object is created for each
+  run. `oc start-build <bc>` starts one manually, and webhook or image change
+  triggers run builds automatically.
+checks:
+  - desc: Names BuildConfig
+    contains: "BuildConfig"
+  - desc: Mentions the output ImageStreamTag
+    contains: "ImageStreamTag"
+  - desc: Mentions start-build
+    contains: "start-build"

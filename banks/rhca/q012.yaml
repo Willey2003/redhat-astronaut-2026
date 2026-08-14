@@ -1,0 +1,31 @@
+kind: knowledge
+domain: openshift-architecture
+level: deep
+title: Inside the cluster network
+prompt: |
+  A pod talks to another pod across nodes, and clients reach the router. Which
+  component implements pod-to-pod forwarding in OpenShift 4?
+options:
+  A: "OVN-Kubernetes, the default SDN, built on Open Virtual Network"
+  B: "The etcd database"
+  C: "The container image registry"
+  D: "The kubelet static pod scheduler"
+answer: A
+explanation: |
+  OpenShift 4 defaults to OVN-Kubernetes, an SDN built on Open Virtual Network,
+  providing pod networking, NetworkPolicy, and service connectivity across
+  nodes. The router then exposes selected workloads externally via routes.
+solution: |
+  Pod networking in OpenShift 4 is implemented by OVN-Kubernetes, the default
+  software-defined network built on Open Virtual Network. It assigns pod IPs,
+  forwards traffic across nodes, enforces NetworkPolicy, and provides the
+  logical network services that Services and the router build on. The router
+  then exposes select workloads externally through HTTP and HTTPS routes, which
+  is the layer administrators configure for external access.
+checks:
+  - desc: Names OVN-Kubernetes
+    contains: "OVN-Kubernetes"
+  - desc: Mentions NetworkPolicy
+    contains: "NetworkPolicy"
+  - desc: Mentions the router
+    contains: "router"

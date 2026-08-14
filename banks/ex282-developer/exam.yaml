@@ -1,0 +1,13 @@
+id: ex282-developer
+title: Red Hat OpenShift Developer (EX282) Mock
+engine: knowledge
+duration_minutes: 90
+pass_threshold: 0.7
+draw_size: 18
+seed: null
+domains:
+  openshift-concepts: 0.15
+  developer-workflows: 0.25
+  building-deploying-applications: 0.25
+  pipelines-gitops: 0.20
+  debugging-troubleshooting: 0.15

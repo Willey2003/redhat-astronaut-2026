@@ -1,0 +1,31 @@
+kind: knowledge
+domain: openstack-core
+level: core
+title: One API to rule them all
+prompt: |
+  The openstack CLI and the Horizon dashboard both talk to the cloud. What do
+  they have in common at the protocol level?
+options:
+  A: "They both consume the OpenStack REST API via Keystone's service catalog"
+  B: "They both read the Nova database directly"
+  C: "They both use SSH to the compute nodes"
+  D: "They share a single TCP port on the hypervisor"
+answer: A
+explanation: |
+  Every OpenStack client, the openstack CLI, Horizon, and SDKs, authenticates
+  to Keystone to get a token, reads the service catalog to find each service's
+  endpoint, and then calls those REST APIs. No client touches service databases
+  directly.
+solution: |
+  All OpenStack clients speak the same language: they authenticate to Keystone
+  to get a token, read the service catalog to find each service's public
+  endpoint, and then call those REST APIs. That is why the openstack CLI,
+  Horizon, and SDKs behave identically: they are all thin clients over the same
+  HTTP API, and none of them touches service databases directly.
+checks:
+  - desc: Names the REST API
+    contains: "REST API"
+  - desc: Mentions Keystone authentication
+    contains: "Keystone"
+  - desc: Mentions the service catalog
+    contains: "service catalog"

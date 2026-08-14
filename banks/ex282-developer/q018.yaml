@@ -1,0 +1,36 @@
+kind: knowledge
+domain: debugging-troubleshooting
+level: deep
+title: Rolling back a bad rollout
+prompt: |
+  The latest rollout of a DeploymentConfig is broken and the developer must
+  return the application to the previous working revision. Which command does
+  this, and which one verifies completion?
+options:
+  A: oc rollout undo dc/<name> then oc rollout status dc/<name>.
+  B: oc delete deployment <name> then oc new-app <name>.
+  C: oc scale dc/<name> --replicas=0 only.
+  D: oc patch dc/<name> to change the image to a nonexistent tag.
+answer: A
+explanation: |
+  DeploymentConfigs keep a history of rollouts. oc rollout undo dc/<name>
+  reverts to the previous revision (or --to-revision=N for a specific one),
+  and oc rollout status dc/<name> blocks until the new rollout completes.
+  Deleting and recreating loses history, scaling to zero just stops traffic, and
+  patching to a bad tag repeats the original mistake.
+solution: |
+  DeploymentConfigs preserve a rollout history (default retention, configurable
+  with revisionHistoryLimit), so a broken deployment can be reverted safely.
+  oc rollout undo dc/<name> triggers a rollout back to the previous revision,
+  and oc rollout undo dc/<name> --to-revision=<n> selects an explicit
+  revision. oc rollout status dc/<name> waits for the reverted rollout to
+  finish and reports its outcome. The same pattern applies to Deployments with
+  oc rollout undo deployment/<name>, giving developers a fast, auditable
+  rollback path.
+checks:
+  - desc: Names oc rollout undo
+    contains: "oc rollout undo"
+  - desc: Names oc rollout status
+    contains: "oc rollout status"
+  - desc: Mentions revision history
+    contains: "revision"

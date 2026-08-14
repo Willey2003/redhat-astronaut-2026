@@ -1,0 +1,30 @@
+kind: knowledge
+domain: logging-monitoring
+level: quick
+title: Following pod logs
+prompt: |
+  A developer is debugging a long-running Pod and wants to stream its standard
+  output live. Which command shows the logs and keeps following them?
+options:
+  A: oc logs <pod> -f
+  B: oc describe <pod>
+  C: oc exec <pod>
+  D: oc adm top pod
+answer: A
+explanation: |
+  `oc logs <pod> -f` prints the Pod's container logs and, with -f, streams new
+  output. `oc describe` shows metadata and events, `oc exec` runs a command
+  inside the container, and `oc adm top pod` reports resource usage.
+solution: |
+  `oc logs <pod> -f` follows the log stream of the default container; `oc logs
+  <pod> -c <container>` selects a specific container in multi-container Pods.
+  Combined with `--since` it limits output by time. For cluster-wide log
+  aggregation and searching, OpenShift forwards container logs to the Logging
+  stack (Loki) instead.
+checks:
+  - desc: Uses oc logs with -f
+    contains: "logs"
+  - desc: Selects a container
+    contains: "-c"
+  - desc: Mentions Loki aggregation
+    contains: "Loki"

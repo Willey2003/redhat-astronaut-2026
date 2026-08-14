@@ -1,0 +1,36 @@
+kind: knowledge
+domain: virtualization-concepts
+level: core
+title: When to choose VMs on OpenShift
+prompt: |
+  An IT director wants to move a legacy server-based application to OpenShift
+  but it requires an older operating system kernel and cannot be
+  containerized. Which option best fits the requirement?
+options:
+  A: Run it as a VirtualMachine on OpenShift Virtualization, keeping the VM in
+    the same managed platform while adopting Kubernetes networking and storage.
+  B: Force the application into a container by disabling kernel features.
+  C: Keep the server outside the platform because VMs are unsupported.
+  D: Run the application as a Job that executes on the control plane.
+answer: A
+explanation: |
+  OpenShift Virtualization is designed exactly for this: workloads that need a
+  full OS or a different kernel can run as VMs side by side with containers on
+  the same cluster, managed with Kubernetes APIs. Forcing an incompatible
+  workload into a container fails, and VMs are fully supported; a control-plane
+  Job is a misuse of the platform.
+solution: |
+  OpenShift Virtualization lets teams consolidate legacy virtualized workloads
+  onto the same OpenShift infrastructure as containers. A VirtualMachine runs a
+  complete guest OS, so applications that need an older kernel, require direct
+  hardware access, or ship as OS images can be migrated without
+  re-architecting. The VM benefits from Kubernetes scheduling, node
+  maintenance-driven live migration, persistent storage through DataVolumes, and
+  the same cluster-wide security and observability tooling.
+checks:
+  - desc: Says OpenShift Virtualization runs full guest OS
+    contains: "guest OS"
+  - desc: Mentions live migration
+    contains: "live migration"
+  - desc: Names DataVolume
+    contains: "DataVolume"

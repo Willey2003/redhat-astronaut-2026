@@ -1,0 +1,36 @@
+kind: knowledge
+domain: openshift-virtualization
+level: core
+title: Scaling identical VMs
+prompt: |
+  A stateless workload needs many identical VMs, and the team wants a
+  declarative way to scale them up and down. Which KubeVirt API object is
+  designed for this?
+options:
+  A: VirtualMachineInstanceReplicaSet, which keeps a desired number of identical
+    VirtualMachineInstances running.
+  B: VirtualMachineTemplate, which can only produce one VM ever.
+  C: DataVolume, which replicates disk images.
+  D: A single VirtualMachine with many interfaces.
+answer: A
+explanation: |
+  VirtualMachineInstanceReplicaSet (VMIR) declares a template and a replica
+  count; the controller creates and maintains that number of
+  VirtualMachineInstances, scaling on demand. A DataVolume manages persistent
+  disks, not running VMs, and a single VirtualMachine cannot be scaled in the
+  same way. Note that each instance is still a separate VMI with its own guest.
+solution: |
+  VirtualMachineInstanceReplicaSet (VMIR) mirrors the Kubernetes ReplicaSet for
+  VMs: it holds a VM template and a replicas count, and the controller keeps
+  exactly that many VirtualMachineInstances running, replacing any that fail and
+  scaling up or down when replicas changes. It suits stateless, identical VM
+  workloads such as compute farms. Because each VMI is a full guest OS, the
+  replica set trades VM-level individualization for uniformity and
+  self-healing scale.
+checks:
+  - desc: Names VirtualMachineInstanceReplicaSet
+    contains: "VirtualMachineInstanceReplicaSet"
+  - desc: Names a replicas field
+    contains: "replicas"
+  - desc: Notes it mirrors ReplicaSet
+    contains: "ReplicaSet"

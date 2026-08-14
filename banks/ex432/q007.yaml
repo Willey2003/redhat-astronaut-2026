@@ -1,0 +1,34 @@
+kind: knowledge
+domain: installation-methods
+level: core
+title: Which method installs with a discovery ISO and an assisted service
+prompt: |
+  An administrator wants to install a cluster by booting bare-metal hosts from
+  an ISO that discovers the hardware and reports it to a web UI, where the
+  cluster is configured and installed from inside the running cluster. Which
+  method is this?
+options:
+  A: Assisted installer
+  B: Traditional IPI on AWS
+  C: Manual UPI with hand-written ignition files
+  D: A single-node installation only
+answer: A
+explanation: |
+  The Assisted installer uses a discovery ISO: hosts boot it, an agent uploads
+  hardware details to the assisted service or UI, and the installer provisions
+  the cluster using in-cluster agents. It supports single-node and multi-node
+  clusters. IPI on AWS builds cloud infrastructure, and a fully manual UPI does
+  not use a discovery ISO.
+solution: |
+  The Assisted installer starts with a discovery ISO generated from the
+  assisted service. Each host boots it and an agent registers the hardware with
+  the service; the UI validates that the hosts meet the requirements, then the
+  installer creates the cluster from inside the provisioned nodes. Discovery
+  images are per-cluster and include the pull secret and the SSH key.
+checks:
+  - desc: Names the Assisted installer
+    contains: "Assisted installer"
+  - desc: Mentions the discovery ISO
+    contains: "discovery ISO"
+  - desc: Mentions the agent
+    contains: "agent"

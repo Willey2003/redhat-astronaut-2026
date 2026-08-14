@@ -1,0 +1,31 @@
+kind: knowledge
+domain: openshift-data-foundation
+level: core
+title: Object storage with NooBaa
+prompt: |
+  An application must read and write objects over an S3-compatible API, backed
+  by ODF. Which mechanism gives it a dedicated S3 bucket?
+options:
+  A: An ObjectBucketClaim referencing the ODF NooBaa-backed bucket class.
+  B: A PersistentVolumeClaim with the ceph-rbd storage class.
+  C: A ConfigMap holding AWS access keys.
+  D: A Route exposing the Ceph monitor service.
+answer: A
+explanation: |
+  The MultiCloud Object Gateway (NooBaa) provides S3-compatible object
+  storage. Applications request a bucket with an ObjectBucketClaim, which
+  provisions a bucket and a Secret with the access key and endpoint needed to
+  connect.
+solution: |
+  ObjectBucketClaims (OBC) are the object-storage counterpart to PVCs. An OBC
+  referencing the NooBaa bucket class triggers the NooBaa operator to create an
+  S3 bucket, an associated ConfigMap with bucket and endpoint details, and a
+  Secret with the access key and secret key. The application mounts those
+  credentials and talks S3 to the bucket, which NooBaa backs by Ceph storage.
+checks:
+  - desc: Names ObjectBucketClaim
+    contains: "ObjectBucketClaim"
+  - desc: Mentions NooBaa
+    contains: "NooBaa"
+  - desc: Mentions S3
+    contains: "S3"

@@ -1,0 +1,32 @@
+kind: knowledge
+domain: ansible-fundamentals
+level: quick
+title: Inventory file structure
+prompt: |
+  An engineer is writing an inventory for a fleet of web and database servers.
+  Which statement about Ansible inventory files is correct?
+options:
+  A: Inventories can be written as INI or YAML and may define groups such as [webservers], host variables, and group variables.
+  B: An inventory may only contain a flat list of hostnames with no grouping.
+  C: An inventory must live at /etc/ansible/hosts and cannot be overridden.
+  D: Inventories cannot store any variables; variables must come from playbooks alone.
+answer: A
+explanation: |
+  Ansible inventories support both INI and YAML syntax and can express groups,
+  child groups, host variables, and group variables. The default location is
+  /etc/ansible/hosts, but the path is commonly overridden with `-i` or via
+  `ANSIBLE_INVENTORY`, so it is neither mandatory nor exclusive.
+solution: |
+  An Ansible inventory lists managed hosts and may group them, for example an
+  INI group `[webservers]` or the equivalent YAML map. Both INI and YAML forms
+  are valid, and hosts and groups can carry variables such as ansible_user or
+  ansible_ssh_private_key_file. The default file is /etc/ansible/hosts, but an
+  inventory can live anywhere and be selected with `ansible -i <path>` or
+  `ansible-playbook -i <path>`.
+checks:
+  - desc: Names INI and YAML
+    contains: "INI"
+  - desc: Groups are supported
+    contains: "group"
+  - desc: Default file mentioned
+    contains: "/etc/ansible/hosts"

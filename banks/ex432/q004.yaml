@@ -1,0 +1,33 @@
+kind: knowledge
+domain: cluster-installation
+level: core
+title: Which file holds the cluster-admin credentials after install
+prompt: |
+  A completed installation produced credentials that let an administrator
+  authenticate against the new cluster as the system:admin user. Which file
+  contains those credentials?
+options:
+  A: auth/kubeconfig
+  B: bootstrap-kubeconfig
+  C: install-config.yaml
+  D: metadata.json
+answer: A
+explanation: |
+  The installer writes auth/kubeconfig in the install directory, a kubeconfig
+  whose context authenticates as system:admin against the API server;
+  auth/kubeadmin-password holds the kubeadmin password. bootstrap-kubeconfig
+  only works during bootstrap, install-config.yaml is input configuration, and
+  metadata.json records cluster metadata for the installer.
+solution: |
+  After a successful install, the auth directory in the install dir contains
+  kubeconfig, which authenticates you as the cluster's system:admin user. Use
+  it with `export KUBECONFIG=auth/kubeconfig`, then run `oc get nodes` to
+  confirm the cluster is up. The kubeadmin-password file holds the temporary
+  kubeadmin login before you set up identity providers.
+checks:
+  - desc: Names auth/kubeconfig
+    contains: "auth/kubeconfig"
+  - desc: Mentions system:admin
+    contains: "system:admin"
+  - desc: Mentions kubeadmin-password
+    contains: "kubeadmin-password"
