@@ -1,0 +1,22 @@
+kind: knowledge
+domain: networking
+level: deep
+title: Default cluster network provider
+prompt: |
+  Which statement best describes the default cluster network provider in
+  current OpenShift (4.14+) and its capabilities?
+options:
+  A: OpenShiftSDN, which supports only flat pod networking with no policy.
+  B: OVN-Kubernetes, which builds an overlay with OVN/OVS to provide
+    pod-to-pod networking, Services, DNS integration, full NetworkPolicy
+    support, and features such as EgressFirewall and EgressIP.
+  C: Calico as the mandatory and only supported CNI.
+  D: Flannel, which cannot enforce NetworkPolicies.
+answer: B
+explanation: |
+  Since OpenShift 4.14, OVN-Kubernetes is the default and only supported
+  cluster network provider. It uses Open Virtual Network and Open vSwitch to
+  create an overlay for pod networking and services, integrates with CoreDNS,
+  fully implements NetworkPolicy, and adds OpenShift-specific capabilities such
+  as EgressFirewall and EgressIP. OpenShiftSDN was the default before 4.14,
+  Calico is not the OpenShift default, and Flannel is not used.

@@ -1,0 +1,21 @@
+kind: knowledge
+domain: core-concepts
+level: quick
+title: Smallest schedulable unit
+prompt: |
+  A developer asks which object the Kubernetes scheduler places directly onto a
+  worker node. Which resource is the smallest unit that can be scheduled in
+  OpenShift?
+options:
+  A: A Deployment
+  B: A Pod
+  C: A container image
+  D: A Service
+answer: B
+explanation: |
+  The Pod is the smallest and basic unit of scheduling: the scheduler assigns
+  Pods to nodes, and containers inside a pod share a network namespace and
+  lifecycle. Deployments and Services are higher-level abstractions that manage
+  or expose pods rather than being scheduled themselves, and a container image
+  is only an artifact that the kubelet pulls, not something the scheduler
+  places.

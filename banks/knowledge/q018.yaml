@@ -1,0 +1,23 @@
+kind: knowledge
+domain: security
+level: core
+title: RBAC Role vs ClusterRole
+prompt: |
+  Which combination grants a developer permissions only inside their own
+  project, without any cluster-wide power?
+options:
+  A: Bind the cluster-admin ClusterRole to the user.
+  B: Bind an aggregated ClusterRole such as `edit` to the user through a
+    RoleBinding in that project, or create a project-scoped Role with the
+    needed verbs and resources.
+  C: Add the user to the project with `oc adm policy add-user-to-cluster` and
+    no role.
+  D: Reference a Role from a ClusterRoleBinding.
+answer: B
+explanation: |
+  A RoleBinding grants the referenced Role or ClusterRole only within a single
+  namespace, so binding the aggregated `edit` ClusterRole via a RoleBinding in
+  the project confines it to that project. A ClusterRoleBinding grants
+  cluster-wide access, which makes option A dangerous; option D is invalid
+  because a ClusterRoleBinding can only reference ClusterRoles; and option C
+  grants no permissions at all.

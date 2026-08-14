@@ -1,0 +1,24 @@
+kind: knowledge
+domain: administration
+level: core
+title: Monitoring and metrics
+prompt: |
+  Which statement correctly describes how OpenShift 4 collects and exposes
+  cluster and application metrics?
+options:
+  A: Metrics are stored as images in the integrated registry.
+  B: The cluster-monitoring operator deploys Prometheus with Thanos and
+    Alertmanager; node and container metrics are scraped from the kubelet via
+    cAdvisor, and application metrics are gathered through ServiceMonitors.
+  C: Metrics are collected only from the control plane and never from
+    application pods.
+  D: The kube-apiserver writes every metric into etcd as custom resources.
+answer: B
+explanation: |
+  OpenShift 4 ships the cluster-monitoring operator, which runs Prometheus,
+  Thanos Querier/Ruler, and Alertmanager, with Grafana optionally installed for
+  visualization. Node and container metrics come from the kubelet/cAdvisor, and
+  application metrics are discovered and scraped through ServiceMonitor
+  resources. Option A confuses the registry with a time-series store, option C
+  is false because application pods are monitored too, and option D is wrong
+  because metrics are scraped over HTTP rather than persisted in etcd.

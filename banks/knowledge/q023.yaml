@@ -1,0 +1,20 @@
+kind: knowledge
+domain: networking
+level: quick
+title: Service types
+prompt: |
+  Which Service type provides a stable virtual IP and DNS name reachable only
+  from inside the cluster, and is the default type when none is specified?
+options:
+  A: NodePort
+  B: ClusterIP
+  C: LoadBalancer
+  D: ExternalName
+answer: B
+explanation: |
+  A ClusterIP Service, the default, exposes a stable virtual IP and DNS name
+  such as `<service>.<namespace>.svc` for in-cluster traffic; the cluster
+  network data plane (kube-proxy on OpenShiftSDN, or OVN load balancers on
+  OVN-Kubernetes) forwards it to the backing pod endpoints. NodePort and
+  LoadBalancer add external reachability, and ExternalName is only a DNS alias
+  with no real endpoint set.

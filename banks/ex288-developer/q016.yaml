@@ -1,0 +1,21 @@
+kind: knowledge
+domain: app-configuration
+level: core
+title: Create a ConfigMap from a literal key/value
+prompt: |
+  Which `oc` command creates a ConfigMap named `quote-config` holding a single
+  entry with key `MODE` and value `production`?
+options:
+  A: oc create configmap quote-config --from-literal=MODE=production
+  B: oc create configmap quote-config --from-file=MODE=production
+  C: oc create cm quote-config --from-env=MODE=production
+  D: oc create configmap MODE=production --name=quote-config
+answer: A
+explanation: |
+  `--from-literal=KEY=VALUE` injects one literal entry, so `oc create configmap
+  quote-config --from-literal=MODE=production` is correct. `--from-file` treats
+  the argument as a file path whose contents become the value, `--from-env` is
+  not a real option (the correct flag is `--from-env-file`), and option D gets
+  the argument order wrong - the name comes from the `--name`/first positional
+  and literals come after `--from-literal`. The ConfigMap can then be consumed
+  by a pod through `envFrom` or a volume mount.

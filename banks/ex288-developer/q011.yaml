@@ -1,0 +1,24 @@
+kind: knowledge
+domain: image-management
+level: core
+title: Enable image lookup on an ImageStream
+prompt: |
+  A developer wants to write `image: quote:latest` in a Deployment's container
+  definition and have OpenShift resolve it to the image stored in the local
+  ImageStream `quote` in the same namespace, instead of a full registry path.
+  Which change enables this short-name resolution?
+options:
+  A: Enable the image lookup policy on the ImageStream with `oc set image-lookup quote --enabled=true`
+  B: Copy the ImageStream into the `openshift` project
+  C: Set `spec.dockerImageRepository` on the Deployment's Service
+  D: Create a pull Secret of type `kubernetes.io/dockerconfigjson`
+answer: A
+explanation: |
+  Setting `imageLookupPolicy.local=true` on an ImageStream (via `oc set
+  image-lookup quote --enabled=true`) tells the cluster to resolve image names
+  that do not contain a registry host by matching the first component against a
+  local ImageStream tag, so `quote:latest` becomes the internal registry
+  reference for that ImageStream. Without it, an imageless tag is treated as a
+  Docker Hub reference and fails to pull. Copying the ImageStream to another
+  project or creating pull secrets does not affect name resolution for
+  Deployments.

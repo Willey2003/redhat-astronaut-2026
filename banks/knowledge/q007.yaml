@@ -1,0 +1,21 @@
+kind: knowledge
+domain: cluster-architecture
+level: core
+title: Control plane components
+prompt: |
+  Which control plane component in an OpenShift 4 cluster validates every
+  request, enforces authentication and authorization, and serves as the single
+  front-end to the Kubernetes API?
+options:
+  A: The kube-scheduler
+  B: The kube-controller-manager
+  C: The kube-apiserver
+  D: The kubelet
+answer: C
+explanation: |
+  The kube-apiserver is the front-end of the control plane: every interaction
+  from oc, kubectl, controllers, and watches flows through it, and it handles
+  authentication, authorization, admission, and validation before persisting
+  objects to etcd. The scheduler only decides which node receives each pod, the
+  controller-manager runs reconciliation loops, and the kubelet runs on worker
+  nodes and manages the containers assigned to its own node.

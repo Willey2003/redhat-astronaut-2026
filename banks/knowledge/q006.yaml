@@ -1,0 +1,21 @@
+kind: knowledge
+domain: core-concepts
+level: core
+title: Jobs and CronJobs
+prompt: |
+  A batch script must run once and finish successfully; if its pod crashes, the
+  script should be retried until it succeeds. Which resource should define this
+  workload?
+options:
+  A: A DaemonSet
+  B: A Deployment
+  C: A Job
+  D: A ReplicaSet
+answer: C
+explanation: |
+  A Job creates one or more Pods and tracks them until a specified number have
+  completed successfully; on failure the Job controller retries within the
+  backoffLimit, matching the run-until-success requirement. Deployments and
+  ReplicaSets assume long-running services that must stay up and restart
+  indefinitely, and a DaemonSet runs on every node. A CronJob would be the
+  right answer only if the same task also had to run repeatedly on a schedule.

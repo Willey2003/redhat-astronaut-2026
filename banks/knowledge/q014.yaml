@@ -1,0 +1,22 @@
+kind: knowledge
+domain: administration
+level: core
+title: Taints and tolerations
+prompt: |
+  An admin wants to dedicate a node to a specific database workload and keep
+  other pods off it unless they explicitly opt in. Which pair of mechanisms
+  implements this exclusion?
+options:
+  A: A nodeSelector and a matching label on the workload.
+  B: A taint on the node plus a matching toleration on the pods that are
+    allowed to run there.
+  C: A ResourceQuota applied to the node itself.
+  D: Giving the node a label and letting every pod with the same label run
+    there.
+answer: B
+explanation: |
+  A taint on a node causes the scheduler to skip the node unless a pod carries
+  a matching toleration, which is exactly the opt-in exclusion requested.
+  nodeSelector and node affinity are positive preference mechanisms rather than
+  blockers, a ResourceQuota is namespace-scoped and does not gate nodes, and a
+  plain label does not stop the scheduler the way a taint does.

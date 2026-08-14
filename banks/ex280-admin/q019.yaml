@@ -1,0 +1,49 @@
+kind: hands-on
+domain: application-lifecycle
+level: core
+title: Apply a ResourceQuota and LimitRange to a project
+prompt: |
+  In project `lab-01`, create a ResourceQuota named `rq-lab` that limits
+  requests.cpu to 2 and requests.memory to 2Gi, and a LimitRange named
+  `lr-lab` that applies a default cpu of 250m and default memory of 512Mi to
+  every container.
+solution: |
+  oc apply -f - <<'EOF'
+  apiVersion: v1
+  kind: ResourceQuota
+  metadata:
+    name: rq-lab
+    namespace: lab-01
+  spec:
+    hard:
+      requests.cpu: "2"
+      requests.memory: 2Gi
+  ---
+  apiVersion: v1
+  kind: LimitRange
+  metadata:
+    name: lr-lab
+    namespace: lab-01
+  spec:
+    limits:
+    - default:
+        cpu: 250m
+        memory: 512Mi
+      defaultRequest:
+        cpu: 250m
+        memory: 512Mi
+      type: Container
+  EOF
+checks:
+  - desc: ResourceQuota rq-lab exists in lab-01
+    run: oc get resourcequota rq-lab -n lab-01 -o name
+    equals: resourcequota/rq-lab
+  - desc: Memory request quota is 2Gi
+    run: "oc get resourcequota rq-lab -n lab-01 -o jsonpath='{.spec.hard.requests\\.memory}'"
+    equals: 2Gi
+  - desc: LimitRange lr-lab exists in lab-01
+    run: oc get limitrange lr-lab -n lab-01 -o name
+    equals: limitrange/lr-lab
+  - desc: Default container memory is 512Mi
+    run: "oc get limitrange lr-lab -n lab-01 -o jsonpath='{.spec.limits[0].default.memory}'"
+    equals: 512Mi

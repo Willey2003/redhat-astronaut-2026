@@ -1,0 +1,20 @@
+kind: knowledge
+domain: cluster-architecture
+level: core
+title: etcd and cluster state
+prompt: |
+  Where is the authoritative state of an OpenShift 4 cluster (all API objects)
+  persistently stored, and which statement about that store is correct?
+options:
+  A: In etcd, which is itself deployed as pods managed by the etcd Operator on
+    the control plane nodes.
+  B: In a PostgreSQL database running in the openshift namespace.
+  C: Only in the memory of the kube-apiserver, with no durable store.
+  D: In a shared filesystem mounted into the kube-apiserver pods.
+answer: A
+explanation: |
+  OpenShift 4 persists all API objects in etcd, a distributed key-value store.
+  Unlike the static systemd control plane of OpenShift 3, the etcd cluster in
+  OpenShift 4 runs as pods managed by the etcd Operator, and backing up etcd is
+  the foundation of cluster disaster recovery. There is no PostgreSQL store, no
+  in-memory-only persistence, and no shared-filesystem backing for API state.

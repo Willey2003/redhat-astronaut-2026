@@ -1,0 +1,22 @@
+kind: hands-on
+domain: gitops-cicd
+level: core
+title: Render a Helm chart and apply it with oc
+prompt: |
+  On the workstation there is a Helm chart directory `quote-chart` which, when
+  rendered for the project `dev-01`, produces a Deployment named `quote` and a
+  Service named `quote-svc`. Render the chart with the release name `quote`
+  and apply the rendered manifests to the cluster with `oc apply` so both
+  objects are created in `dev-01`.
+solution: |
+  helm template quote ./quote-chart --namespace dev-01 | oc apply -f - -n dev-01
+checks:
+  - desc: Helm chart renders without errors
+    run: helm template quote ./quote-chart --namespace dev-01
+    exit-success: true
+  - desc: Deployment quote was applied
+    run: oc -n dev-01 get deployment quote -o name
+    equals: deployment.apps/quote
+  - desc: Service quote-svc was applied
+    run: oc -n dev-01 get service quote-svc -o name
+    equals: service/quote-svc

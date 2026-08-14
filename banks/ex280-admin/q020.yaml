@@ -1,0 +1,25 @@
+kind: hands-on
+domain: application-lifecycle
+level: deep
+title: Schedule a Deployment with a nodeSelector and toleration
+prompt: |
+  In project `lab-01`, create a Deployment named `db` with two replicas using
+  image `nginx:1.24`. Schedule its pods only on nodes labelled
+  `disktype=ssd` and add a toleration for a node taint with key `db` and
+  effect `NoSchedule`.
+solution: |
+  oc create deployment db -n lab-01 --image=nginx:1.24 --replicas=2
+  oc patch deployment db -n lab-01 -p '{"spec":{"template":{"spec":{"nodeSelector":{"disktype":"ssd"},"tolerations":[{"key":"db","operator":"Exists","effect":"NoSchedule"}]}}}}'
+checks:
+  - desc: Deployment db exists in lab-01
+    run: oc get deployment db -n lab-01 -o name
+    equals: deployment.apps/db
+  - desc: Deployment requests two replicas
+    run: "oc get deployment db -n lab-01 -o jsonpath='{.spec.replicas}'"
+    equals: 2
+  - desc: Pods are pinned to nodes labelled disktype=ssd
+    run: "oc get deployment db -n lab-01 -o jsonpath='{.spec.template.spec.nodeSelector.disktype}'"
+    equals: ssd
+  - desc: Pods tolerate the db NoSchedule taint
+    run: "oc get deployment db -n lab-01 -o jsonpath='{.spec.template.spec.tolerations[0].effect}'"
+    equals: NoSchedule

@@ -1,0 +1,25 @@
+kind: knowledge
+domain: core-concepts
+level: core
+title: Deployments and ReplicaSets
+prompt: |
+  When the pod template of a Deployment is updated, which object is responsible
+  for reconciling the desired number of replicas during the rollout?
+options:
+  A: The Deployment creates the new pods directly and the old ReplicaSet is
+    left running forever.
+  B: The Deployment controller creates a new ReplicaSet with the updated
+    template and performs a rolling scale-up of the new ReplicaSet while
+    scaling down the old one.
+  C: The kubelet scales the ReplicaSet when the pod template changes.
+  D: The Service controller creates the replacement pods on behalf of the
+    Deployment.
+answer: B
+explanation: |
+  A Deployment owns one or more ReplicaSets, and each ReplicaSet owns the pods
+  created from a specific template. On an update, the Deployment controller in
+  the kube-controller-manager creates a new ReplicaSet carrying the new template
+  and rolls traffic by scaling it up while scaling the previous ReplicaSet
+  down. A Deployment never creates pods directly, the kubelet only runs pods
+  already assigned to its node, and Services only route to pods rather than
+  creating them.

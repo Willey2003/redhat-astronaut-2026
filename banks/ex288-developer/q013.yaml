@@ -1,0 +1,20 @@
+kind: knowledge
+domain: gitops-cicd
+level: quick
+title: GitOps model implemented by Argo CD
+prompt: |
+  Which statement best describes the GitOps operational model as implemented
+  by a tool such as Argo CD?
+options:
+  A: The cluster is continuously reconciled to match the desired state declared in a Git repository
+  B: Configuration is rendered and applied manually once during the initial cluster bootstrap
+  C: Every developer commit immediately redeploys the running workloads
+  D: Operators watch cluster events and push diffs back into the Git repository
+answer: A
+explanation: |
+  GitOps treats the Git repository as the single source of truth: Argo CD
+  watches the declared manifests and repeatedly reconciles the live cluster so
+  that drift is corrected automatically, a model known as "pull-based"
+  delivery. Bootstrap-only application is not GitOps because no continuous
+  reconciliation happens, auto-deploying every commit skips review/rollback
+  control, and pushing cluster diffs back to Git is not how the model works.

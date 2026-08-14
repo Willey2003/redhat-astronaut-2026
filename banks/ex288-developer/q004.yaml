@@ -1,0 +1,22 @@
+kind: knowledge
+domain: build-deploy
+level: quick
+title: DeploymentConfig triggers vs Deployment
+prompt: |
+  A developer wants the application to be rolled out automatically whenever a
+  new image is pushed to the ImageStream tag the app consumes. Which capability
+  is provided by a DeploymentConfig (DC) but NOT by a Kubernetes Deployment?
+options:
+  A: Automatic image-change triggers that update the rollout when an ImageStreamTag changes
+  B: Rolling-update deployment strategy
+  C: ReplicaSet-backed scaling
+  D: Readiness probes on containers
+answer: A
+explanation: |
+  DeploymentConfigs add OpenShift-specific lifecycle automation: the
+  ImageChange trigger watches a referenced ImageStreamTag and starts a new
+  rollout automatically when the tag points to a new image, and the
+  ConfigChange trigger reacts to changes in the DC's pod template. Plain
+  Deployments have neither of those triggers, although they do support rolling
+  updates, ReplicaSet scaling and readiness probes. When you push a fresh image
+  with `oc tag` or a build completes, only the DC reacts on its own.

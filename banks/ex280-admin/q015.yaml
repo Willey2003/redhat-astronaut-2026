@@ -1,0 +1,20 @@
+kind: hands-on
+domain: storage
+level: deep
+title: Expand an existing PVC
+prompt: |
+  The PVC `db-data` in project `lab-01` currently requests 1Gi. Expand the
+  claim to 3Gi so the database can grow, assuming the storage class supports
+  volume expansion.
+solution: |
+  oc patch pvc db-data -n lab-01 -p '{"spec":{"resources":{"requests":{"storage":"3Gi"}}}}'
+checks:
+  - desc: PVC requests 3Gi after expansion
+    run: "oc get pvc db-data -n lab-01 -o jsonpath='{.spec.resources.requests.storage}'"
+    equals: 3Gi
+  - desc: PVC is still bound
+    run: "oc get pvc db-data -n lab-01 -o jsonpath='{.status.phase}'"
+    equals: Bound
+  - desc: The volume reports a capacity
+    run: "oc get pvc db-data -n lab-01 -o jsonpath='{.status.capacity.storage}'"
+    non-empty: true

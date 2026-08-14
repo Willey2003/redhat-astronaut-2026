@@ -1,0 +1,22 @@
+kind: knowledge
+domain: security
+level: quick
+title: Service accounts
+prompt: |
+  A pod needs to authenticate to the Kubernetes API using a cluster-managed
+  identity rather than a human user's credentials. Which mechanism should be
+  used?
+options:
+  A: A ServiceAccount referenced by the pod's `serviceAccountName`, with a
+    projected token automatically mounted for the workload to use.
+  B: A ConfigMap holding the admin password.
+  C: A Secret manually created with the cluster-admin token.
+  D: A Route exposed to the kube-apiserver.
+answer: A
+explanation: |
+  A ServiceAccount provides an identity for workloads: the pod names it in
+  `serviceAccountName` and receives a projected service account token issued
+  through the TokenRequest API, which the application uses to authenticate.
+  Placing the cluster-admin token in a ConfigMap or Secret is a serious
+  anti-pattern that leaks the most privileged credential in the cluster, and a
+  Route exposes a service rather than providing any identity.

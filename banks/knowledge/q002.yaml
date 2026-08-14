@@ -1,0 +1,25 @@
+kind: knowledge
+domain: core-concepts
+level: quick
+title: Namespaces and projects
+prompt: |
+  In OpenShift, what is a Project and how does it differ from a standard
+  Kubernetes Namespace?
+options:
+  A: A Project is a Namespace plus additional metadata such as a creator
+    annotation and display name, and it is the unit users request when they
+    self-provision.
+  B: A Project is a separate resource that cannot contain pods, only quotas and
+    role bindings.
+  C: A Project is a deprecated alias, and `oc get namespaces` returns nothing
+    on an OpenShift cluster.
+  D: A Project is a Kubernetes Namespace with no extra metadata whatsoever.
+answer: A
+explanation: |
+  In OpenShift a Project is a Namespace with an extra layer: it records the
+  requesting user, carries display/description annotations, and is created
+  through the ProjectRequest flow when a user self-provisions. Because a
+  Project is a superset of a Namespace, it still contains pods, services, and
+  every other namespace-scoped resource. Options B, C, and D are wrong because
+  a project does hold workloads, namespaces still exist and are visible, and
+  the extra project metadata is the whole point of the abstraction.

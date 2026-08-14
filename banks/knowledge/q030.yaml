@@ -1,0 +1,21 @@
+kind: knowledge
+domain: development-workflow
+level: quick
+title: Web console Developer perspective
+prompt: |
+  Which of the following is a feature of the OpenShift web console's Developer
+  perspective?
+options:
+  A: A Topology view that graphically represents an application's components and
+    lets you add services, connect them, and trigger builds.
+  B: A direct SSH terminal into the worker nodes.
+  C: Editing the etcd configuration of the cluster.
+  D: Manually managing the OVN-Kubernetes data plane.
+answer: A
+explanation: |
+  The Developer perspective centers on the Topology view, which shows
+  Deployments, Services, Routes, and Builds as an interactive graph where you
+  can add components, create applications from Git or container images, and
+  start builds. Node SSH, etcd changes, and low-level network plumbing are
+  operator tasks handled from the Administrator perspective or the CLI, not by
+  the Developer perspective.

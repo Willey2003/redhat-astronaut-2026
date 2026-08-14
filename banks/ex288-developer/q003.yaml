@@ -1,0 +1,26 @@
+kind: hands-on
+domain: build-deploy
+level: core
+title: Roll a Deployment back to an earlier revision
+prompt: |
+  The Deployment `quote` in project `dev-01` has been rolled out several times
+  and the latest release is broken. Roll the deployment back to revision 2
+  using `oc rollout`, then wait until the rollback completes.
+setup:
+  - oc new-project dev-01 || true
+  - oc -n dev-01 create deployment quote --image=quay.io/example/quote:v1 || true
+  - oc -n dev-01 set image deployment/quote quote=quay.io/example/quote:v2
+  - oc -n dev-01 set image deployment/quote quote=quay.io/example/quote:v3
+solution: |
+  oc -n dev-01 rollout undo deployment/quote --to-revision=2
+  oc -n dev-01 rollout status deployment/quote
+checks:
+  - desc: Pod template now uses the image from revision 2
+    run: oc -n dev-01 get deployment quote -o jsonpath='{.spec.template.spec.containers[0].image}'
+    equals: quay.io/example/quote:v2
+  - desc: Rollout completed successfully
+    run: oc -n dev-01 rollout status deployment/quote
+    exit-success: true
+  - desc: A fresh revision above the previous maximum was created
+    run: oc -n dev-01 get deployment quote -o jsonpath='{.metadata.annotations.deployment\.kubernetes\.io/revision}'
+    matches: ^[4-9]

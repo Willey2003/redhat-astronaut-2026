@@ -1,0 +1,19 @@
+kind: knowledge
+domain: knowledge
+level: quick
+title: Default project in OpenShift
+prompt: |
+  After logging in to a fresh OpenShift cluster as the cluster admin, which
+  project (namespace) is the user placed into by default?
+options:
+  A: default
+  B: openshift
+  C: kube-system
+  D: openshift-infra
+answer: B
+explanation: |
+  A fresh OpenShift cluster places the cluster-admin user into the `openshift`
+  project. `default` is the namespace where cluster workloads and default
+  ServiceAccounts live, `kube-system` is Kubernetes internal (rarely used in
+  OpenShift), and `openshift-infra` is the namespace for the pod/registry
+  infrastructure.

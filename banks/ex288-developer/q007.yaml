@@ -1,0 +1,27 @@
+kind: hands-on
+domain: routes-ingress
+level: core
+title: Expose a service with an edge-terminated route
+prompt: |
+  The Service `quote-svc` already exists in project `dev-01`. Create a Route
+  named `quote-route` that exposes it on the host
+  `quote.apps.example.com` with edge TLS termination.
+setup:
+  - oc new-project dev-01 || true
+  - oc -n dev-01 create service clusterip quote-svc --tcp=8080:8080 || true
+solution: |
+  oc -n dev-01 create route edge quote-route \
+      --service=quote-svc --hostname=quote.apps.example.com
+checks:
+  - desc: Route quote-route exists
+    run: oc -n dev-01 get route quote-route -o name
+    equals: route.route.openshift.io/quote-route
+  - desc: Host is set to quote.apps.example.com
+    run: oc -n dev-01 get route quote-route -o jsonpath='{.spec.host}'
+    equals: quote.apps.example.com
+  - desc: Route targets the quote-svc service
+    run: oc -n dev-01 get route quote-route -o jsonpath='{.spec.to.name}'
+    equals: quote-svc
+  - desc: TLS termination is edge
+    run: oc -n dev-01 get route quote-route -o jsonpath='{.spec.tls.termination}'
+    equals: edge

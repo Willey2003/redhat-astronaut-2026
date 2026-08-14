@@ -1,0 +1,22 @@
+kind: hands-on
+domain: authentication-security
+level: deep
+title: Configure an htpasswd identity provider
+prompt: |
+  Set up an HTPasswd identity provider so that user `devops` can log in. An
+  htpasswd file already exists locally as `htpasswd-file`. Store it in a Secret
+  named `htpass-secret` in the `openshift-config` project and patch the OAuth
+  cluster resource to use it as a provider named `htpasswd_provider`.
+solution: |
+  oc create secret generic htpass-secret --from-file=htpasswd=htpasswd-file -n openshift-config
+  oc patch oauth cluster --type=merge -p '{"spec":{"identityProviders":[{"name":"htpasswd_provider","type":"HTPasswd","mappingMethod":"claim","htpasswd":{"fileData":{"name":"htpass-secret"}}}]}}'
+checks:
+  - desc: htpasswd Secret exists in openshift-config
+    run: oc get secret htpass-secret -n openshift-config -o name
+    equals: secret/htpass-secret
+  - desc: OAuth cluster resource is configured with an HTPasswd provider
+    run: "oc get oauth cluster -o jsonpath='{.spec.identityProviders[*].type}'"
+    contains: HTPasswd
+  - desc: The provider is named htpasswd_provider
+    run: "oc get oauth cluster -o jsonpath='{.spec.identityProviders[*].name}'"
+    equals: htpasswd_provider

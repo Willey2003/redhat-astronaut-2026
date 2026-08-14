@@ -1,0 +1,23 @@
+kind: hands-on
+domain: cluster-configuration
+level: deep
+title: Take a worker node out of service for maintenance
+prompt: |
+  Node `lab-worker-1` must undergo maintenance. Mark it unschedulable
+  (cordon), evict its pods (drain), and confirm the node no longer accepts
+  scheduling. DaemonSet pods may be ignored and pods using local storage or
+  emptyDir volumes must still be evicted.
+solution: |
+  oc adm cordon lab-worker-1
+  oc adm drain lab-worker-1 --ignore-daemonsets --delete-emptydir-data --force
+  oc adm manage-node lab-worker-1 --schedulable=false
+checks:
+  - desc: Node is cordoned without error
+    run: oc adm cordon lab-worker-1
+    exit-success: true
+  - desc: Node is marked unschedulable
+    run: "oc get node lab-worker-1 -o jsonpath='{.spec.unschedulable}'"
+    equals: true
+  - desc: Pods are evicted by draining the node
+    run: oc adm drain lab-worker-1 --ignore-daemonsets --delete-emptydir-data --force
+    exit-success: true

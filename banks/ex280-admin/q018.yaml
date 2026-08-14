@@ -1,0 +1,18 @@
+kind: knowledge
+domain: application-lifecycle
+level: quick
+title: Effect of creating a project with oc new-project
+prompt: |
+  A developer is working in project `lab-01` and runs `oc new-project quotes`.
+  What is the immediate effect?
+options:
+  A: A namespace is created and the current project switches to quotes
+  B: A namespace is created but the current project stays lab-01
+  C: The command fails because quotes already exists
+  D: Nothing is created; only an administrator may create projects
+answer: A
+explanation: |
+  oc new-project creates the namespace, annotates it, and switches the current
+  context to it, so deployments that follow land in the new project. An
+  administrator who must create a project for another team uses
+  oc adm new-project and grants access separately.

@@ -1,0 +1,27 @@
+kind: knowledge
+domain: cluster-architecture
+level: deep
+title: Operator Lifecycle Manager flow
+prompt: |
+  When a user installs an Operator from OperatorHub, which sequence best
+  describes what the Operator Lifecycle Manager (OLM) orchestrates?
+options:
+  A: OLM creates the ClusterServiceVersion first, then derives a Subscription
+    and a CatalogSource from it.
+  B: A Subscription subscribes to a channel in a CatalogSource; when a new
+    operator version is available, OLM creates an InstallPlan that, once
+    approved, installs the Operator's ClusterServiceVersion.
+  C: OLM copies the operator bundle image into the internal registry and runs
+    it as a plain Deployment with no declared CRDs or RBAC.
+  D: OLM immediately installs every bundle found in the catalog without any
+    approval step.
+answer: B
+explanation: |
+  OLM uses CatalogSources to index operator bundles. A Subscription requests a
+  particular channel and install mode; when an update is available, OLM creates
+  an InstallPlan that lists the required ClusterServiceVersion(s), and once the
+  plan is approved (automatically or manually) OLM installs the CSV. The CSV
+  then declares the operator's CRDs, RBAC, and the Deployment that runs the
+  operator pod. Option A inverts the ordering, option C ignores the
+  CRD/RBAC/rollback machinery of the CSV, and option D contradicts the
+  approval-gated InstallPlan workflow.

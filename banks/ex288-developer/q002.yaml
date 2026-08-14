@@ -1,0 +1,27 @@
+kind: hands-on
+domain: build-deploy
+level: core
+title: Create a Docker-strategy BuildConfig
+prompt: |
+  In the project `dev-01`, create a BuildConfig named `quote-build` that:
+  - uses the Docker build strategy,
+  - pulls source from the Git repository https://github.com/example/quote-app.git,
+  - pushes the resulting image to the ImageStream tag `quote:latest`.
+
+  Use `oc new-build`. Do not start a build yet - only create the BuildConfig.
+solution: |
+  oc -n dev-01 new-build --name quote-build --strategy docker \
+      --to quote:latest https://github.com/example/quote-app.git
+checks:
+  - desc: BuildConfig quote-build exists
+    run: oc -n dev-01 get bc quote-build -o name
+    equals: buildconfig.build.openshift.io/quote-build
+  - desc: Strategy type is Docker
+    run: oc -n dev-01 get bc quote-build -o jsonpath='{.spec.strategy.type}'
+    equals: Docker
+  - desc: Source Git repository is correct
+    run: oc -n dev-01 get bc quote-build -o jsonpath='{.spec.source.git.uri}'
+    equals: https://github.com/example/quote-app.git
+  - desc: Output goes to the quote:latest ImageStreamTag
+    run: oc -n dev-01 get bc quote-build -o jsonpath='{.spec.output.to}'
+    contains: quote:latest

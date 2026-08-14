@@ -1,0 +1,27 @@
+kind: hands-on
+domain: troubleshooting
+level: core
+title: Debug an environment variable with oc exec
+prompt: |
+  The Deployment `quote` in project `dev-01` runs a single replica and is
+  expected to have the environment variable `MODE` set to `production`. Use
+  `oc exec` to run a command inside the running container and confirm that
+  `MODE` really has the value `production`, then verify the deployment is
+  healthy.
+setup:
+  - oc new-project dev-01 || true
+  - oc -n dev-01 create deployment quote --image=quay.io/example/quote:latest || true
+  - oc -n dev-01 set env deployment/quote MODE=production
+solution: |
+  oc -n dev-01 exec deployment/quote -- printenv MODE
+  oc -n dev-01 get deployment quote
+checks:
+  - desc: MODE inside the container equals production
+    run: oc -n dev-01 exec deployment/quote -- printenv MODE
+    equals: production
+  - desc: Deployment reports one ready replica
+    run: oc -n dev-01 get deployment quote -o jsonpath='{.status.readyReplicas}'
+    equals: "1"
+  - desc: A pod from the quote deployment is running
+    run: oc -n dev-01 get pods -l app=quote -o name
+    non-empty: true

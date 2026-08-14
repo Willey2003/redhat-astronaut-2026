@@ -1,0 +1,16 @@
+kind: knowledge
+domain: knowledge
+level: quick
+title: List ServiceAccounts
+prompt: |
+  Which `oc` command lists the ServiceAccounts in the current project?
+options:
+  A: oc get sa
+  B: oc get service-accounts -n kube-system
+  C: oc get pods --all-namespaces
+  D: oc auth whoami
+answer: A
+explanation: |
+  `oc get sa` (or `oc get serviceaccounts`) lists the ServiceAccounts in the
+  current project. Options B lists a different project, C lists Pods, and D
+  reports the identity of the current user.

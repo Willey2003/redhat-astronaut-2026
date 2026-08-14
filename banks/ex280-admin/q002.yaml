@@ -1,0 +1,21 @@
+kind: knowledge
+domain: cluster-configuration
+level: core
+title: Default MachineConfigPool for worker nodes
+prompt: |
+  On a freshly installed OpenShift cluster, the worker nodes carry the label
+  node-role.kubernetes.io/worker. Which MachineConfigPool renders their
+  machine configuration by default?
+options:
+  A: worker
+  B: master
+  C: infra
+  D: nodes
+answer: A
+explanation: |
+  The default worker pool selects nodes labelled
+  node-role.kubernetes.io/worker and renders the MachineConfigs that apply to
+  them; the master pool does the same for control-plane nodes. An infra pool
+  only exists after the administrator explicitly assigns the infra role label
+  to nodes. The Machine Config Operator applies the rendered config through
+  the machine-config-daemon, rebooting nodes when the config changes.

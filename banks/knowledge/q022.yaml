@@ -1,0 +1,24 @@
+kind: knowledge
+domain: security
+level: deep
+title: Why privileged pods are rejected
+prompt: |
+  A developer with `edit` access in their project creates a pod with
+  `securityContext.runAsUser: 0` and `privileged: true`. The pod is rejected at
+  creation. What is the best description of why?
+options:
+  A: SCC admission rejected the pod because the pod's ServiceAccount may only
+    use SCCs that forbid root and privileged containers, such as restricted-v2.
+  B: The kubelet detected UID 0 on the node and refused to start the container.
+  C: Pod Security admission always blocks privileged containers independently
+    of any SCC grant.
+  D: A node taint rejected the pod because privileged workloads are not
+    tolerated.
+answer: A
+explanation: |
+  SCC admission runs in the kube-apiserver and selects the SCC the pod's
+  ServiceAccount is permitted to use; if that set only includes restrictive SCCs
+  such as restricted-v2, requests for root UID or privileged mode are rejected
+  before the pod is persisted. The kubelet never enforces SCC, Pod Security
+  admission in OpenShift maps to the same SCC restrictions rather than
+  overriding them, and node taints govern scheduling, not security context.

@@ -1,0 +1,28 @@
+kind: hands-on
+domain: build-deploy
+level: deep
+title: Create a scaled DeploymentConfig
+prompt: |
+  In project `dev-01`, create a DeploymentConfig named `quote-dc` that:
+  - uses the container image quay.io/example/quote:latest,
+  - keeps 3 replicas,
+  - uses the Rolling deployment strategy.
+
+  Verify the object after creation. This simulates preparing an application
+  DeploymentConfig before wiring up image-change triggers.
+solution: |
+  oc -n dev-01 create deploymentconfig quote-dc --image=quay.io/example/quote:latest
+  oc -n dev-01 scale dc/quote-dc --replicas=3
+checks:
+  - desc: DeploymentConfig quote-dc exists
+    run: oc -n dev-01 get dc quote-dc -o name
+    equals: deploymentconfig.apps.openshift.io/quote-dc
+  - desc: Replica count is 3
+    run: oc -n dev-01 get dc quote-dc -o jsonpath='{.spec.replicas}'
+    equals: "3"
+  - desc: Deployment strategy is Rolling
+    run: oc -n dev-01 get dc quote-dc -o jsonpath='{.spec.strategy.type}'
+    equals: Rolling
+  - desc: Container image matches the requested image
+    run: oc -n dev-01 get dc quote-dc -o jsonpath='{.spec.template.spec.containers[0].image}'
+    equals: quay.io/example/quote:latest

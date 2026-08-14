@@ -1,0 +1,21 @@
+kind: knowledge
+domain: troubleshooting
+level: core
+title: Stream the logs of a crashing pod
+prompt: |
+  A pod `quote-abc12` in project `dev-01` is repeatedly crashing. The developer
+  wants to watch its standard output as new lines are written. Which command
+  does this?
+options:
+  A: oc -n dev-01 logs quote-abc12 -f
+  B: oc -n dev-01 describe pod quote-abc12
+  C: oc -n dev-01 get pod quote-abc12 -o wide
+  D: oc -n dev-01 exec quote-abc12 -- cat /var/log/messages
+answer: A
+explanation: |
+  `oc logs <pod> -f` prints the container's current output and then follows
+  (streams) new lines, which is exactly what is needed to watch a crashing pod.
+  `oc describe pod` shows events, container state and the last termination
+  reason but is not a live stream, `get -o wide` only adds node/IP columns, and
+  `oc exec` runs a command inside a crashing container that may not even be
+  running, so it is the wrong tool for this job.

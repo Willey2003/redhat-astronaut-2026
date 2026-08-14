@@ -1,0 +1,24 @@
+kind: knowledge
+domain: administration
+level: core
+title: Persistent storage binding
+prompt: |
+  A workload needs 5Gi of block storage and references an existing
+  PersistentVolumeClaim. Which combination of criteria determines which
+  PersistentVolume the claim binds to?
+options:
+  A: The claim name must exactly match the volume name.
+  B: The scheduler chooses the volume that is closest to the pod's node.
+  C: The volume must be available and match the requested capacity, access
+    modes, and StorageClass referenced by the claim.
+  D: The claim always binds to the volume with the most capacity regardless of
+    access modes.
+answer: C
+explanation: |
+  A PersistentVolumeClaim binds to a PersistentVolume whose capacity satisfies
+  the request, whose access modes (such as ReadWriteOnce) are compatible, and
+  which belongs to the same StorageClass when the claim references one; with a
+  StorageClass, dynamic provisioning can create a matching volume on demand.
+  Names do not need to match, the scheduler does not select volumes, and
+  picking the largest capacity would ignore access-mode and storage-class
+  constraints.

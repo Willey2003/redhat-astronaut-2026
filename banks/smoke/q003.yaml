@@ -1,0 +1,16 @@
+kind: hands-on
+domain: cluster-ops
+level: core
+title: Create a project and label it
+prompt: |
+  Create a project named `practice-a` and give it the label `owner=dev`.
+solution: |
+  oc new-project practice-a
+  oc label namespace/practice-a owner=dev
+checks:
+  - desc: Project exists
+    run: oc get project practice-a -o name
+    equals: project.project.openshift.io/practice-a
+  - desc: Label applied
+    run: oc get namespace practice-a -o jsonpath='{.metadata.labels.owner}'
+    equals: dev

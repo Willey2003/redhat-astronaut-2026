@@ -1,0 +1,22 @@
+kind: knowledge
+domain: networking
+level: core
+title: Routes vs Ingress
+prompt: |
+  An application must be reachable from outside the cluster over HTTPS at a
+  friendly hostname with path-based routing and edge TLS termination. What is
+  the OpenShift-native way to achieve this?
+options:
+  A: Create a ClusterIP Service and manually assign it an external IP.
+  B: Create a Route, which the built-in Router (HAProxy or Envoy) serves with
+    optional TLS termination, sticky sessions, and hostname-based routing.
+  C: Deploy an Ingress resource without any ingress controller running.
+  D: Use a StatefulSet backed by a headless Service.
+answer: B
+explanation: |
+  The OpenShift Router runs as a DaemonSet of HAProxy or Envoy instances and
+  serves Route resources, giving external access with features such as
+  edge/passthrough/reencrypt TLS, cookie-based sticky sessions, and wildcard
+  hosts. An Ingress by itself does nothing without an ingress controller, a
+  ClusterIP Service is not reachable from outside the cluster, and a headless
+  Service provides pod-level DNS rather than external routing.

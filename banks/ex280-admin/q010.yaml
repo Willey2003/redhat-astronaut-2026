@@ -1,0 +1,23 @@
+kind: hands-on
+domain: networking
+level: core
+title: Expose a service with an edge-terminated Route
+prompt: |
+  Service `web` exists in project `lab-01`. Create a Route named `web-edge`
+  that exposes the service on the host `web.lab.example.com` with edge TLS
+  termination.
+solution: |
+  oc -n lab-01 create route edge web-edge --service=web --hostname=web.lab.example.com
+checks:
+  - desc: Route web-edge exists in lab-01
+    run: oc get route web-edge -n lab-01 -o name
+    equals: route.route.openshift.io/web-edge
+  - desc: Route uses the expected host
+    run: "oc get route web-edge -n lab-01 -o jsonpath='{.spec.host}'"
+    equals: web.lab.example.com
+  - desc: Route targets the web service
+    run: "oc get route web-edge -n lab-01 -o jsonpath='{.spec.to.name}'"
+    equals: web
+  - desc: TLS termination is edge
+    run: "oc get route web-edge -n lab-01 -o jsonpath='{.spec.tls.termination}'"
+    equals: edge

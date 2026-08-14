@@ -1,0 +1,30 @@
+kind: hands-on
+domain: routes-ingress
+level: deep
+title: Weighted route across two services (canary)
+prompt: |
+  In project `dev-01` the services `quote-svc` (stable) and `quote-svc-v2`
+  (candidate) both exist. Create a Route named `quote-w` with edge TLS
+  termination that sends 80% of the traffic to `quote-svc` and 20% to
+  `quote-svc-v2`, implementing a canary release.
+setup:
+  - oc new-project dev-01 || true
+  - oc -n dev-01 create service clusterip quote-svc --tcp=8080:8080 || true
+  - oc -n dev-01 create service clusterip quote-svc-v2 --tcp=8080:8080 || true
+solution: |
+  oc -n dev-01 create route edge quote-w \
+      --service=quote-svc --weight=80 \
+      --alternate-service=quote-svc-v2 --alternate-weight=20
+checks:
+  - desc: Primary backend is quote-svc
+    run: oc -n dev-01 get route quote-w -o jsonpath='{.spec.to.name}'
+    equals: quote-svc
+  - desc: Alternate backend is quote-svc-v2
+    run: oc -n dev-01 get route quote-w -o jsonpath='{.spec.alternateBackends[0].name}'
+    equals: quote-svc-v2
+  - desc: Primary backend weight is 80
+    run: oc -n dev-01 get route quote-w -o jsonpath='{.spec.to.weight}'
+    equals: "80"
+  - desc: Alternate backend weight is 20
+    run: oc -n dev-01 get route quote-w -o jsonpath='{.spec.alternateBackends[0].weight}'
+    equals: "20"

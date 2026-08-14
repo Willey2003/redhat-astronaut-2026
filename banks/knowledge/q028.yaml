@@ -1,0 +1,21 @@
+kind: knowledge
+domain: development-workflow
+level: core
+title: Source-to-Image builds
+prompt: |
+  A developer wants to build a container image directly from a Git repository
+  using a language builder image, without writing a Dockerfile. Which OpenShift
+  feature is designed for this?
+options:
+  A: A BuildConfig using the Source strategy with an S2I builder image.
+  B: A Dockerfile that the cluster admin writes on the developer's behalf.
+  C: A Jenkinsfile executed by the scheduler.
+  D: An ImageStreamTag pointing at a prebuilt binary.
+answer: A
+explanation: |
+  A BuildConfig using the Source strategy performs a source-to-image (S2I)
+  build: it injects the Git source into a builder image that compiles and
+  assembles the application, then pushes the resulting image to the integrated
+  registry. S2I avoids hand-written Dockerfiles for common languages. The Docker
+  strategy would build from a Dockerfile, a Jenkinsfile drives CI/CD pipelines
+  rather than image creation, and an ImageStreamTag alone builds nothing.

@@ -1,0 +1,25 @@
+kind: knowledge
+domain: development-workflow
+level: core
+title: Quay vs integrated registry
+prompt: |
+  What is the practical difference between Quay and the OpenShift integrated
+  registry?
+options:
+  A: Quay is the only registry that can store container images.
+  B: Quay is an enterprise registry offering security scanning, mirroring, and
+    storage management, while the integrated registry is the private in-cluster
+    registry that stores the images OpenShift builds and pulls from its
+    namespace image streams.
+  C: The integrated registry is a read-only mirror of Quay.
+  D: There is no difference; they are two names for the same registry.
+answer: B
+explanation: |
+  Quay (Quay.io or self-hosted) is an enterprise registry with image scanning,
+  geo-replication, and robot accounts, typically deployed outside the cluster.
+  The OpenShift integrated registry runs inside the cluster, stores the images
+  produced by builds, and is used by namespace image streams; workloads pull
+  from it automatically (the default service account carries a pull secret, and
+  `oc registry login` can expose credentials over the default-route). Option A
+  is false because many registries exist, option C reverses the relationship,
+  and option D ignores that they are separate systems that can integrate.

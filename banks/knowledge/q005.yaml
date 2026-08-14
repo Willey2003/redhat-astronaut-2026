@@ -1,0 +1,22 @@
+kind: knowledge
+domain: core-concepts
+level: deep
+title: DaemonSet vs StatefulSet
+prompt: |
+  Each worker node must run exactly one instance of a pod, and any node that
+  joins the cluster later must automatically get an instance too (for example a
+  node-level metrics exporter). Which workload API is the right choice?
+options:
+  A: A Deployment with the replica count set to the current number of nodes.
+  B: A DaemonSet.
+  C: A StatefulSet backed by a headless Service.
+  D: A CronJob scheduled to run once per minute.
+answer: B
+explanation: |
+  A DaemonSet guarantees that a copy of the pod runs on every node and that
+  nodes joining later are automatically covered, which is exactly what
+  node-level agents require. Deployments spread replicas according to the
+  scheduler and do not pin one instance per node, StatefulSets provide stable
+  network identity and ordered scaling for stateful applications, and a CronJob
+  runs short-lived jobs on a schedule rather than maintaining a constant
+  presence on every node.

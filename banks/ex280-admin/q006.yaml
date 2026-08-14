@@ -1,0 +1,20 @@
+kind: knowledge
+domain: authentication-security
+level: quick
+title: Grant an SCC to a ServiceAccount
+prompt: |
+  A workload that must run as root uses the ServiceAccount `pipeline` in the
+  current project. Which command grants the `anyuid` SCC to that
+  ServiceAccount?
+options:
+  A: oc adm policy add-scc-to-user anyuid -z pipeline
+  B: oc adm policy add-scc-to-group anyuid pipeline
+  C: oc create scc anyuid --grant-to=pipeline
+  D: oc adm policy add-scc-to-user pipeline -z anyuid
+answer: A
+explanation: |
+  add-scc-to-user takes the SCC name first and the subject second; the -z flag
+  is shorthand for a ServiceAccount in the current project, which is the
+  standard way to grant an SCC to a workload. add-scc-to-group binds an SCC to
+  a group, and oc create scc defines a brand new SCC instead of binding an
+  existing one, so the other options are incorrect.

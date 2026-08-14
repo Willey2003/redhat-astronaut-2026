@@ -1,0 +1,9 @@
+id: smoke
+title: Smoke Test Bank
+engine: mixed
+duration_minutes: 10
+pass_threshold: 0.5
+draw_size: 3
+domains:
+  knowledge: 0.5
+  cluster-ops: 0.5

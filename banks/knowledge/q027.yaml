@@ -1,0 +1,21 @@
+kind: knowledge
+domain: development-workflow
+level: quick
+title: Purpose of image streams
+prompt: |
+  What problem do ImageStreams solve in an OpenShift development workflow?
+options:
+  A: They compress container images to save registry space.
+  B: They act as a pointer to container images so that deployments can track
+    tags and roll out automatically whenever the underlying image is updated,
+    for example after a build completes.
+  C: They are the place where application source code is stored.
+  D: They replace the integrated registry entirely.
+answer: B
+explanation: |
+  An ImageStream is an abstraction over the images in a registry repository: it
+  tracks image tags and metadata, and Deployments or BuildConfigs can trigger on
+  an ImageStreamTag update, so a freshly built or re-tagged image automatically
+  rolls out. ImageStreams do not store image bytes themselves (the registry
+  does), do not compress images, do not hold source code, and depend on a
+  registry rather than replacing one.

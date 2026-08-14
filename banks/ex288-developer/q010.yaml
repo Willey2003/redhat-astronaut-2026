@@ -1,0 +1,24 @@
+kind: hands-on
+domain: image-management
+level: core
+title: Tag an ImageStreamTag for a release
+prompt: |
+  The ImageStream `quote` in project `dev-01` has an imported `latest` tag.
+  Create a new ImageStreamTag `quote:stable` that points to the same image as
+  `quote:latest`, so deployments pinned to `stable` receive that image.
+setup:
+  - oc new-project dev-01 || true
+  - oc -n dev-01 create imagestream quote || true
+  - oc -n dev-01 import-image quote:latest --from=quay.io/example/quote:latest --confirm
+solution: |
+  oc -n dev-01 tag quote:latest quote:stable
+checks:
+  - desc: ImageStreamTag quote:stable exists
+    run: oc -n dev-01 get imagestreamtag quote:stable -o name
+    equals: imagestreamtag.image.openshift.io/quote:stable
+  - desc: Stable tag carries a resolved image reference
+    run: oc -n dev-01 get imagestreamtag quote:stable -o jsonpath='{.image.dockerImageReference}'
+    non-empty: true
+  - desc: Stable tag was created as a reference to the latest tag
+    run: oc -n dev-01 get is quote -o jsonpath='{.spec.tags[?(@.name=="stable")].from.name}'
+    contains: latest

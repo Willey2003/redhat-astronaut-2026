@@ -1,0 +1,20 @@
+kind: hands-on
+domain: app-configuration
+level: core
+title: Create a generic Secret from a literal
+prompt: |
+  In project `dev-01`, create a Secret named `quote-secret` of type `Opaque`
+  with a single key `api-key` whose literal value is `sk-abc123`.
+solution: |
+  oc -n dev-01 create secret generic quote-secret \
+      --from-literal=api-key=sk-abc123
+checks:
+  - desc: Secret quote-secret exists
+    run: oc -n dev-01 get secret quote-secret -o name
+    equals: secret/quote-secret
+  - desc: Secret type is Opaque
+    run: oc -n dev-01 get secret quote-secret -o jsonpath='{.type}'
+    equals: Opaque
+  - desc: api-key data is base64 of sk-abc123
+    run: oc -n dev-01 get secret quote-secret -o jsonpath='{.data.api-key}'
+    equals: c2stYWJjMTIz

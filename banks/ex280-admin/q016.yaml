@@ -1,0 +1,20 @@
+kind: knowledge
+domain: operators
+level: core
+title: What OLM creates after an InstallPlan is approved
+prompt: |
+  An administrator installs an Operator from OperatorHub and approves the
+  generated InstallPlan. Which resource does Operator Lifecycle Manager (OLM)
+  then create to describe the installed Operator and the CRDs it manages?
+options:
+  A: A ClusterServiceVersion (CSV)
+  B: A new Subscription
+  C: A MachineConfigPool
+  D: A new Namespace
+answer: A
+explanation: |
+  The installation flow is Subscription, then OperatorGroup scoping, then an
+  InstallPlan that, once approved, produces a ClusterServiceVersion (CSV). The
+  CSV carries the Operator version, the CRDs it owns, and the Deployment that
+  runs it. A Subscription starts the installation process rather than
+  finishing it.

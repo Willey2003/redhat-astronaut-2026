@@ -1,0 +1,21 @@
+kind: knowledge
+domain: administration
+level: quick
+title: ResourceQuota vs LimitRange
+prompt: |
+  A namespace admin must cap the total CPU and memory that all pods in a
+  namespace may consume together. Which resource enforces a hard aggregate
+  limit across the whole namespace?
+options:
+  A: A LimitRange applied per pod.
+  B: A ResourceQuota.
+  C: Only a ClusterResourceQuota can cap CPU and memory.
+  D: A NetworkPolicy with cpu limits.
+answer: B
+explanation: |
+  A ResourceQuota restricts aggregate consumption in a namespace, covering
+  totals such as CPU, memory, number of pods, and number of PVCs. A LimitRange
+  instead sets per-container or per-pod minimums, maximums, and defaults, so
+  option A describes the wrong scope. A ClusterResourceQuota spans multiple
+  projects, which is not needed here, and a NetworkPolicy governs traffic
+  rather than resource usage.

@@ -1,0 +1,18 @@
+id: ex288-developer
+title: EX288 OpenShift Development Mock
+engine: mixed
+duration_minutes: 240
+pass_threshold: 0.7
+draw_size: 15
+seed: null
+domains:
+  build-deploy: 0.25
+  routes-ingress: 0.20
+  image-management: 0.15
+  gitops-cicd: 0.15
+  app-configuration: 0.13
+  troubleshooting: 0.12
+levels:
+  quick: 0.3
+  core: 0.4
+  deep: 0.3

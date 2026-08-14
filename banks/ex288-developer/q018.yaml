@@ -1,0 +1,27 @@
+kind: hands-on
+domain: app-configuration
+level: deep
+title: Set resource limits and requests on a Deployment
+prompt: |
+  In project `dev-01`, create a Deployment named `quote` using the image
+  quay.io/example/quote:latest, then set resource limits of
+  `cpu=500m`/`memory=256Mi` and requests of `cpu=250m`/`memory=128Mi` on its
+  single container using `oc set resources`. Verify the resulting spec.
+solution: |
+  oc -n dev-01 create deployment quote --image=quay.io/example/quote:latest
+  oc -n dev-01 set resources deployment quote \
+      --limits=cpu=500m,memory=256Mi \
+      --requests=cpu=250m,memory=128Mi
+checks:
+  - desc: Deployment quote exists
+    run: oc -n dev-01 get deployment quote -o name
+    equals: deployment.apps/quote
+  - desc: CPU limit is 500m
+    run: oc -n dev-01 get deployment quote -o jsonpath='{.spec.template.spec.containers[0].resources.limits.cpu}'
+    equals: 500m
+  - desc: Memory limit is 256Mi
+    run: oc -n dev-01 get deployment quote -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'
+    equals: 256Mi
+  - desc: CPU request is 250m
+    run: oc -n dev-01 get deployment quote -o jsonpath='{.spec.template.spec.containers[0].resources.requests.cpu}'
+    equals: 250m

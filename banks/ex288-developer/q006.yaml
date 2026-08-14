@@ -1,0 +1,22 @@
+kind: knowledge
+domain: routes-ingress
+level: quick
+title: Route TLS termination for application-terminated HTTPS
+prompt: |
+  The backend application itself terminates TLS (HTTPS) on its own port. The
+  developer wants the OpenShift router to hand the encrypted connection to the
+  pod unchanged. Which Route TLS termination policy should be used?
+options:
+  A: edge
+  B: reencrypt
+  C: passthrough
+  D: none
+answer: C
+explanation: |
+  With `passthrough` the router forwards the TLS stream unmodified to the
+  backend, so the pod does its own termination; the route is created with `oc
+  create route passthrough`. `edge` makes the router terminate TLS and talk
+  plain HTTP to the pod, while `reencrypt` has the router terminate and then
+  re-encrypt to the backend, typically with a trusted backend certificate.
+  Choosing the wrong policy breaks the TLS handshake because the pod receives
+  plain HTTP (edge) or a second certificate it does not expect.

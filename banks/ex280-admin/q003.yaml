@@ -1,0 +1,22 @@
+kind: hands-on
+domain: cluster-configuration
+level: core
+title: Verify the cluster version and update state
+prompt: |
+  Verify the installed OpenShift version of this cluster and confirm that the
+  update machinery reports a healthy state. Use the oc version command and
+  inspect the ClusterVersion object named `version`.
+solution: |
+  oc version
+  oc get clusterversion version -o jsonpath='{.status.desired.version}'
+  oc get clusterversion version -o jsonpath='{.status.conditions[*].type}'
+checks:
+  - desc: oc version runs successfully
+    run: oc version
+    exit-success: true
+  - desc: Desired cluster version is reported as a semver
+    run: "oc get clusterversion version -o jsonpath='{.status.desired.version}'"
+    matches: '^4\.\d+\.\d+.*'
+  - desc: ClusterVersion reports an Available condition
+    run: "oc get clusterversion version -o jsonpath='{.status.conditions[*].type}'"
+    contains: Available

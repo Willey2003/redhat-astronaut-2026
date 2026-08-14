@@ -1,0 +1,21 @@
+kind: knowledge
+domain: networking
+level: core
+title: In-cluster service DNS
+prompt: |
+  A pod in namespace `backend` must reach a Service named `api` that lives in
+  namespace `orders`. Which hostname resolves reliably to the Service from any
+  node or pod in the cluster?
+options:
+  A: api
+  B: api.orders.svc.cluster.local
+  C: api.backend.svc.cluster.local
+  D: orders.api.cluster.local
+answer: B
+explanation: |
+  In-cluster DNS (CoreDNS) resolves names of the form
+  `<service>.<namespace>.svc.cluster.local`, so `api.orders.svc.cluster.local`
+  (or the short form `api.orders.svc`) returns the Service's ClusterIP. A bare
+  `api` only works from within the same namespace, `api.backend...` points into
+  the wrong namespace, and option D reverses the service and namespace parts of
+  the name.

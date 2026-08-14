@@ -1,0 +1,47 @@
+kind: hands-on
+domain: operators
+level: core
+title: Create an OperatorGroup and Subscription for an Operator
+prompt: |
+  Install an Operator into project `lab-ops` from OperatorHub. Create an
+  OperatorGroup named `og-lab-ops` that targets the `lab-ops` namespace, then a
+  Subscription named `etcd` for the `etcd` Operator with channel `stable`,
+  source `community-operators` in `openshift-marketplace`, and automatic
+  InstallPlan approval.
+solution: |
+  oc new-project lab-ops
+  oc apply -f - <<'EOF'
+  apiVersion: operators.coreos.com/v1
+  kind: OperatorGroup
+  metadata:
+    name: og-lab-ops
+    namespace: lab-ops
+  spec:
+    targetNamespaces:
+    - lab-ops
+  ---
+  apiVersion: operators.coreos.com/v1alpha1
+  kind: Subscription
+  metadata:
+    name: etcd
+    namespace: lab-ops
+  spec:
+    channel: stable
+    name: etcd
+    source: community-operators
+    sourceNamespace: openshift-marketplace
+    installPlanApproval: Automatic
+  EOF
+checks:
+  - desc: OperatorGroup og-lab-ops exists
+    run: oc get operatorgroup og-lab-ops -n lab-ops -o name
+    equals: operatorgroup.operators.coreos.com/og-lab-ops
+  - desc: Subscription etcd exists
+    run: oc get subscription etcd -n lab-ops -o name
+    equals: subscription.operators.coreos.com/etcd
+  - desc: Subscription uses channel stable
+    run: "oc get subscription etcd -n lab-ops -o jsonpath='{.spec.channel}'"
+    equals: stable
+  - desc: InstallPlan approval is Automatic
+    run: "oc get subscription etcd -n lab-ops -o jsonpath='{.spec.installPlanApproval}'"
+    equals: Automatic

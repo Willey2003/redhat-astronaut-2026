@@ -1,0 +1,20 @@
+kind: knowledge
+domain: administration
+level: quick
+title: Cluster logging with Loki
+prompt: |
+  What is the role of Loki in the OpenShift cluster logging stack?
+options:
+  A: It is the container runtime used to launch pods.
+  B: It is a log aggregator that stores logs from the cluster and provides a
+    query language, LogQL, for searching them.
+  C: It replaces Prometheus for collecting and querying metrics.
+  D: It stores the container images used by the integrated registry.
+answer: B
+explanation: |
+  Loki is a horizontally scalable, multi-tenant log aggregation system: the
+  Red Hat OpenShift Logging Operator collects logs from cluster components and
+  applications (via the Vector collector) and stores them in Loki, which is
+  queried with LogQL from the web console or the CLI. Loki is not a container
+  runtime (that is CRI-O), not a metrics system (that is Prometheus), and not
+  an image registry.

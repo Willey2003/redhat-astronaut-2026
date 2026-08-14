@@ -1,0 +1,23 @@
+kind: knowledge
+domain: security
+level: core
+title: Admission and SCC enforcement
+prompt: |
+  When a pod is created, Security Context Constraints (SCCs) are enforced by
+  which mechanism?
+options:
+  A: The scheduler checks SCCs while placing the pod on a node.
+  B: An admission plugin in the kube-apiserver runs at pod creation time,
+    chooses the most permissive SCC the pod's service account may use, and
+    validates or mutates the pod's security context.
+  C: The kubelet rejects the container at start time if the SCC is violated.
+  D: The OAuth server validates the pod's securityContext field on every
+    request.
+answer: B
+explanation: |
+  SCC enforcement is an admission plugin in the kube-apiserver: at pod creation
+  it selects the most permissive SCC the pod's ServiceAccount (or user) is
+  allowed to use, applies defaults such as runAsUser or fsGroup, and rejects the
+  pod if it violates the constraint. The scheduler only places pods and does not
+  judge security context, the kubelet cannot enforce admission-time policy, and
+  the OAuth server authenticates humans rather than validating pods.

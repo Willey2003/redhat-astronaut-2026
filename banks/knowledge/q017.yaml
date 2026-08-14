@@ -1,0 +1,22 @@
+kind: knowledge
+domain: security
+level: quick
+title: SCC vs Pod Security
+prompt: |
+  OpenShift ships Security Context Constraints (SCCs). What is the closest
+  upstream Kubernetes concept that maps to SCCs in newer OpenShift releases?
+options:
+  A: Pod Security admission with the Pod Security Standards and the
+    pod-security labels on namespaces.
+  B: NetworkPolicy.
+  C: ResourceQuota.
+  D: The AdmissionReview API type.
+answer: A
+explanation: |
+  OpenShift defined SCCs before Kubernetes introduced Pod Security; newer
+  OpenShift releases map SCCs onto the Pod Security Standards (privileged,
+  baseline, restricted) and apply pod-security admission labels to namespaces,
+  with restricted-v2 as the default for new projects. NetworkPolicy controls
+  traffic, ResourceQuota controls resources, and AdmissionReview is a generic
+  request type in the admission flow, none of which define security context
+  policy.

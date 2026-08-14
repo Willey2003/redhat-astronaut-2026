@@ -1,0 +1,22 @@
+kind: knowledge
+domain: authentication-security
+level: core
+title: Mint a long-lived token for a ServiceAccount
+prompt: |
+  An external script must authenticate to the API as ServiceAccount `ci-bot`
+  using a long-lived API token. Which approach is the supported way to obtain
+  such a token on current OpenShift releases?
+options:
+  A: "Create a Secret of type kubernetes.io/service-account-token annotated with kubernetes.io/service-account.name: ci-bot"
+  B: Run oc create token ci-bot and store the printed token in a ConfigMap
+  C: Read the token from the Secret that the ServiceAccount generates automatically
+  D: Set the token field directly in the ServiceAccount manifest
+answer: A
+explanation: |
+  A Secret of type kubernetes.io/service-account-token carrying the
+  kubernetes.io/service-account.name annotation is filled in with a static
+  token by the token controller and never expires. oc create token issues a
+  short-lived, bound token through the TokenRequest API, which is not a
+  permanent credential, and storing secrets in a ConfigMap is poor practice.
+  OpenShift no longer auto-creates a token Secret per ServiceAccount, and the
+  ServiceAccount spec has no token field.

@@ -1,0 +1,22 @@
+kind: knowledge
+domain: security
+level: deep
+title: Default SCC for new projects
+prompt: |
+  In current OpenShift (4.14+), which SCC set is applied by default to the
+  ServiceAccounts of a newly created project, and what practical effect does it
+  have on workloads?
+options:
+  A: The privileged SCC, so any pod may run as root by default.
+  B: The restricted-v2 SCC, which requires runAsNonRoot and a non-root user and
+    drops capabilities, so pods must run as non-root by default.
+  C: The anyuid SCC, which lets containers keep any UID including root.
+  D: No SCC at all; new projects have no security constraints.
+answer: B
+explanation: |
+  Since OpenShift 4.10 the default SCC for new projects is restricted-v2: it
+  enforces runAsNonRoot, assigns a UID from the project range, and drops
+  privileged capabilities, which is why freshly deployed pods run as non-root
+  unless an admin grants otherwise. Options A and C describe SCCs (privileged,
+  anyuid) that must be explicitly granted and never default to new projects,
+  and option D is false because every pod is validated against an SCC.

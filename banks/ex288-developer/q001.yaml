@@ -1,0 +1,24 @@
+kind: knowledge
+domain: build-deploy
+level: quick
+title: BuildConfig strategies - Docker vs Source
+prompt: |
+  A developer needs to produce a container image from a Git repository that
+  contains a Dockerfile (with no Dockerfile-less S2I builder image involved).
+  Which BuildConfig build strategy should they configure?
+options:
+  A: Source strategy (S2I), which injects source into a builder image
+  B: Docker strategy, which runs a `docker build` on the supplied context
+  C: Custom strategy, which invokes a custom builder image supplied by the user
+  D: Pipeline strategy, which runs a Jenkinsfile-based pipeline
+answer: B
+explanation: |
+  The Docker strategy runs a standard container build from the Dockerfile
+  found in the BuildConfig's source context; it is the right choice when the
+  repository ships its own Dockerfile. The Source (S2I) strategy instead
+  injects application source into a pre-existing builder image and is used
+  when no Dockerfile is wanted. The Custom strategy runs an arbitrary builder
+  image the user provides, and the Pipeline strategy executes a Jenkins
+  pipeline rather than producing an image directly. Strategy is selected with
+  `--strategy docker` on `oc new-build` or the `spec.strategy.type` field of a
+  BuildConfig.

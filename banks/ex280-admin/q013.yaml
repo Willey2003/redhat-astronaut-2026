@@ -1,0 +1,20 @@
+kind: knowledge
+domain: storage
+level: core
+title: Prerequisite for expanding a PVC
+prompt: |
+  A database pod uses a PersistentVolumeClaim and the administrator wants to
+  expand the claim while the pod keeps running. Which condition must be met by
+  the storage class used by the claim?
+options:
+  A: "The StorageClass sets allowVolumeExpansion: true"
+  B: The PV must first be deleted
+  C: The PVC must use ReadWriteMany access mode
+  D: The PVC must have a Retain reclaim policy
+answer: A
+explanation: |
+  In-place PVC expansion is only possible when the StorageClass sets
+  allowVolumeExpansion: true and the underlying volume driver supports
+  resizing. The PV is never deleted to resize a claim, ReadWriteMany is not
+  required for expansion, and the reclaim policy governs what happens to the
+  PV after the claim is deleted rather than whether it can grow.

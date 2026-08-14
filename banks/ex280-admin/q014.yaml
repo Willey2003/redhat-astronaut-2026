@@ -1,0 +1,20 @@
+kind: hands-on
+domain: storage
+level: core
+title: Create a PVC for the web application
+prompt: |
+  In project `lab-01`, create a PersistentVolumeClaim named `web-data` that
+  requests 2Gi of storage with access mode ReadWriteOnce, using the cluster's
+  default storage class.
+solution: |
+  oc create pvc web-data -n lab-01 --request=2Gi --access-mode=ReadWriteOnce
+checks:
+  - desc: PVC web-data exists in lab-01
+    run: oc get pvc web-data -n lab-01 -o name
+    equals: persistentvolumeclaim/web-data
+  - desc: PVC requests 2Gi
+    run: "oc get pvc web-data -n lab-01 -o jsonpath='{.spec.resources.requests.storage}'"
+    equals: 2Gi
+  - desc: PVC uses ReadWriteOnce access mode
+    run: "oc get pvc web-data -n lab-01 -o jsonpath='{.spec.accessModes[0]}'"
+    equals: ReadWriteOnce

@@ -1,0 +1,23 @@
+kind: hands-on
+domain: networking
+level: core
+title: Expose a Deployment with a NodePort Service
+prompt: |
+  Deployment `web` exists in project `lab-01` and its pods listen on TCP 8080.
+  Create a Service named `web-nodeport` of type NodePort that routes to the
+  web pods.
+solution: |
+  oc -n lab-01 expose deployment web --name=web-nodeport --type=NodePort --port=8080 --target-port=8080
+checks:
+  - desc: Service web-nodeport exists in lab-01
+    run: oc get service web-nodeport -n lab-01 -o name
+    equals: service/web-nodeport
+  - desc: Service type is NodePort
+    run: "oc get service web-nodeport -n lab-01 -o jsonpath='{.spec.type}'"
+    equals: NodePort
+  - desc: Service routes to the web pods
+    run: "oc get service web-nodeport -n lab-01 -o jsonpath='{.spec.selector.app}'"
+    equals: web
+  - desc: Service listens on port 8080
+    run: "oc get service web-nodeport -n lab-01 -o jsonpath='{.spec.ports[0].port}'"
+    equals: 8080

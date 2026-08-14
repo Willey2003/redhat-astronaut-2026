@@ -1,0 +1,22 @@
+kind: hands-on
+domain: image-management
+level: deep
+title: Import an external image into an ImageStream
+prompt: |
+  In project `dev-01`, create an ImageStream named `quote` and import the tag
+  `v2` from the external registry image quay.io/example/quote:v2. Force the
+  import to run even if the tag has already been seen, so the ImageStreamTag
+  `quote:v2` is fully resolved.
+solution: |
+  oc -n dev-01 create imagestream quote
+  oc -n dev-01 import-image quote:v2 --from=quay.io/example/quote:v2 --confirm
+checks:
+  - desc: ImageStream quote exists
+    run: oc -n dev-01 get is quote -o name
+    equals: imagestream.image.openshift.io/quote
+  - desc: ImageStreamTag quote:v2 exists
+    run: oc -n dev-01 get imagestreamtag quote:v2 -o name
+    equals: imagestreamtag.image.openshift.io/quote:v2
+  - desc: Imported tag holds a resolved registry image reference
+    run: oc -n dev-01 get imagestreamtag quote:v2 -o jsonpath='{.image.dockerImageReference}'
+    non-empty: true

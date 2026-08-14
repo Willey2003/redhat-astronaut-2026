@@ -1,0 +1,48 @@
+kind: hands-on
+domain: gitops-cicd
+level: deep
+title: Apply a Tekton Pipeline definition
+prompt: |
+  In project `dev-01`, create a Tekton Pipeline named `quote-pipeline` that
+  runs a single task named `quote-build` backed by the Task `quote-build-task`.
+  Save the manifest to a file and apply it with `oc apply -f` (an oc-apply
+  pipeline step), then verify the Pipeline resource exists.
+
+  Manifest to apply:
+
+  ```
+  apiVersion: tekton.dev/v1
+  kind: Pipeline
+  metadata:
+    name: quote-pipeline
+    namespace: dev-01
+  spec:
+    tasks:
+      - name: quote-build
+        taskRef:
+          name: quote-build-task
+  ```
+solution: |
+  cat > quote-pipeline.yaml <<'EOF'
+  apiVersion: tekton.dev/v1
+  kind: Pipeline
+  metadata:
+    name: quote-pipeline
+    namespace: dev-01
+  spec:
+    tasks:
+      - name: quote-build
+        taskRef:
+          name: quote-build-task
+  EOF
+  oc apply -f quote-pipeline.yaml
+checks:
+  - desc: Tekton Pipeline quote-pipeline exists
+    run: oc -n dev-01 get pipeline quote-pipeline -o name
+    equals: pipeline.tekton.dev/quote-pipeline
+  - desc: Pipeline runs a task named quote-build
+    run: oc -n dev-01 get pipeline quote-pipeline -o jsonpath='{.spec.tasks[0].name}'
+    equals: quote-build
+  - desc: Task references quote-build-task
+    run: oc -n dev-01 get pipeline quote-pipeline -o jsonpath='{.spec.tasks[0].taskRef.name}'
+    equals: quote-build-task

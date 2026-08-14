@@ -1,0 +1,23 @@
+kind: knowledge
+domain: cluster-architecture
+level: core
+title: Custom resources and controllers
+prompt: |
+  A custom resource `Backup` with fields `schedule` and `ttl` appears in
+  `oc api-resources`. What must exist for the cluster to do something useful
+  when a user creates a Backup object?
+options:
+  A: A controller, typically shipped by an Operator, that watches Backup
+    objects and reconciles them.
+  B: A Deployment scaled to run one pod per Backup object.
+  C: A Service that exposes the Backup resource through a load balancer.
+  D: Nothing; a registered custom resource is self-executing.
+answer: A
+explanation: |
+  Registering a CustomResourceDefinition only adds an API endpoint that stores
+  the custom objects; the actual behavior comes from a controller that watches
+  those objects and acts on them, which is the heart of the Operator pattern.
+  Without a controller the resource is just inert data. Option B confuses
+  workload scaling with reconciliation, option C describes Service exposure
+  rather than behavior, and option D is false because custom resources never
+  execute themselves.

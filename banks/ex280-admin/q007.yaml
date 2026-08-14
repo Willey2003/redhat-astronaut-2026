@@ -1,0 +1,21 @@
+kind: hands-on
+domain: authentication-security
+level: core
+title: Grant a ServiceAccount read access to a project
+prompt: |
+  In project `lab-01`, create a ServiceAccount named `monitor` and bind the
+  ClusterRole `view` to it so the account can read resources in lab-01. Verify
+  the account can actually list pods.
+solution: |
+  oc create sa monitor -n lab-01
+  oc adm policy add-cluster-role-to-user view -z monitor -n lab-01
+checks:
+  - desc: ServiceAccount monitor exists in lab-01
+    run: oc get sa monitor -n lab-01 -o name
+    equals: serviceaccount/monitor
+  - desc: A RoleBinding links the ClusterRole view to monitor
+    run: "oc get rolebindings -n lab-01 -o jsonpath='{.items[*].roleRef.kind}/{.items[*].roleRef.name}'"
+    contains: ClusterRole/view
+  - desc: monitor can list pods in lab-01
+    run: oc auth can-i list pods --as=system:serviceaccount:lab-01:monitor -n lab-01
+    equals: yes

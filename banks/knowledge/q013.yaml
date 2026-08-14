@@ -1,0 +1,22 @@
+kind: knowledge
+domain: administration
+level: deep
+title: PersistentVolume reclaim policies
+prompt: |
+  An admin deletes a PersistentVolumeClaim whose PersistentVolume has
+  reclaimPolicy set to Retain. What happens to the PersistentVolume?
+options:
+  A: It is deleted immediately together with the claim.
+  B: It stays in the Released state so the admin can recover the data manually
+    before the volume is reused.
+  C: It is automatically scrubbed and returned to Available for the next claim.
+  D: It moves to Failed because Retain requires administrative confirmation at
+    deletion time.
+answer: B
+explanation: |
+  With the Retain policy, deleting the claim leaves the PersistentVolume in the
+  Released state with its data preserved; a human must delete or recreate the
+  volume (after handling the data) before it can be bound again. The Delete
+  policy would remove the underlying storage, and automatic scrubbing is the
+  behavior of the deprecated Recycle policy, not Retain. There is no Failed
+  state triggered by deletion under Retain.

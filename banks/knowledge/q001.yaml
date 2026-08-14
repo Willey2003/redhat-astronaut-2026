@@ -1,0 +1,27 @@
+kind: knowledge
+domain: core-concepts
+level: quick
+title: Relationship between Kubernetes and OpenShift
+prompt: |
+  A platform team is evaluating Red Hat OpenShift 4 as their container
+  platform. Which statement best describes how OpenShift relates to
+  Kubernetes?
+options:
+  A: OpenShift is a separate orchestration engine that replaces the Kubernetes
+    scheduler and API server with its own components.
+  B: OpenShift is a Kubernetes distribution that runs a standard Kubernetes
+    control plane and adds a Red Hat enterprise layer of operators, Routes,
+    image streams, builds, and an integrated registry on top of it.
+  C: OpenShift only packages the Kubernetes control plane and adds no resources
+    beyond the core Kubernetes API.
+  D: OpenShift and Kubernetes are two independent platforms that share no
+    common API objects.
+answer: B
+explanation: |
+  OpenShift 4 is built directly on Kubernetes: it runs the standard
+  kube-apiserver, controller-manager, scheduler, and etcd, then extends the API
+  with resources such as Routes, ImageStreams, BuildConfigs, and Security
+  Context Constraints, all managed by operators like the cluster-version
+  operator. Options A and D are wrong because OpenShift neither replaces nor
+  runs separately from Kubernetes, and option C is wrong because OpenShift adds
+  a substantial platform layer on top of the core Kubernetes API.

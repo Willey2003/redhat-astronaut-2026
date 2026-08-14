@@ -1,0 +1,20 @@
+kind: knowledge
+domain: cluster-configuration
+level: quick
+title: Which component reconciles the cluster to the desired version
+prompt: |
+  A cluster upgrade is driven by a component that watches the ClusterVersion
+  resource and moves the cluster toward the desired version recorded in it.
+  Which component performs this role?
+options:
+  A: Cluster Version Operator (CVO)
+  B: Machine Config Operator (MCO)
+  C: Operator Lifecycle Manager (OLM)
+  D: Cluster Network Operator (CNO)
+answer: A
+explanation: |
+  The Cluster Version Operator (CVO) watches the ClusterVersion object and
+  reconciles the cluster to the version stored in spec.desiredUpdate, which is
+  the field that oc adm upgrade writes. The MCO updates the operating system
+  and machine configuration, OLM installs Operators, and the CNO manages the
+  cluster network, so none of them drive version reconciliation.

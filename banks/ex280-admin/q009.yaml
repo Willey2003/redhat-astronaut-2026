@@ -1,0 +1,20 @@
+kind: knowledge
+domain: networking
+level: quick
+title: Route termination that stops TLS at the router
+prompt: |
+  Clients must reach a web application over HTTPS, but the application pod
+  only listens on plain HTTP. TLS must be terminated at the router, which then
+  forwards unencrypted traffic to the pod. Which Route termination type does
+  this?
+options:
+  A: edge
+  B: passthrough
+  C: reencrypt
+  D: none
+answer: A
+explanation: |
+  Edge termination terminates TLS at the router and forwards plain HTTP to the
+  service, which matches the requirement. Reencrypt also terminates at the
+  router but re-encrypts the connection to the pod, and passthrough forwards
+  the encrypted stream untouched so the pod itself must terminate TLS.

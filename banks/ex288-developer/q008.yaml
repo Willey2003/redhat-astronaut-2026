@@ -1,0 +1,23 @@
+kind: hands-on
+domain: routes-ingress
+level: core
+title: Path-based routing on a route
+prompt: |
+  The Service `quote-svc` already exists in project `dev-01`. Create a Route
+  named `quote-api` with edge TLS termination that only serves requests whose
+  path starts with `/api`, still routing them to `quote-svc`.
+setup:
+  - oc new-project dev-01 || true
+  - oc -n dev-01 create service clusterip quote-svc --tcp=8080:8080 || true
+solution: |
+  oc -n dev-01 create route edge quote-api --service=quote-svc --path=/api
+checks:
+  - desc: Route path is /api
+    run: oc -n dev-01 get route quote-api -o jsonpath='{.spec.path}'
+    equals: /api
+  - desc: Route targets the quote-svc service
+    run: oc -n dev-01 get route quote-api -o jsonpath='{.spec.to.name}'
+    equals: quote-svc
+  - desc: TLS termination is edge
+    run: oc -n dev-01 get route quote-api -o jsonpath='{.spec.tls.termination}'
+    equals: edge

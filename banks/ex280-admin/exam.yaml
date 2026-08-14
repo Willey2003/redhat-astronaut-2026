@@ -1,0 +1,18 @@
+id: ex280-admin
+title: EX280 OpenShift Administration Mock
+engine: mixed
+duration_minutes: 180
+pass_threshold: 0.7
+draw_size: 15
+seed: null
+domains:
+  cluster-configuration: 0.22
+  authentication-security: 0.20
+  networking: 0.20
+  storage: 0.13
+  operators: 0.12
+  application-lifecycle: 0.13
+levels:
+  quick: 0.3
+  core: 0.5
+  deep: 0.2

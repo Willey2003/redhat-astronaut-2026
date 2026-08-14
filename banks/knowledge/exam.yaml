@@ -1,0 +1,18 @@
+id: knowledge
+title: OpenShift Concepts Knowledge Bank
+engine: knowledge
+duration_minutes: 60
+pass_threshold: 0.75
+draw_size: 30
+seed: null
+domains:
+  core-concepts: 0.20
+  cluster-architecture: 0.15
+  administration: 0.20
+  security: 0.20
+  networking: 0.15
+  development-workflow: 0.10
+levels:
+  quick: 0.35
+  core: 0.45
+  deep: 0.20
