@@ -18,8 +18,9 @@ engine, grading, bank format, UI, cluster automation — is original.
 
 ## Why it exists
 
-The current kubestronaut-sim practice environment targets Kubernetes
-certifications. Golden Astronaut 2026 covers the *OpenShift* track: Red Hat's
+The companion [Golden Kubestronaut](https://github.com/Willey2003/golden-kubestronaut)
+simulator targets the CNCF/Linux Foundation certifications. Red Hat Astronaut 2026
+covers the *OpenShift* track: Red Hat's
 Kubernetes distribution, with its own administration and development
 competencies — Operators, SCCs, Routes, BuildConfigs, ImageStreams, GitOps,
 and more. It is a companion platform for the same learning journey.
@@ -38,12 +39,11 @@ and more. It is a companion platform for the same learning journey.
 
 ```bash
 ./ga doctor        # preflight: python, docker, oc, RAM, virtualization
-./ga install       # build platform containers + write config
-./ga up            # start the platform
+./ga up            # build the containers and start the platform
 ./ga exam ex280-admin  # start a timed EX280 attempt (headless API) or open the UI
 ```
 
-Open <http://localhost:8900> (or the LAN address after `ga expose`) in your
+Open <http://localhost:8903> (or the LAN address after `ga expose`) in your
 browser and pick a certification.
 
 See [docs/install.md](docs/install.md), [docs/cli.md](docs/cli.md).
@@ -57,7 +57,6 @@ engine/         Original simulator: facilitator (UI/API), conductor (grader), ba
 labs/           Hands-on exercises and their grader checks
 cluster/        OpenShift provisioning: CRC (OpenShift Local), OKD, preflight
 docs/           Architecture, bank spec, install, security, roadmap
-examples/       Reference banks, curriculum module, and grader checks
 ```
 
 ## Current status

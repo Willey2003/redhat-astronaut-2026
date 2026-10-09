@@ -1,6 +1,6 @@
 # Installation
 
-Golden Astronaut 2026 runs as a small Docker stack (facilitator UI/API,
+Red Hat Astronaut 2026 runs as a small Docker stack (facilitator UI/API,
 conductor grader, registry) plus your own OpenShift cluster for practice.
 
 ## Requirements
@@ -30,10 +30,10 @@ cd golden-astronaut-2026
 
 ```bash
 ./ga build         # build facilitator + conductor images
-./ga up            # start facilitator (:8900), conductor, registry
+./ga up            # start facilitator (http://127.0.0.1:8903), conductor, registry
 ```
 
-Open <http://localhost:8900> in your browser. The pages list the three banks
+Open <http://localhost:8903> in your browser. The pages list the three banks
 (EX280 admin, EX288 developer, Knowledge).
 
 ### Reach it from another machine on your LAN
